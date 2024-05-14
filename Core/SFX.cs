@@ -1,0 +1,86 @@
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+public class SFX : MonoSingletonDontDestroyed<SFX>
+{
+    static Dictionary<string, AudioClip> dic = new();
+    AudioSource[] audios;
+    int length;
+    int iter;
+
+    const string dirPath = "SFX";
+    public List<string> failedNames = new();
+
+
+    public override void Init()
+    {
+        if (didInit) return;
+
+        var dir = Resources.LoadAll<AudioClip>(dirPath);
+        foreach (var file in dir)
+        {
+            dic.Add(file.name, file);
+        }
+
+        audios = GetComponents<AudioSource>();
+        length = audios.Length;
+
+        if (Settings.MuteSFX) SetVolume(0);
+        else SetVolume(1);
+
+        base.Init();
+    }
+
+#if UNITY_EDITOR
+    void OnDestroy()
+    {
+        if (failedNames.Count == 0) return;
+        var sb = new StringBuilder();
+        failedNames.ForEach(e => sb.Append($"{e}, "));
+        Debug.Log($"<color=red>No SFX Files: {sb}</color>");
+    }
+#endif
+
+    GameObject selected;
+    void Update()
+    {
+        // play click sound Only when it's a button
+        if (Input.GetMouseButtonDown(0) == false) return;
+        selected = EventSystem.current.currentSelectedGameObject;
+        if (selected == null) return;
+
+        var btn = selected.GetComponent<Button>();
+        if ((btn != null && btn.transition != Selectable.Transition.None) ||
+            selected.GetComponent<Toggle>() != null) Play("beep");
+    }
+
+
+    public static void Mute(bool b)
+    {
+        i?.audios.ForEach(e =>
+        {
+            e.enabled = !b;
+        });
+    }
+    public static void SetVolume(float val)
+    {
+        Mute(val == 0);
+        i?.audios.ForEach(e => e.volume = val);
+    }
+
+    public static void Play(string name)
+    {
+        if (name.IsNullOrEmpty()) return;
+        var _ = i;
+        if (dic.ContainsKey(name) == false)
+        {
+            if (_.failedNames.Contains(name) == false) _.failedNames.Add(name);
+            return;
+        }
+        if (_.iter >= _.length) _.iter = 0;
+        _.audios[_.iter++]?.PlayOneShot(dic[name]);
+    }
+}
