@@ -24,13 +24,15 @@ public class GM : MonoSingleton<GM>
         Application.targetFrameRate = Settings.FrameRate;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
+        float targetAspect = (float)Screen.width / Screen.height;
+        Camera.main.orthographicSize = 3.5f / targetAspect;
         // size
         // float w = Screen.width;
         // float h = Screen.height;
         // Screen.SetResolution(720, (int)(h / w * 720), true, 60);
     }
 
-    
+
     IEnumerator Start()
     {
         // Fade.i.Dim(Color.black);
