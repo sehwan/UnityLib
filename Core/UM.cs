@@ -21,8 +21,6 @@ public class UM : MonoBehaviour
     {
         i = this;
         canvas = GetComponent<Canvas>();
-        GetComponent<CanvasScaler>().referenceResolution =
-            new Vector2(1280, Application.isMobilePlatform ? 720 : 888);
 
         // Registers all windows
         windows = FindObjectsOfType<UIWindow>(true).ToList();

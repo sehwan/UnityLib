@@ -123,8 +123,8 @@ public class MetaParent : MonoBehaviour
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Meta))]
-public class MetaEditor : Editor
+[CustomEditor(typeof(MetaParent), true)]
+public class MetaEditorParent : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -148,6 +148,20 @@ public class MetaEditor : Editor
             meta.LoadGoogleSheet(false);
     }
 }
+
+// ADD THIS TO META SCRIPT
+
+// #if UNITY_EDITOR
+// [CustomEditor(typeof(Meta))]
+// public class MetaEditor : MetaEditorParent
+// {
+//     public override void OnInspectorGUI()
+//     {
+//         base.OnInspectorGUI();
+//     }
+// }
+// #endif
+
 #endif
 
 // Nested Object
