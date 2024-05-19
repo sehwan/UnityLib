@@ -1,16 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using System.Linq;
-using System;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(Text))]
 public class ClickByKey : MonoBehaviour
 {
+    Transform tr;
     public KeyCode key = KeyCode.Space;
     public Button button;
+    static UM um;
 
 
     void Awake()
@@ -20,7 +20,12 @@ public class ClickByKey : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
+        tr = transform;
         GetComponent<Text>().text = $"[{KeyCodeToString(key)}]";
+    }
+    void Start()
+    {
+        if (um == null) um = UM.i;
     }
     string KeyCodeToString(KeyCode k)
     {
@@ -37,16 +42,14 @@ public class ClickByKey : MonoBehaviour
     {
         if (button.IsInteractable() == false) return;
         if (Input.GetKeyDown(key) == false) return;
-        var um = UM.i;
         if (um.showings.Count > 0)
         {
-            if (transform.IsChildOf(um.showings.Last().transform) == false)
+            if (tr.IsChildOf(um.showings.Last().transform) == false)
                 return;
         }
-        else if (transform.IsChildOf(um.scenes.Last().transform) == false) return;
+        else if (tr.IsChildOf(um.scenes.Last().transform) == false) return;
         if (um.others.Count > 0) return;
 
-        // button?.onClick?.Invoke();
         ExecuteEvents.Execute(button.gameObject,
             new PointerEventData(EventSystem.current),
             ExecuteEvents.pointerClickHandler);

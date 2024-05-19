@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-public enum AttackElementalType
-{ Normal, Magic }
+public enum AttackElementalType { Normal, Magic }
 
 [System.Serializable]
 public class AttackData
