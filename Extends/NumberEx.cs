@@ -152,4 +152,9 @@ public static class NumberEx
     //     y = pow(abs((x++ % 6) - 3), 2.0);
     // Concave curves(i.e.sqrt(x) shape):
     // y = pow(abs((x++ % 6) - 3), 0.5);
+    
+    public static bool IsBetween(this int me, int min, int max)
+    {
+        return me >= min && me <= max;
+    }
 }

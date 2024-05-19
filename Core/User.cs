@@ -669,8 +669,8 @@ public class User : MonoSingletonDontDestroyed<User>
                 ToastGroup.Show("Complete".L());
                 Common_InputField.i.Hide();
                 _data.nick = newID;
-                if (cb != null) cb();
-                if (onChangeNick != null) onChangeNick();
+                cb?.Invoke();
+                onChangeNick?.Invoke();
             }
             // }), "InputNewName".L() + "\n" + $"({"OnlyAlphabetsAndNumbers".L()})", tempNick, canESC, LIMIT_LENGTH);
             // }), "InputNewName".L() + "\n" + $"({"NotAvailableCharacters".L()})", tempNick, canESC, LIMIT_LENGTH);
@@ -767,7 +767,7 @@ public class User : MonoSingletonDontDestroyed<User>
         //     FirebaseMng.Log($"level{_data.lv}");
         // }
 
-        if (onChangeEXP != null) onChangeEXP();
+        onChangeEXP?.Invoke();
     }
     #endregion
 

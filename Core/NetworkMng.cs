@@ -122,7 +122,7 @@ public class NetworkMng : MonoSingleton<NetworkMng>
         if (www.result == UnityWebRequest.Result.Success)
         {
             Debug.Log($"{uri}\n{www.downloadHandler.text}");
-            if (cb != null) cb(www.downloadHandler.text);
+            cb?.Invoke(www.downloadHandler.text);
         }
         else
         {

@@ -74,7 +74,7 @@ public class PopNumberInput : MonoBehaviour
 
     public void Btn_Ok()
     {
-        if (cb != null) cb(value);
+        cb?.Invoke(value);
         ESC();
     }
     public void ESC()

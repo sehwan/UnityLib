@@ -132,6 +132,6 @@ public class Dialogue : MonoSingleton<Dialogue>
     public void Hide()
     {
         go.SetActive(false);
-        if (callback != null) callback();
+        callback?.Invoke();
     }
 }

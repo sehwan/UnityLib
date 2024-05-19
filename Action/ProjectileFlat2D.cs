@@ -39,7 +39,7 @@ public class ProjectileFlat2D : MonoBehaviour
     {
         if (tr.position.V2() == dest)
         {
-            if (onArrived != null) onArrived();
+            onArrived?.Invoke();
         }
         tr.position = Vector2.MoveTowards(tr.position, dest, Time.deltaTime * speed);
     }

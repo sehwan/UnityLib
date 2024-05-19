@@ -89,37 +89,30 @@ public class CameraWork : MonoBehaviour
     #region Follow
     [Header("Follow")]
     public bool isFollowingObject;
-    public float spd_followingTarget;
-    public float spd_dynamicPosition;
-    public float spd_dynamicZoom;
+    public float spd_followingTarget = 1;
+    public float spd_dynamicPosition = 1;
+    public float spd_dynamicZoom = 1;
     // Object
-    public GameObject target;
-    public void SetTarget(GameObject t)
+    [SerializeField] Transform target;
+    public void SetTarget(Transform t)
     {
         target = t;
     }
     // Position
     public Vector3? targetPos = null;
     public float? targetZoom = null;
-    public void ResetTargets()
-    {
-        targetPos = null;
-        targetZoom = null;
-    }
     void Follow()
     {
         // Pan
-        // To the Object
         if (target)
         {
-            var vector = spd_followingTarget * Time.deltaTime * (target.transform.position - tr.position + zero);
-            tr.Translate(vector);
+            var dir = spd_followingTarget * Time.deltaTime * (target.position - tr.position + zero);
+            tr.Translate(dir);
         }
-        // To the Position
         else if (targetPos.HasValue)
         {
-            var vector = spd_dynamicPosition * Time.deltaTime * (targetPos.Value - tr.position + zero);
-            tr.Translate(vector);
+            var dir = spd_dynamicPosition * Time.deltaTime * (targetPos.Value - tr.position + zero);
+            tr.Translate(dir);
         }
 
         // Zoom
@@ -174,8 +167,8 @@ public class CameraWork : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            Vector3 newMouse = cam.ScreenToViewportPoint(Input.mousePosition);
-            Vector3 moved = oldMouse - newMouse;
+            var newMouse = cam.ScreenToViewportPoint(Input.mousePosition);
+            var moved = oldMouse - newMouse;
             if (isXMovable == false) moved.x = 0;
             if (isYMovable == false) moved.y = 0;
             tr.position = oldPos + moved * (isOrthographic ? cam.orthographicSize : cam.fieldOfView / 6);
@@ -203,7 +196,7 @@ public class CameraWork : MonoBehaviour
     }
     void Clamp()
     {
-        float zoom = 0;
+        var zoom = 0f;
         if (isOrthographic)
         {
             zoom = cam.orthographicSize / 2;
@@ -214,8 +207,12 @@ public class CameraWork : MonoBehaviour
             zoom = cam.fieldOfView / 15;
             cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, minZoom, maxZoom);
         }
-        float x = Mathf.Clamp(tr.position.x, limit_minX + zoom, limit_maxX - zoom);
-        float y = Mathf.Clamp(tr.position.y, limit_minY + zoom, limit_maxY - zoom);
+        var x = isXMovable ?
+            Mathf.Clamp(tr.position.x, limit_minX + zoom, limit_maxX - zoom) :
+            zero.x;
+        var y = isYMovable ?
+            Mathf.Clamp(tr.position.y, limit_minY + zoom, limit_maxY - zoom) :
+            zero.y;
         tr.Position(x, y, zero.z);
     }
     #endregion

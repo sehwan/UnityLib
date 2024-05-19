@@ -54,7 +54,7 @@ public class ItemSlot : MonoBehaviour
     public Action updateAction;
     void Update()
     {
-        if (updateAction != null) updateAction();
+        updateAction?.Invoke();
     }
 
 
@@ -186,10 +186,10 @@ public class ItemSlot : MonoBehaviour
 
     public void OnClick()
     {
-        if (onClick != null) onClick();
+        onClick?.Invoke();
     }
     public void OnClickDelete()
     {
-        if (onClickDelete != null) onClickDelete();
+        onClickDelete?.Invoke();
     }
 }

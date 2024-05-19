@@ -48,7 +48,7 @@ public class PopInput : MonoSingleton<PopInput>
     {
         box.SetActive(false);
         // Um.inst._showingWindows.Remove(box);
-        if (cb != null) cb(result, input.text);
+        cb?.Invoke(result, input.text);
     }
 
 

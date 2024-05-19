@@ -49,13 +49,13 @@ public class Clippy : PrefabSignleton<Clippy>
     // to Button
     public void Next()
     {
-        if (callback != null) callback();
+        callback?.Invoke();
     }
 
     // Manual
     public void Hide()
     {
         gameObject.SetActive(false);
-        if (callback != null) callback();
+        callback?.Invoke();
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using UnityEngine.EventSystems;
 
 
 public static class UnityEx
@@ -157,5 +158,15 @@ public static class UnityEx
     {
         me.startWidth = start;
         me.endWidth = end;
+    }
+
+    public static bool IsWrongClick()
+    {
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) return true;
+        }
+        else if (EventSystem.current.IsPointerOverGameObject()) return true;
+        return false;
     }
 }

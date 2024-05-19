@@ -73,12 +73,12 @@ public class UM : MonoBehaviour
             showings.Add(w);
         }
         w.transform.SetAsLastSibling();
-        if (onRegisterWindow != null) onRegisterWindow(w.gameObject);
+        onRegisterWindow?.Invoke(w.gameObject);
     }
     public void DeregisterWindow(UIWindow w)
     {
         showings.Remove(w);
-        if (onDeregisterWindow != null) onDeregisterWindow(w.gameObject);
+        onDeregisterWindow?.Invoke(w.gameObject);
     }
 
 

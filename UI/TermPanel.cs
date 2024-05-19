@@ -34,7 +34,7 @@ public class TermPanel : MonoBehaviour
     public void Btn_Ok()
     {
         PlayerPrefs.SetInt("term", 1);
-        if (onOK != null) onOK();
+        onOK?.Invoke();
         Destroy(gameObject);
     }
 

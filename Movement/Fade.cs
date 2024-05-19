@@ -20,11 +20,11 @@ public class Fade : MonoSingleton<Fade>
     }
     void OnEnable()
     {
-        if (onEnable != null) onEnable();
+        onEnable?.Invoke();
     }
     void OnDisable()
     {
-        if (onDisable != null) onDisable();
+        onDisable?.Invoke();
     }
 
     void MakeGameObject()
