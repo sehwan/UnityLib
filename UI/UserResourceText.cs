@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,24 +8,25 @@ public class UserResourceText : MonoBehaviour
     public Text text;
     public Image icon;
 
-    public static object data;
+    FieldInfo fieldInfo;
+    int lastRsc;
 
     void Awake()
     {
         text.text = "";
-    }
-
-    void OnEnable()
-    {
+        fieldInfo = (typeof(UserData)).GetField(key);
         if (icon != null) icon.sprite = UIUtil.GetIcon(key);
     }
 
     void Update()
     {
-        var rsc = data.GetField<int>(key);
-        text.text = $"{rsc:n0}";
-        text.color = rsc > 0 ?
-            Color.white :
-            Color.red;
+        if (fieldInfo == null) return;
+        var neo = (int)fieldInfo.GetValue(User.i.data);
+        if (neo != lastRsc)
+        {
+            text.text = $"{neo:n0}";
+            text.color = neo > 0 ? Color.white : Color.red;
+            lastRsc = neo;
+        }
     }
 }

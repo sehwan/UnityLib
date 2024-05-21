@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 4603619639997807457}
   - component: {fileID: 6054625593608269348}
   m_Layer: 0
-  m_Name: attend7_pn
+  m_Name: AttendPanel7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

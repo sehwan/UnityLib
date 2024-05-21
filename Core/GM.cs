@@ -23,8 +23,7 @@ public class GM : MonoSingleton<GM>
         base.Awake();
         Application.targetFrameRate = Settings.FrameRate;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
-        float targetAspect = (float)Screen.width / Screen.height;
+        var targetAspect = (float)Screen.width / Screen.height;
         Camera.main.orthographicSize = 3.5f / targetAspect;
         // size
         // float w = Screen.width;
@@ -43,7 +42,7 @@ public class GM : MonoSingleton<GM>
         // while (FirebaseMng.inst.didFetchConfig == false) yield return null;
         // while (FirebaseMng.inst.user == null) yield return null;
         // while (GameData.i.didInitMeta == false) yield return null;
-        // User.i.LoadOrNew();
+        User.i.LoadOrNew();
         // while (User.WasInit == false) yield return null;
         // GameData.i.FetchAfterUser();
         // while (GameData._inst.didFetchedRunningMeta == false) yield return null;

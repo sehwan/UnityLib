@@ -28,7 +28,7 @@ public class UIScene : UIPanel
 }
 public class UIWindow : UIPanel
 {
-    [Immutable] public bool buttonWillBeESC = true;
+    [Immutable] public bool buttonWillBeESC;
     public bool isESCable = true;
 
     [ContextMenu("Make Dim to ESC Buttons")]

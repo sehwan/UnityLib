@@ -28,11 +28,11 @@ public class AttendancePanel : UIWindow
         RefreshToday();
         // if (User.data.IsTutorialOver() == false) return;
         // if (User.data.GetField<bool>(keyCheck)) return;
-        Show();
+        // Show();
     }
     public override void Show()
     {
-        // base.Show();
+        base.Show();
         // int day = (User.data.GetField<int>(key) % CYCLE);
         // var table = GameData.meta.GetField<Dictionary<int, Resource>>(key);
         // for (int i = 0; i < tr_table.childCount; i++)
@@ -53,13 +53,13 @@ public class AttendancePanel : UIWindow
         // }
     }
 
-    void SetPassed(Transform tr)
+    void SetPassed(AttendItem item)
     {
-        tr.Find("today").SetActive(false);
-        tr.Find("img_icon").GetComponent<Image>().color = new Color(.2f, .2f, .2f);
-        tr.Find("img_check").SetActive(true);
-        tr.Find("txt_count").GetText().color = Color.gray;
-        tr.GetComponent<Button>().onClick.RemoveAllListeners();
+        item.go_today.SetActive(false);
+        item.icon.color = new Color(.2f, .2f, .2f);
+        item.go_check.SetActive(true);
+        item.txt_reward.color = Color.gray;
+        item.btn.onClick.RemoveAllListeners();
     }
     void RefreshToday()
     {

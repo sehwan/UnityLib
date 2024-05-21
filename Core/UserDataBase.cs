@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 [Serializable]
-public class UserData
+public partial class UserData
 {
     [Header("Base")]
     public string id;
@@ -16,9 +16,6 @@ public class UserData
 
     [Header("In Game")]
     public int lv = 1;
-
-    [Space]
-    [Header("Main")]
 
     [Space]
     [Header("Resources")]
@@ -78,19 +75,23 @@ public class UserData
     static public UserData Default()
     {
         Debug.Log("<color=cyan>Default User</color>");
-        var r = new UserData();
-        // r.id = FirebaseMng.inst.user.UserId;
-        r.nick = DefaultNick;
+        var r = new UserData
+        {
+            // r.id = FirebaseMng.inst.user.UserId;
+            nick = DefaultNick
+        };
         return r;
     }
     static public UserData Tester()
     {
         Debug.Log("<color=cyan>Tester User</color>");
-        var r = new UserData();
-        // r.id = FirebaseMng.inst.user.UserId;
-        r.nick = DefaultNick;
-        r.tester = true;
-        r.tut = -1;
+        var r = new UserData
+        {
+            // r.id = FirebaseMng.inst.user.UserId;
+            nick = DefaultNick,
+            tester = true,
+            tut = -1
+        };
         return r;
     }
 

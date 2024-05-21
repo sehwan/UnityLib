@@ -42,9 +42,9 @@ public class SettingsPanel : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) Btn_Close();
+        if (Input.GetKeyDown(KeyCode.Escape)) _Hide();
     }
-    public void Btn_Close()
+    public void _Hide()
     {
         Destroy(gameObject);
     }
@@ -84,7 +84,7 @@ public class SettingsPanel : MonoBehaviour
         // else if (s == "1212date") User.inst.OnDayChanged();
         else if (s == "1212reset")
         {
-            User.i._data = UserData.Default();
+            // User.i.Data = UserDataBase.Default();
             Application.Quit();
         }
         else if (s == "1212sstone")
@@ -208,10 +208,10 @@ public class SettingsPanel : MonoBehaviour
     public void Btn_Inquiry()
     {
         string email = "alchemistsgames@gmail.com";
-        string subject = MyEscapeURL($"Inquiry {Application.productName} {User.data.nick}");
+        string subject = MyEscapeURL($"Inquiry {Application.productName} {User.i.data.nick}");
         string body = MyEscapeURL("Please Enter Your Message here\n\n\n\n" +
         "Project: " + Application.productName + "\n" +
-          "Name: " + User.data.nick + "\n" +
+          "Name: " + User.i.data.nick + "\n" +
          "Model: " + SystemInfo.deviceModel + "\n" +
             "OS: " + SystemInfo.operatingSystem + "\n" +
         "Version:" + Application.version);

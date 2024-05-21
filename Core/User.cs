@@ -8,13 +8,28 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEditor;
 
 // using Firebase.Database;
 // using Firebase.Extensions;
 // using Firebase.Auth;
 
-public class User : MonoSingletonDontDestroyed<User>
+public class UserBase : MonoBehaviour
 {
+    virtual public void UpdateDataForNewVersion() { }
+}
+
+
+public partial class User : UserBase
+{
+    public static User i;
+
+    void Awake()
+    {
+        i = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     [Header("Settings")]
     [Immutable] public bool isUsingServer;
     [Immutable] public bool isCryptClient;
@@ -25,46 +40,41 @@ public class User : MonoSingletonDontDestroyed<User>
     [Header("ETC")]
     [Immutable] public bool isListening;
     [Immutable] public bool isForceQuit;
-    public static bool WasInit => (data != null && data.nick.IsFilled());
 
     [Header("Data")]
-    public UserData _data;
-    public static UserData data
-    {
-        get { return i._data; }
-        set { i._data = value; }
-    }
-    public static bool IsFilled() => (i._data != null && i._data.nick.IsFilled());
-    public JObject xData;
+    public UserData data;
 
+
+    public static bool IsFilled() => i.data != null && i.data.nick.IsFilled();
+    public JObject xData;
 
 
     #region Application
     [Immutable] public DateTime dt_lastFocused = DateTime.Now;
     void OnApplicationQuit()
     {
-        _data.device = null;
+        data.device = null;
         SaveImmediately();
     }
     void OnDestroy()
     {
-        _data.device = null;
+        data.device = null;
         SaveImmediately();
     }
     void OnApplicationPause(bool paused)
     {
         if (paused == false) return;
-        if (_data.nick.IsNullOrEmpty()) return;
-        _data.device = null;
+        if (data.nick.IsNullOrEmpty()) return;
+        data.device = null;
         dt_lastFocused = DateTime.Now;
         SaveImmediately();
-        System.GC.Collect();
     }
     void OnApplicationFocus(bool hasFocus)
     {
         if (hasFocus == false) return;
-        if (_data.nick.IsNullOrEmpty()) return;
-        _data.device = SystemInfo.deviceUniqueIdentifier;
+        if (IsFilled() == false) return;
+        if (data.nick.IsNullOrEmpty()) return;
+        data.device = SystemInfo.deviceUniqueIdentifier;
         // Diff
         var diff = DateTime.Now - dt_lastFocused;
         Debug.Log($"<color=cyan>{dt_lastFocused} {diff}</color>");
@@ -73,7 +83,6 @@ public class User : MonoSingletonDontDestroyed<User>
         dt_lastFocused = DateTime.Now;
     }
     #endregion
-
 
 
     #region Save
@@ -91,14 +100,14 @@ public class User : MonoSingletonDontDestroyed<User>
 
     void Save(bool isToast)
     {
-        if (_data == null
-        || _data.nick.IsNullOrEmpty()
+        if (data == null
+        || data.nick.IsNullOrEmpty()
             // || _data.nick == UserData.DefaultNick ||
             // _data.IsTutorialOver() == false
             ) return;
         if (isForceQuit) return;
 
-        _data.dt_saved = DateTime.Now;
+        data.dt_saved = DateTime.Now;
 
         if (isUsingServer) SaveToServer(isToast);
         else SaveToClient();
@@ -110,7 +119,7 @@ public class User : MonoSingletonDontDestroyed<User>
     {
         try
         {
-            var json = JsonConvert.SerializeObject(_data);
+            var json = JsonConvert.SerializeObject(data);
             PlayerPrefs.SetString(saveKey, json);
 
             // fake
@@ -125,7 +134,7 @@ public class User : MonoSingletonDontDestroyed<User>
     }
     async void SaveToServer(bool isToast = false)
     {
-        await NetworkMng.i.FuncAsync("user-save", isToast, ("data", JsonConvert.SerializeObject(_data)));
+        await NetworkMng.i.FuncAsync("user-save", isToast, ("data", JsonConvert.SerializeObject(data)));
         if (isToast) ToastGroup.Show("Complete".L());
         print("saved at " + DateTime.Now);
     }
@@ -144,7 +153,7 @@ public class User : MonoSingletonDontDestroyed<User>
 
     public void BackUp()
     {
-        NetworkMng.i.Func("user-backup", null, false, ("data", JsonConvert.SerializeObject(_data)));
+        NetworkMng.i.Func("user-backup", null, false, ("data", JsonConvert.SerializeObject(data)));
     }
     #endregion
 
@@ -230,42 +239,42 @@ public class User : MonoSingletonDontDestroyed<User>
         }
         // Client
         else login = LoadFromClient();
-        _data = login.user;
+        data = login.user;
 
         CheckBlackUser();
         UpdateDataForNewVersion();
 
-        if (_data.IsTutorialOver())
+        if (data.IsTutorialOver())
         {
-            var diff = (login.now.ToDateTime() - _data.dt_saved).TotalSeconds;
+            var diff = (login.now.ToDateTime() - data.dt_saved).TotalSeconds;
             Debug.Log($"<color=cyan>{diff / 60} min</color>");
             GetOfflineReward(diff);
             CheckDateChanged(login.now);
         }
-        _data.lastLogin = login.now;
-        _data.active = true;
+        data.lastLogin = login.now;
+        data.active = true;
         ListenDB();
 
         StartCoroutine(Co_AutoSave());
     }
 
-    void UpdateDataForNewVersion()
-    {
-        // ETC
-        // while (_data.stageCur.Count < DataEx.GetEnumCount<StageMode>()) _data.stageCur.Add(0);
-        // // IAPs
-        // foreach (var e in GameData.meta.iap)
-        // {
-        //     if (_data.dts_iap.ContainsKey(e.Key) == false &&
-        //         (e.Value.priceType == "time" || e.Value.duration != 0))
-        //         _data.dts_iap.Add(e.Key, DateTime.Now);
-        // }
-    }
+    // public override void UpdateDataForNewVersion()
+    // {
+    // ETC
+    // while (_data.stageCur.Count < DataEx.GetEnumCount<StageMode>()) _data.stageCur.Add(0);
+    // // IAPs
+    // foreach (var e in GameData.meta.iap)
+    // {
+    //     if (_data.dts_iap.ContainsKey(e.Key) == false &&
+    //         (e.Value.priceType == "time" || e.Value.duration != 0))
+    //         _data.dts_iap.Add(e.Key, DateTime.Now);
+    // }
+    // }
 
     void ListenDB()
     {
-        if (_data.IsTutorialOver() == false) return;
-        if (_data.dt_saved == DateTime.MinValue) return;
+        if (data.IsTutorialOver() == false) return;
+        if (data.dt_saved == DateTime.MinValue) return;
         if (isListening) return;
         // FirebaseMng.inst.ListenDB("users", FirebaseMng.inst.user.UserId, (shot) =>
         // {
@@ -309,8 +318,8 @@ public class User : MonoSingletonDontDestroyed<User>
         // var val = Stage.ResourcePerMinute(User.data.Progress);
         // var gold = Resource.Gold(val.gold * min);
         // var soul = Resource.Soul(val.soul * min);
-        // User.inst.AddResource(gold);
-        // User.inst.AddResourceBig(soul);
+        // AddResource(gold);
+        // AddResourceBig(soul);
         // // Reward Panel
         // var pn = RewardsMsg.inst;
         // soul.InitToSlot(pn.GetNextSlot());
@@ -321,7 +330,7 @@ public class User : MonoSingletonDontDestroyed<User>
     void CheckDateChanged(ulong now)
     {
         // If the Day was Changed
-        DateTime last = _data.lastLogin.ToDateTime();
+        DateTime last = data.lastLogin.ToDateTime();
         // Day
         if (last.IsDateChangedFromNow())
         {
@@ -337,9 +346,9 @@ public class User : MonoSingletonDontDestroyed<User>
 
     void CheckBlackUser()
     {
-        if (_data.black.IsFilled())
+        if (data.black.IsFilled())
         {
-            ToastGroup.Alert($"No permission : {_data.black}");
+            ToastGroup.Alert($"No permission : {data.black}");
             Application.Quit();
             return;
         }
@@ -362,18 +371,18 @@ public class User : MonoSingletonDontDestroyed<User>
     #region CheckDays
     public void OnDayChanged()
     {
-        _data.dq.Clear();
-        _data.att++;
-        _data.attCheck = false;
+        data.dq.Clear();
+        data.att++;
+        data.attCheck = false;
 
         // Attendance Reward
         var ticket = 3;
-        RewardMsg.inst.Enqueue("Welcome!".L() + " " + _data.att.ToOrdinal(), "ticket", ticket);
+        RewardMsg.inst.Enqueue("Welcome!".L() + " " + data.att.ToOrdinal(), "ticket", ticket);
         AddResource("ticket", ticket);
 
         // VIP
-        DateTime NOW = _data.lastLogin.ToDateTime();
-        foreach (var e in _data.dts_iap)
+        DateTime NOW = data.lastLogin.ToDateTime();
+        foreach (var e in data.dts_iap)
         {
             // if (NOW <= e.Value &&
             //     GameData.meta.iap.ContainsKey(e.Key) &&
@@ -398,8 +407,8 @@ public class User : MonoSingletonDontDestroyed<User>
     }
     void OnMonthChanged()
     {
-        _data.time_m = 0;
-        _data.onlineCheck = 0;
+        data.time_m = 0;
+        data.onlineCheck = 0;
         // var filtered = GameData.meta.iap.Where(
         //     e => e.Value.month &&
         //     _data.dts_iap.ContainsKey(e.Key));
@@ -417,12 +426,12 @@ public class User : MonoSingletonDontDestroyed<User>
 
     public void ReportFinishTutorial()
     {
-        _data.tut = -1;
+        data.tut = -1;
         ListenDB();
 
         // Reward
         int gem = 500;
-        User.i.AddResource(Resource.kGem, gem);
+        AddResource(Resource.kGem, gem);
         RewardMsg.inst.Enqueue("FinishTutorial".L(), Resource.kGem, gem);
     }
     #endregion
@@ -449,9 +458,9 @@ public class User : MonoSingletonDontDestroyed<User>
 
     public void OpenRbox()
     {
-        if (_data.rbox <= 0) return;
+        if (data.rbox <= 0) return;
         var pn = UM.Get<GachaPanel>();
-        var amount = Mathf.Min(_data.rbox, pn.SlotCount);
+        var amount = Mathf.Min(data.rbox, pn.SlotCount);
         AddResource("rbox", -amount);
         RecordInt("rbox", amount);
 
@@ -500,7 +509,7 @@ public class User : MonoSingletonDontDestroyed<User>
             return false;
         }
 
-        var old = User.data.GetField<int>(type);
+        var old = data.GetField<int>(type);
         if (old + value < 0 && value < 0)
         {
             ToastGroup.Show("NotEnoughResource".L());
@@ -508,7 +517,7 @@ public class User : MonoSingletonDontDestroyed<User>
         }
 
         // if (value > 0) UM.Scene<MainScenePanel>().snowMsg.Show($"{value} {type.L()}");
-        User.data.SetField(type, old + value);
+        data.SetField(type, old + value);
         if (onAddResource.ContainsKey(type)) onAddResource[type](value);
         if (type == Resource.kGem) SaveImmediately();
         return true;
@@ -517,14 +526,14 @@ public class User : MonoSingletonDontDestroyed<User>
     public bool AddResourceBig(string type, BigNumber value)
     {
         if (value == 0) return true;
-        var old = User.data.GetField<BigNumber>(type);
+        var old = data.GetField<BigNumber>(type);
         if (old + value < 0)
         {
             ToastGroup.Show("NotEnoughResource".L());
             return false;
         }
         // if (value > 0) UM.Scene<MainScenePanel>().snowMsg.Show($"{value} {type.L()}");
-        User.data.SetField(type.ToString(), old + value);
+        data.SetField(type.ToString(), old + value);
         if (onAddResourceBig.ContainsKey(type)) onAddResourceBig[type](value);
         return true;
     }
@@ -561,12 +570,12 @@ public class User : MonoSingletonDontDestroyed<User>
         var meta = GameData.meta;
         if (meta.dq.ContainsKey(type))
         {
-            var q = _data.dq.GetValueOrNew(type);
+            var q = data.dq.GetValueOrNew(type);
             if (q.v < v) q.v = v;
         }
         if (meta.rq.ContainsKey(type))
         {
-            var q = _data.rq.GetValueOrNew(type);
+            var q = data.rq.GetValueOrNew(type);
             if (q.v < v) q.v = v;
         }
 
@@ -582,8 +591,8 @@ public class User : MonoSingletonDontDestroyed<User>
     {
         // Quest
         var meta = GameData.meta;
-        if (meta.dq.ContainsKey(type)) _data.dq.GetValueOrNew(type).v += add;
-        if (meta.rq.ContainsKey(type)) _data.rq.GetValueOrNew(type).v += add;
+        if (meta.dq.ContainsKey(type)) data.dq.GetValueOrNew(type).v += add;
+        if (meta.rq.ContainsKey(type)) data.rq.GetValueOrNew(type).v += add;
 
         // Task
         // var task = _data.task;
@@ -625,16 +634,16 @@ public class User : MonoSingletonDontDestroyed<User>
     // to Check if user is a Cheater
     public void RecordInt(string type, int add = 1)
     {
-        if (_data.rcd_int.ContainsKey(type) == false) _data.rcd_int.Add(type, add);
-        else _data.rcd_int[type] += add;
+        if (data.rcd_int.ContainsKey(type) == false) data.rcd_int.Add(type, add);
+        else data.rcd_int[type] += add;
     }
 
     public Action onChangeNick;
     public void ReqChangeNick(bool canESC, Action cb = null)
     {
         int LIMIT_LENGTH = 14;
-        var tempNick = _data.nick == UserData.DefaultNick ? null : _data.nick;
-        Common_InputField.i.Show((async (string newID) =>
+        var tempNick = data.nick == UserData.DefaultNick ? null : data.nick;
+        Common_InputField.i.Show((Action<string>)(async (string newID) =>
         {
             if (newID.Length < 2)
             {
@@ -663,18 +672,18 @@ public class User : MonoSingletonDontDestroyed<User>
                 return;
             }
 
-            var res = await NetworkMng.i.FuncAsync("user-isNickOK", true, ("newID", newID));
+            var res = await NetworkMng.i.FuncAsync("user-isNickOK", true, ((object, object))("newID", newID));
             if (res.IsOK())
             {
                 ToastGroup.Show("Complete".L());
                 Common_InputField.i.Hide();
-                _data.nick = newID;
+                this.data.nick = newID;
                 cb?.Invoke();
                 onChangeNick?.Invoke();
             }
             // }), "InputNewName".L() + "\n" + $"({"OnlyAlphabetsAndNumbers".L()})", tempNick, canESC, LIMIT_LENGTH);
             // }), "InputNewName".L() + "\n" + $"({"NotAvailableCharacters".L()})", tempNick, canESC, LIMIT_LENGTH);
-        }), "InputNewName".L(), tempNick, canESC, LIMIT_LENGTH);
+        }), "InputNewName".L(), (string)tempNick, canESC, LIMIT_LENGTH);
     }
 
     public void ChangeSlogan(bool canESC, Action cb = null)
@@ -703,9 +712,9 @@ public class User : MonoSingletonDontDestroyed<User>
 
     public void RecordGacha(int rate)
     {
-        _data.rcd_gacha.Add(rate);
-        if (_data.rcd_gacha.Count > 30) _data.rcd_gacha.RemoveAt(0);
-        _data.gachaRate = (float)_data.rcd_gacha.Average();
+        data.rcd_gacha.Add(rate);
+        if (data.rcd_gacha.Count > 30) data.rcd_gacha.RemoveAt(0);
+        data.gachaRate = (float)data.rcd_gacha.Average();
     }
 
 
@@ -714,9 +723,9 @@ public class User : MonoSingletonDontDestroyed<User>
     {
         for (int i = 0; i < time; i++)
         {
-            var nowCount = _data.GetEnergyCount();
-            if (Def.EnergyMaxDefault <= nowCount) _data.exEnergy++;
-            _data.dt_energy = _data.dt_energy.AddSeconds(-Def.EnergyCool);
+            var nowCount = data.GetEnergyCount();
+            if (Def.EnergyMaxDefault <= nowCount) data.exEnergy++;
+            data.dt_energy = data.dt_energy.AddSeconds(-Def.EnergyCool);
         }
         ToastGroup.Show("Complete".L());
         // UM.Scene<UICamp>().Refresh_Energy();
@@ -770,13 +779,17 @@ public class User : MonoSingletonDontDestroyed<User>
         onChangeEXP?.Invoke();
     }
     #endregion
-
-
-    #region Inven
-    void MoveItem<T>(List<T> from, List<T> to, T o)
-    {
-        from.Remove(o);
-        to.Add(o);
-    }
-    #endregion
 }
+
+
+// #if UNITY_EDITOR
+// [CustomEditor(typeof(UserBase), true)]
+// public class UserBaseEditorBase : Editor
+// {
+//     public override void OnInspectorGUI()
+//     {
+//         // base.OnInspectorGUI();
+//         // var meta = target as MetaBase;
+//     }
+// }
+// #endif

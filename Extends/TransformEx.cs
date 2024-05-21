@@ -104,7 +104,7 @@ public static class TransformEx
         me.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
-
+// 
     public static void MultiLocalScale(this Transform me, float v)
     {
         me.transform.localScale *= v;
@@ -140,6 +140,7 @@ public static class TransformEx
         me.transform.localScale = new Vector3(x, y, z);
     }
 
+    // Position
     public static void LocalPositionX(this Transform me, float v)
     {
         me.transform.localPosition = new Vector3(v, me.transform.localPosition.y, me.transform.localPosition.z);
@@ -225,7 +226,6 @@ public static class TransformEx
         }
         return rt;
     }
-
     public static GameObject FindChildRecursively(this GameObject parent, string path)
     {
         string[] pathSegments = path.Split('/');
@@ -245,7 +245,6 @@ public static class TransformEx
 
         return FindChildRecursively(childTransform.gameObject, remainingPath);
     }
-
     public static Transform FirstInactiveChild(this Transform me)
     {
         foreach (Transform c in me)

@@ -28,7 +28,7 @@ public class QuestRepeatingItem : MonoBehaviour
     public void Refresh()
     {
         RefreshAble();
-        var users = User.data.rq.GetValueOrNew(meta.id);
+        var users = User.i.data.rq.GetValueOrNew(meta.id);
         txt_title.text = $"q_{meta.id}".L() + $" Lv.{users.l + 1}";
         var req = meta.req * (users.l + 1);
         txt_progress.FractionalText(users.v, req);
@@ -38,7 +38,7 @@ public class QuestRepeatingItem : MonoBehaviour
 
     public void RefreshAble()
     {
-        var users = User.data.rq.GetValueOrNew(meta.id);
+        var users = User.i.data.rq.GetValueOrNew(meta.id);
         var req = meta.req * (users.l + 1);
         isAble = users.v >= req;
         if (isAble) NotiBadges.Noti("quest", true);
@@ -49,7 +49,7 @@ public class QuestRepeatingItem : MonoBehaviour
     {
         if (meta == null) return;
 
-        User.data.rq.GetValueOrNew(meta.id).l++;
+        User.i.data.rq.GetValueOrNew(meta.id).l++;
         User.i.GetReward(meta, $"q_{meta.id}".L());
 
         Refresh();

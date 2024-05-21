@@ -15,9 +15,8 @@ public class MetaURL
     public string rel;
 }
 
-public class MetaParent : MonoBehaviour
+public class MetaBase : MonoBehaviour
 {
-    public static MetaParent i;
     static readonly JsonSerializerSettings jsonSetting = new() { NullValueHandling = NullValueHandling.Ignore };
     int counter;
     [Immutable] public string mode = "";
@@ -66,14 +65,16 @@ public class MetaParent : MonoBehaviour
 
         counter++;
         var color = devMode ? "orange" : "cyan";
-        if (counter == urls.Length) Debug.Log($"Loaded {mode}".TagColor(color));
+        if (counter == urls.Length)
+        {
+            Debug.Log($"Loaded {mode}".TagColor(color));
+            OnLoad();
+        }
     }
-
-
-    void Awake()
+    public virtual void OnLoad()
     {
-        i = this;
     }
+
 
     static string CSVToJSON(string csv)
     {
@@ -123,13 +124,13 @@ public class MetaParent : MonoBehaviour
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(MetaParent), true)]
-public class MetaEditorParent : Editor
+[CustomEditor(typeof(MetaBase), true)]
+public class MetaEditorBase : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        var meta = target as MetaParent;
+        var meta = target as MetaBase;
 
         GUILayout.Space(30);
         GUILayout.Label("Dev", EditorStyles.boldLabel);
@@ -153,7 +154,7 @@ public class MetaEditorParent : Editor
 
 // #if UNITY_EDITOR
 // [CustomEditor(typeof(Meta))]
-// public class MetaEditor : MetaEditorParent
+// public class MetaEditor : MetaEditorBase
 // {
 //     public override void OnInspectorGUI()
 //     {

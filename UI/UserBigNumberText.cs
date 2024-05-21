@@ -21,6 +21,6 @@ public class UserBigNumberText : MonoBehaviour
     void Update()
     {
         if (User.IsFilled() == false) return;
-        text.text = User.data.GetField<BigNumber>(key).ToString();
+        text.text = User.i.data.GetField<BigNumber>(key).ToString();
     }
 }

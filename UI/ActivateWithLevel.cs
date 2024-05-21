@@ -8,7 +8,7 @@ public class ActivateWithLevel : MonoBehaviour
     public static List<ActivateWithLevel> tut = new();
     public static void Refresh_Tut()
     {
-        var level = User.data.tut;
+        var level =   User.i.data.tut;
         if (level < 0) level = int.MaxValue;
         foreach (var item in tut)
             item.gameObject.SetActive(item.unlockTut <= level);
@@ -19,7 +19,7 @@ public class ActivateWithLevel : MonoBehaviour
     public static List<ActivateWithLevel> stage = new();
     public static void Refresh_Stage()
     {
-        var level = User.data.stageHigh;
+        var level = User.i.data.stageHigh;
         foreach (var item in stage)
             item.gameObject.SetActive(item.unlockStage <= level);
         stage.RemoveAll(x => x.unlockStage <= level);
@@ -32,9 +32,9 @@ public class ActivateWithLevel : MonoBehaviour
         if (unlockTut != 0)
         {
             tut.Add(this);
-            if (User.data.IsFilled())
+            if (User.i.data.IsFilled())
             {
-                var lv = User.data.tut;
+                var lv = User.i.data.tut;
                 if (lv < 0) lv = int.MaxValue;
                 gameObject.SetActive(unlockTut <= lv);
                 // tut.Remove(this);
@@ -43,9 +43,9 @@ public class ActivateWithLevel : MonoBehaviour
         if (unlockStage != 0)
         {
             stage.Add(this);
-            if (User.data.IsFilled())
+            if (User.i.data.IsFilled())
             {
-                gameObject.SetActive(unlockStage <= User.data.stageHigh);
+                gameObject.SetActive(unlockStage <= User.i.data.stageHigh);
                 // stage.Remove(this);
             }
         }

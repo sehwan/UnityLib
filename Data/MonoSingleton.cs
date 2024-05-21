@@ -3,33 +3,33 @@ using UnityEngine;
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
     // Static
-    protected static T _inst = null;
+    protected static T _i = null;
     public static T i
     {
         get
         {
-            if (_inst == null)
+            if (_i == null)
             {
-                _inst = GameObject.FindObjectOfType(typeof(T)) as T;
-                if (_inst == null)
+                _i = GameObject.FindObjectOfType(typeof(T)) as T;
+                if (_i == null)
                 {
-                    _inst = new GameObject(typeof(T).ToString(), typeof(T)).GetComponent<T>();
-                    _inst.Init();
+                    _i = new GameObject(typeof(T).ToString(), typeof(T)).GetComponent<T>();
+                    _i.Init();
                 }
             }
-            return _inst;
+            return _i;
         }
     }
     // For Instance
     [Immutable] public bool didInit;
     protected virtual void Awake()
     {
-        if (_inst == null)
+        if (_i == null)
         {
-            _inst = this as T;
+            _i = this as T;
             if (didInit == false) Init();
         }
-        else if (_inst != this)
+        else if (_i != this)
         {
             Destroy(gameObject);
         }
@@ -47,10 +47,10 @@ public abstract class MonoSingletonDontDestroyed<T> : MonoSingleton<T> where T :
 {
     protected override void Awake()
     {
-        if (_inst == null)
+        if (_i == null)
         {
-            _inst = this as T;
-            _inst.Init();
+            _i = this as T;
+            _i.Init();
             DontDestroyOnLoad(gameObject);
         }
     }

@@ -56,5 +56,5 @@ public class FirebaseChatData
         // Other
         return COLOR_OTHER;
     }
-    public static string GetNick() => User.data.nick;
+    public static string GetNick() => User.i.data.nick;
 }
