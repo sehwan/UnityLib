@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using UnityEditor;
 
 // using Firebase.Database;
 // using Firebase.Extensions;
 // using Firebase.Auth;
+
 
 public class UserBase : MonoBehaviour
 {
@@ -780,16 +780,3 @@ public partial class User : UserBase
     }
     #endregion
 }
-
-
-// #if UNITY_EDITOR
-// [CustomEditor(typeof(UserBase), true)]
-// public class UserBaseEditorBase : Editor
-// {
-//     public override void OnInspectorGUI()
-//     {
-//         // base.OnInspectorGUI();
-//         // var meta = target as MetaBase;
-//     }
-// }
-// #endif
