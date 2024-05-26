@@ -131,7 +131,7 @@ public class CameraWork : MonoBehaviour
     public bool isPan;
     public bool isXMovable = true;
     public bool isYMovable = true;
-    public float panSpeedOfPerpectiveInMobile;
+    public float panSpeed;
     void Pan()
     {
         if (obstructors.Count > 0) return;
@@ -159,8 +159,9 @@ public class CameraWork : MonoBehaviour
         if (isYMovable == false) moved.y = 0;
         var spd = isOrthographic ?
             cam.orthographicSize / cam.pixelHeight * 2f :
-            panSpeedOfPerpectiveInMobile * cam.fieldOfView;
-        tr.position += tr.TransformDirection((Vector3)(moved * spd));
+            cam.fieldOfView;
+        spd *= panSpeed;
+        tr.position += tr.TransformDirection((Vector3)(spd * moved));
         oldTouchPos[0] = newTouchPos;
     }
     void Pan_EditorOrDesktop()
@@ -168,7 +169,7 @@ public class CameraWork : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             var newMouse = cam.ScreenToViewportPoint(Input.mousePosition);
-            var moved = oldMouse - newMouse;
+            var moved = (oldMouse - newMouse) * panSpeed;
             if (isXMovable == false) moved.x = 0;
             if (isYMovable == false) moved.y = 0;
             tr.position = oldPos + moved * (isOrthographic ? cam.orthographicSize : cam.fieldOfView / 6);

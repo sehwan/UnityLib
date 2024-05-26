@@ -69,13 +69,13 @@ public static class TimeEx
     /// 시각 -> 남은 시간 시;분;초
     public static TimeSpan ToRemain(this DateTime dt)
     {
-        return dt - DateTime.Now;
+        return dt - DateTime.UtcNow;
     }
 
     /// 스트링 -> 남은 시간.
     public static TimeSpan ToTimeSpanFromNow(this string me)
     {
-        return Convert.ToDateTime(me) - DateTime.Now;
+        return Convert.ToDateTime(me) - DateTime.UtcNow;
     }
 
 
@@ -109,7 +109,7 @@ public static class TimeEx
     #region Chance
     public static TimeSpan GetDiff(this DateTime me)
     {
-        return DateTime.Now - me;
+        return DateTime.UtcNow - me;
     }
     public static int GetChance(this TimeSpan me, int cool, int max)
     {
@@ -127,7 +127,7 @@ public static class TimeEx
     {
         int remainChance = me.GetDiff().GetChance(cool, max);
         if (remainChance == max)
-            return DateTime.Now.AddSeconds(-(remainChance - 1) * cool);
+            return DateTime.UtcNow.AddSeconds(-(remainChance - 1) * cool);
         else return me.AddSeconds(cool);
     }
     public static DateTime GetTimeRefillChance(this DateTime me, int cool, int times)
@@ -138,13 +138,13 @@ public static class TimeEx
     {
         var chance = me.GetChance(cool, max);
         if (chance > 0) return $"{chance} / {max}";
-        else return (me.AddSeconds(cool + 1) - DateTime.Now).ToFormattedString();
+        else return (me.AddSeconds(cool + 1) - DateTime.UtcNow).ToFormattedString();
     }
-    public static string GetRemain(this DateTime me, int cool, int max)
+    public static string RemainTimeText(this DateTime me, int ex, int cool, int max)
     {
-        var chance = me.GetChance(cool, max);
-        if (chance >= max) return "FULL";
-        int sec = (int)((DateTime.Now - me).TotalSeconds % cool);
+        var chance = me.GetChance(cool, max) + ex;
+        if (chance >= max) return "";
+        int sec = (int)((DateTime.UtcNow - me).TotalSeconds % cool);
         return (cool - sec).Seconds_to_Text();
     }
     #endregion
@@ -153,19 +153,19 @@ public static class TimeEx
     // Date Checking
     public static bool IsDateChangedFromNow(this DateTime last)
     {
-        var now = DateTime.Now;
+        var now = DateTime.UtcNow;
         return (last.Date < now.Date);
     }
     public static bool IsWeekChangedFromNow(this DateTime last)
     {
-        var now = DateTime.Now;
+        var now = DateTime.UtcNow;
         if (now.Date <= last.Date) return false;
         return (now.DayOfWeek <= last.DayOfWeek ||
                 last.Date.AddDays(7) < now.Date);
     }
     public static bool IsMonthChangedFromNow(this DateTime last)
     {
-        var now = DateTime.Now;
+        var now = DateTime.UtcNow;
         if (now.Date <= last.Date) return false;
         return (last.Month != now.Month ||
                 last.Year != now.Year);
@@ -215,16 +215,16 @@ public static class TimeEx
     {
         if (passed.ContainsKey(key))
         {
-            if (passed[key].AddSeconds(sec) < DateTime.Now)
+            if (passed[key].AddSeconds(sec) < DateTime.UtcNow)
             {
-                passed[key] = DateTime.Now;
+                passed[key] = DateTime.UtcNow;
                 return true;
             }
             else return false;
         }
         else
         {
-            passed.Add(key, DateTime.Now);
+            passed.Add(key, DateTime.UtcNow);
             return true;
         }
     }

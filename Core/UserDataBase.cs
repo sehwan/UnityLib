@@ -24,8 +24,8 @@ public partial class UserData
     public int gold = 100;
     public int rbox = 12;
     public int exEnergy;
-    public DateTime dt_energy; // not used
-    public int ticket = 5;
+    public DateTime dt_energy;
+    public int ticket;
 
     [Space]
     [Header("Stage")]
@@ -100,12 +100,25 @@ public partial class UserData
     public bool IsFilled() => nick.IsNullOrEmpty() == false;
 
 
-    public int GetEnergyCount() => dt_energy.GetChance(600, Def.EnergyMaxDefault + exEnergy);
+    public int GetEnergyCount() => dt_energy.GetChance(Def.EnergyCool, Def.EnergyMax + exEnergy);
 
+
+    public Action onChangeEnergy;
     public void ConsumeEnergy()
     {
         if (exEnergy > 0) exEnergy--;
-        else dt_energy = dt_energy.GetTimeUsedChance(Def.EnergyCool, Def.EnergyMaxDefault + exEnergy);
+        else dt_energy = dt_energy.GetTimeUsedChance(Def.EnergyCool, Def.EnergyMax + exEnergy);
+        onChangeEnergy?.Invoke();
+    }
+    public void RefillEnergy(int token)
+    {
+        for (int i = 0; i < token; i++)
+        {
+            var nowCount = GetEnergyCount();
+            if (Def.EnergyMax <= nowCount) exEnergy++;
+            dt_energy = dt_energy.AddSeconds(-Def.EnergyCool);
+        }
+        onChangeEnergy?.Invoke();
     }
 
     // public bool UseTicket(StageMode mode, int req = 1)

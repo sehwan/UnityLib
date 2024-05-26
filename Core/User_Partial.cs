@@ -719,17 +719,6 @@ public partial class User : UserBase
 
 
     #region Properties
-    public void RefillEnergy(int time)
-    {
-        for (int i = 0; i < time; i++)
-        {
-            var nowCount = data.GetEnergyCount();
-            if (Def.EnergyMaxDefault <= nowCount) data.exEnergy++;
-            data.dt_energy = data.dt_energy.AddSeconds(-Def.EnergyCool);
-        }
-        ToastGroup.Show("Complete".L());
-        // UM.Scene<UICamp>().Refresh_Energy();
-    }
 
     public Action onChangeEXP;
     public void AddEXP(int n)

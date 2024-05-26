@@ -5,27 +5,14 @@ public class InputKeyActivity : MonoBehaviour
 {
     void Update()
     {
-
-
 #if UNITY_ANDROID
         EscapeOnAndroid();
 #endif
 #if UNITY_EDITOR
-        Cheat();
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-            UM.i.canvas.enabled = !UM.i.canvas.enabled;
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            var savePath = "/Users/sehwanlim/Desktop/captures";
-            if (!System.IO.Directory.Exists(savePath))
-                System.IO.Directory.CreateDirectory(savePath);
-            var fileName = $"{System.DateTime.Now:yyyyMMdd_HHmmss}.png";
-            var filePath = System.IO.Path.Combine(savePath, fileName);
-            ScreenCapture.CaptureScreenshot(filePath);
-        }
+        CommonCheat();
 #endif
     }
-
+    
     void EscapeOnAndroid()
     {
         if (Application.isMobilePlatform == false) return;
@@ -46,9 +33,11 @@ public class InputKeyActivity : MonoBehaviour
                 });
         }
     }
-    void Cheat()
+
+    public static bool IsCheatMode => Input.GetKey(KeyCode.BackQuote);
+    void CommonCheat()
     {
-        if (Input.GetKey(KeyCode.BackQuote) == false) return;
+        if (IsCheatMode == false) return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -61,5 +50,18 @@ public class InputKeyActivity : MonoBehaviour
             Time.timeScale = 3;
         else if (Input.GetKeyDown(KeyCode.Alpha4))
             Time.timeScale = 10f;
+
+        else if (Input.GetKeyDown(KeyCode.LeftShift))
+            UM.i.canvas.enabled = !UM.i.canvas.enabled;
+
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            var savePath = "/Users/sehwanlim/Desktop/captures";
+            if (!System.IO.Directory.Exists(savePath))
+                System.IO.Directory.CreateDirectory(savePath);
+            var fileName = $"{System.DateTime.Now:yyyyMMdd_HHmmss}.png";
+            var filePath = System.IO.Path.Combine(savePath, fileName);
+            ScreenCapture.CaptureScreenshot(filePath);
+        }
     }
 }

@@ -26,9 +26,9 @@ public class Def
     }
 
     // Basic
-    [JsonProperty] public static int UserLevelMax = 30;
-    [JsonProperty] public static int EnergyMaxDefault = 10;
-    [JsonProperty] public static int EnergyCool = 600;
+    [JsonProperty] public static int UserLevelMax = 99;
+    [JsonProperty] public static int EnergyMax = 40;
+    [JsonProperty] public static int EnergyCool = 30;
 
     // Item
     [JsonProperty] public static int EhcLimit = 10;
