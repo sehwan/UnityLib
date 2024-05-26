@@ -208,10 +208,10 @@ public class SettingsPanel : MonoBehaviour
     public void Btn_Inquiry()
     {
         string email = "alchemistsgames@gmail.com";
-        string subject = MyEscapeURL($"Inquiry {Application.productName} {User.i.data.nick}");
+        string subject = MyEscapeURL($"Inquiry {Application.productName} {User.i._.nick}");
         string body = MyEscapeURL("Please Enter Your Message here\n\n\n\n" +
         "Project: " + Application.productName + "\n" +
-          "Name: " + User.i.data.nick + "\n" +
+          "Name: " + User.i._.nick + "\n" +
          "Model: " + SystemInfo.deviceModel + "\n" +
             "OS: " + SystemInfo.operatingSystem + "\n" +
         "Version:" + Application.version);

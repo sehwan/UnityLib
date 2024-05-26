@@ -65,7 +65,7 @@ public class ScreenSaver : MonoBehaviour
         txt_battery.text = SystemInfo.batteryLevel.ToString("p0");
         txt_time.text = System.DateTime.Now.ToString("HH:mm:ss");
         // Specipic
-        var userData = User.i.data;
+        var userData = User.i._;
         txt_soul.text = userData.soul.ToString();
         // txt_stage.text = UM.Scene<MainScenePanel>().txt_stage.text;
         // var uicamp = UM.Scene<UICamp>();

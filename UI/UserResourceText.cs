@@ -21,7 +21,7 @@ public class UserResourceText : MonoBehaviour
     void Update()
     {
         if (fieldInfo == null) return;
-        var neo = (int)fieldInfo.GetValue(User.i.data);
+        var neo = (int)fieldInfo.GetValue(User.i._);
         if (neo != lastRsc)
         {
             text.text = $"{neo:n0}";

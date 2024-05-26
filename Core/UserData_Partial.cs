@@ -16,6 +16,7 @@ public partial class UserData
 
     [Header("In Game")]
     public int lv = 1;
+    public int xp;
 
     [Space]
     [Header("Resources")]
@@ -102,24 +103,6 @@ public partial class UserData
 
     public int GetEnergyCount() => dt_energy.GetChance(Def.EnergyCool, Def.EnergyMax + exEnergy);
 
-
-    public Action onChangeEnergy;
-    public void ConsumeEnergy()
-    {
-        if (exEnergy > 0) exEnergy--;
-        else dt_energy = dt_energy.GetTimeUsedChance(Def.EnergyCool, Def.EnergyMax + exEnergy);
-        onChangeEnergy?.Invoke();
-    }
-    public void RefillEnergy(int token)
-    {
-        for (int i = 0; i < token; i++)
-        {
-            var nowCount = GetEnergyCount();
-            if (Def.EnergyMax <= nowCount) exEnergy++;
-            dt_energy = dt_energy.AddSeconds(-Def.EnergyCool);
-        }
-        onChangeEnergy?.Invoke();
-    }
 
     // public bool UseTicket(StageMode mode, int req = 1)
     // {

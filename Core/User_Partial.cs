@@ -42,10 +42,11 @@ public partial class User : UserBase
     [Immutable] public bool isForceQuit;
 
     [Header("Data")]
-    public UserData data;
+    public UserData _;
+    [JsonIgnore] public static UserData Data => i._;
 
 
-    public static bool IsFilled() => i.data != null && i.data.nick.IsFilled();
+    public static bool IsFilled() => i._ != null && i._.nick.IsFilled();
     public JObject xData;
 
 
@@ -53,19 +54,19 @@ public partial class User : UserBase
     [Immutable] public DateTime dt_lastFocused = DateTime.Now;
     void OnApplicationQuit()
     {
-        data.device = null;
+        _.device = null;
         SaveImmediately();
     }
     void OnDestroy()
     {
-        data.device = null;
+        _.device = null;
         SaveImmediately();
     }
     void OnApplicationPause(bool paused)
     {
         if (paused == false) return;
-        if (data.nick.IsNullOrEmpty()) return;
-        data.device = null;
+        if (_.nick.IsNullOrEmpty()) return;
+        _.device = null;
         dt_lastFocused = DateTime.Now;
         SaveImmediately();
     }
@@ -73,8 +74,8 @@ public partial class User : UserBase
     {
         if (hasFocus == false) return;
         if (IsFilled() == false) return;
-        if (data.nick.IsNullOrEmpty()) return;
-        data.device = SystemInfo.deviceUniqueIdentifier;
+        if (_.nick.IsNullOrEmpty()) return;
+        _.device = SystemInfo.deviceUniqueIdentifier;
         // Diff
         var diff = DateTime.Now - dt_lastFocused;
         Debug.Log($"<color=cyan>{dt_lastFocused} {diff}</color>");
@@ -100,41 +101,42 @@ public partial class User : UserBase
 
     void Save(bool isToast)
     {
-        if (data == null
-        || data.nick.IsNullOrEmpty()
-            // || _data.nick == UserData.DefaultNick ||
-            // _data.IsTutorialOver() == false
+        if (_ == null
+            || _.nick.IsNullOrEmpty()
+            // || data.nick == UserData.DefaultNick ||
+            // data.IsTutorialOver() == false
             ) return;
         if (isForceQuit) return;
 
-        data.dt_saved = DateTime.Now;
+        _.dt_saved = DateTime.Now;
 
         if (isUsingServer) SaveToServer(isToast);
         else SaveToClient();
         print("saved at " + DateTime.Now);
     }
-    static string saveKey = "Reporter";
-    static string savePW = "shsh";
+    static readonly string saveKey = "Reporter";
+    static readonly string savePW = "shsh";
     void SaveToClient()
     {
-        try
+        // try
         {
-            var json = JsonConvert.SerializeObject(data);
+            var json = JsonConvert.SerializeObject(_);
+            print(json);
             PlayerPrefs.SetString(saveKey, json);
 
             // fake
             var fake = DateTime.Now.ToString();
             PlayerPrefs.SetString("save", fake.Encrypt(fake));
         }
-        catch (System.Exception e)
-        {
-            Debug.LogError(e);
-            throw;
-        }
+        // catch (Exception e)
+        // {
+        //     Debug.LogError(e);
+        //     throw;
+        // }
     }
     async void SaveToServer(bool isToast = false)
     {
-        await NetworkMng.i.FuncAsync("user-save", isToast, ("data", JsonConvert.SerializeObject(data)));
+        await NetworkMng.i.FuncAsync("user-save", isToast, ("data", JsonConvert.SerializeObject(_)));
         if (isToast) ToastGroup.Show("Complete".L());
         print("saved at " + DateTime.Now);
     }
@@ -145,7 +147,7 @@ public partial class User : UserBase
         while (true)
         {
             yield return w;
-            if ((DateTime.Now - data.dt_saved).TotalMinutes < Def.AutoSaveCycle) continue;
+            if ((DateTime.Now - _.dt_saved).TotalMinutes < Def.AutoSaveCycle) continue;
             // FirebaseMng.inst.TokenAsync();
             Save(false);
         }
@@ -153,7 +155,7 @@ public partial class User : UserBase
 
     public void BackUp()
     {
-        NetworkMng.i.Func("user-backup", null, false, ("data", JsonConvert.SerializeObject(data)));
+        NetworkMng.i.Func("user-backup", null, false, ("data", JsonConvert.SerializeObject(_)));
     }
     #endregion
 
@@ -239,20 +241,20 @@ public partial class User : UserBase
         }
         // Client
         else login = LoadFromClient();
-        data = login.user;
+        _ = login.user;
 
         CheckBlackUser();
         UpdateDataForNewVersion();
 
-        if (data.IsTutorialOver())
+        if (_.IsTutorialOver())
         {
-            var diff = (login.now.ToDateTime() - data.dt_saved).TotalSeconds;
+            var diff = (login.now.ToDateTime() - _.dt_saved).TotalSeconds;
             Debug.Log($"<color=cyan>{diff / 60} min</color>");
             GetOfflineReward(diff);
             CheckDateChanged(login.now);
         }
-        data.lastLogin = login.now;
-        data.active = true;
+        _.lastLogin = login.now;
+        _.active = true;
         ListenDB();
 
         StartCoroutine(Co_AutoSave());
@@ -261,20 +263,20 @@ public partial class User : UserBase
     // public override void UpdateDataForNewVersion()
     // {
     // ETC
-    // while (_data.stageCur.Count < DataEx.GetEnumCount<StageMode>()) _data.stageCur.Add(0);
+    // while (data.stageCur.Count < DataEx.GetEnumCount<StageMode>()) data.stageCur.Add(0);
     // // IAPs
     // foreach (var e in GameData.meta.iap)
     // {
-    //     if (_data.dts_iap.ContainsKey(e.Key) == false &&
+    //     if (data.dts_iap.ContainsKey(e.Key) == false &&
     //         (e.Value.priceType == "time" || e.Value.duration != 0))
-    //         _data.dts_iap.Add(e.Key, DateTime.Now);
+    //         data.dts_iap.Add(e.Key, DateTime.Now);
     // }
     // }
 
     void ListenDB()
     {
-        if (data.IsTutorialOver() == false) return;
-        if (data.dt_saved == DateTime.MinValue) return;
+        if (_.IsTutorialOver() == false) return;
+        if (_.dt_saved == DateTime.MinValue) return;
         if (isListening) return;
         // FirebaseMng.inst.ListenDB("users", FirebaseMng.inst.user.UserId, (shot) =>
         // {
@@ -286,7 +288,7 @@ public partial class User : UserBase
 
         //     // Device
         //     // var device = changedData.device;
-        //     // if (device.IsFilled() && device != _data.device)
+        //     // if (device.IsFilled() && device != data.device)
         //     // {
         //     //     ToastGroup.Alert("SimultaneousLogin".L());
         //     //     isForceQuit = true;
@@ -330,7 +332,7 @@ public partial class User : UserBase
     void CheckDateChanged(ulong now)
     {
         // If the Day was Changed
-        DateTime last = data.lastLogin.ToDateTime();
+        DateTime last = _.lastLogin.ToDateTime();
         // Day
         if (last.IsDateChangedFromNow())
         {
@@ -346,9 +348,9 @@ public partial class User : UserBase
 
     void CheckBlackUser()
     {
-        if (data.black.IsFilled())
+        if (_.black.IsFilled())
         {
-            ToastGroup.Alert($"No permission : {data.black}");
+            ToastGroup.Alert($"No permission : {_.black}");
             Application.Quit();
             return;
         }
@@ -356,10 +358,10 @@ public partial class User : UserBase
         // .GetValueAsync().ContinueWith(task =>
         // {
         //     var r = task.Result.Value.ToString();
-        //     _data.black = r;
+        //     data.black = r;
         //     if (r.IsFilled())
         //     {
-        //         ToastGroup.Alert($"No Permission : {_data.black}");
+        //         ToastGroup.Alert($"No Permission : {data.black}");
         //         Application.Quit();
         //         return;
         //     }
@@ -371,18 +373,18 @@ public partial class User : UserBase
     #region CheckDays
     public void OnDayChanged()
     {
-        data.dq.Clear();
-        data.att++;
-        data.attCheck = false;
+        _.dq.Clear();
+        _.att++;
+        _.attCheck = false;
 
         // Attendance Reward
         var ticket = 3;
-        RewardMsg.inst.Enqueue("Welcome!".L() + " " + data.att.ToOrdinal(), "ticket", ticket);
+        RewardMsg.inst.Enqueue("Welcome!".L() + " " + _.att.ToOrdinal(), "ticket", ticket);
         AddResource("ticket", ticket);
 
         // VIP
-        DateTime NOW = data.lastLogin.ToDateTime();
-        foreach (var e in data.dts_iap)
+        DateTime NOW = _.lastLogin.ToDateTime();
+        foreach (var e in _.dts_iap)
         {
             // if (NOW <= e.Value &&
             //     GameData.meta.iap.ContainsKey(e.Key) &&
@@ -393,40 +395,40 @@ public partial class User : UserBase
         // Check IAP Repurchasable
         // var filtered = GameData.meta.iap.Where(
         //     e => e.Value.day &&
-        //     _data.dts_iap.ContainsKey(e.Key));
+        //     data.dts_iap.ContainsKey(e.Key));
         // NoticeRepurchasable(filtered);
 
-        // FirebaseMng.Log("attend", "day", _data.attend);
+        // FirebaseMng.Log("attend", "day", data.attend);
     }
     void OnWeekChanged()
     {
         // var filtered = GameData.meta.iap.Where(
         //     e => e.Value.week &&
-        //     _data.dts_iap.ContainsKey(e.Key));
+        //     data.dts_iap.ContainsKey(e.Key));
         // NoticeRepurchasable(filtered);
     }
     void OnMonthChanged()
     {
-        data.time_m = 0;
-        data.onlineCheck = 0;
+        _.time_m = 0;
+        _.onlineCheck = 0;
         // var filtered = GameData.meta.iap.Where(
         //     e => e.Value.month &&
-        //     _data.dts_iap.ContainsKey(e.Key));
+        //     data.dts_iap.ContainsKey(e.Key));
         // NoticeRepurchasable(filtered);
     }
     // void NoticeRepurchasable(IEnumerable<KeyValuePair<string, IAPMeta>> filtered)
     // {
     //     foreach (var e in filtered)
     //     {
-    //         _data.dts_iap.Remove(e.Key);
-    //         _data.rcd_int.Remove(e.Key);
+    //         data.dts_iap.Remove(e.Key);
+    //         data.rcd_int.Remove(e.Key);
     //         ToastGroup.Show("YouCanRepurchase".LF(e.Key.L()));
     //     }
     // }
 
     public void ReportFinishTutorial()
     {
-        data.tut = -1;
+        _.tut = -1;
         ListenDB();
 
         // Reward
@@ -458,9 +460,9 @@ public partial class User : UserBase
 
     public void OpenRbox()
     {
-        if (data.rbox <= 0) return;
+        if (_.rbox <= 0) return;
         var pn = UM.Get<GachaPanel>();
-        var amount = Mathf.Min(data.rbox, pn.SlotCount);
+        var amount = Mathf.Min(_.rbox, pn.SlotCount);
         AddResource("rbox", -amount);
         RecordInt("rbox", amount);
 
@@ -509,7 +511,7 @@ public partial class User : UserBase
             return false;
         }
 
-        var old = data.GetField<int>(type);
+        var old = _.GetField<int>(type);
         if (old + value < 0 && value < 0)
         {
             ToastGroup.Show("NotEnoughResource".L());
@@ -517,7 +519,7 @@ public partial class User : UserBase
         }
 
         // if (value > 0) UM.Scene<MainScenePanel>().snowMsg.Show($"{value} {type.L()}");
-        data.SetField(type, old + value);
+        _.SetField(type, old + value);
         if (onAddResource.ContainsKey(type)) onAddResource[type](value);
         if (type == Resource.kGem) SaveImmediately();
         return true;
@@ -526,14 +528,14 @@ public partial class User : UserBase
     public bool AddResourceBig(string type, BigNumber value)
     {
         if (value == 0) return true;
-        var old = data.GetField<BigNumber>(type);
+        var old = _.GetField<BigNumber>(type);
         if (old + value < 0)
         {
             ToastGroup.Show("NotEnoughResource".L());
             return false;
         }
         // if (value > 0) UM.Scene<MainScenePanel>().snowMsg.Show($"{value} {type.L()}");
-        data.SetField(type.ToString(), old + value);
+        _.SetField(type.ToString(), old + value);
         if (onAddResourceBig.ContainsKey(type)) onAddResourceBig[type](value);
         return true;
     }
@@ -570,12 +572,12 @@ public partial class User : UserBase
         var meta = GameData.meta;
         if (meta.dq.ContainsKey(type))
         {
-            var q = data.dq.GetValueOrNew(type);
+            var q = _.dq.GetValueOrNew(type);
             if (q.v < v) q.v = v;
         }
         if (meta.rq.ContainsKey(type))
         {
-            var q = data.rq.GetValueOrNew(type);
+            var q = _.rq.GetValueOrNew(type);
             if (q.v < v) q.v = v;
         }
 
@@ -591,11 +593,11 @@ public partial class User : UserBase
     {
         // Quest
         var meta = GameData.meta;
-        if (meta.dq.ContainsKey(type)) data.dq.GetValueOrNew(type).v += add;
-        if (meta.rq.ContainsKey(type)) data.rq.GetValueOrNew(type).v += add;
+        if (meta.dq.ContainsKey(type)) _.dq.GetValueOrNew(type).v += add;
+        if (meta.rq.ContainsKey(type)) _.rq.GetValueOrNew(type).v += add;
 
         // Task
-        // var task = _data.task;
+        // var task = data.task;
         // if (task.key == type)
         // {
         //     task.val += add;
@@ -606,7 +608,7 @@ public partial class User : UserBase
         // else if (GameData.meta.achv.ContainsKey(type))
         // {
         //     err = false;
-        //     var achv = _data.achv[type];
+        //     var achv = data.achv[type];
         //     achv.val += add;
         //     // print($"achv {type} {add}");
         // }
@@ -615,9 +617,9 @@ public partial class User : UserBase
     void OnReport(string type)
     {
         // All Cleared?
-        // if (_data.dailyQuest.All(e => e.Key == key_record_allClear || e.Value.fin))
+        // if (data.dailyQuest.All(e => e.Key == key_record_allClear || e.Value.fin))
         // {
-        //     _data.dailyQuest.GetValueDefault(key_record_allClear).val = 1;
+        //     data.dailyQuest.GetValueDefault(key_record_allClear).val = 1;
         // }
 
         // Notify
@@ -634,15 +636,15 @@ public partial class User : UserBase
     // to Check if user is a Cheater
     public void RecordInt(string type, int add = 1)
     {
-        if (data.rcd_int.ContainsKey(type) == false) data.rcd_int.Add(type, add);
-        else data.rcd_int[type] += add;
+        if (_.rcd_int.ContainsKey(type) == false) _.rcd_int.Add(type, add);
+        else _.rcd_int[type] += add;
     }
 
     public Action onChangeNick;
     public void ReqChangeNick(bool canESC, Action cb = null)
     {
         int LIMIT_LENGTH = 14;
-        var tempNick = data.nick == UserData.DefaultNick ? null : data.nick;
+        var tempNick = _.nick == UserData.DefaultNick ? null : _.nick;
         Common_InputField.i.Show((Action<string>)(async (string newID) =>
         {
             if (newID.Length < 2)
@@ -677,7 +679,7 @@ public partial class User : UserBase
             {
                 ToastGroup.Show("Complete".L());
                 Common_InputField.i.Hide();
-                this.data.nick = newID;
+                this._.nick = newID;
                 cb?.Invoke();
                 onChangeNick?.Invoke();
             }
@@ -690,7 +692,7 @@ public partial class User : UserBase
     {
         // int LIMIT_LENGTH = 30;
         // var msg = "ChangeTheSlogan".L();
-        // var now = _data.msg.IsFilled() ? _data.msg : "-";
+        // var now = data.msg.IsFilled() ? data.msg : "-";
 
         // Common_InputField.inst.Show((string newSlogan) =>
         // {
@@ -700,7 +702,7 @@ public partial class User : UserBase
         //         return;
         //     }
 
-        //     _data.msg = newSlogan;
+        //     data.msg = newSlogan;
         //     ToastGroup.Show("Complete".L());
         //     UM.Scene<UICamp>().RefreshUser();
         //     Common_InputField.inst.Hide();
@@ -712,60 +714,68 @@ public partial class User : UserBase
 
     public void RecordGacha(int rate)
     {
-        data.rcd_gacha.Add(rate);
-        if (data.rcd_gacha.Count > 30) data.rcd_gacha.RemoveAt(0);
-        data.gachaRate = (float)data.rcd_gacha.Average();
+        _.rcd_gacha.Add(rate);
+        if (_.rcd_gacha.Count > 30) _.rcd_gacha.RemoveAt(0);
+        _.gachaRate = (float)_.rcd_gacha.Average();
     }
 
 
-    #region Properties
+
+    public Action onChangeEnergy;
+    public void ConsumeEnergy()
+    {
+        if (_.exEnergy > 0) _.exEnergy--;
+        else _.dt_energy = _.dt_energy.GetTimeUsedChance(Def.EnergyCool, Def.EnergyMax + _.exEnergy);
+        onChangeEnergy?.Invoke();
+    }
+    public void RefillEnergy(int token)
+    {
+        for (int i = 0; i < token; i++)
+        {
+            var nowCount = _.GetEnergyCount();
+            if (Def.EnergyMax <= nowCount) _.exEnergy++;
+            _.dt_energy = _.dt_energy.AddSeconds(-Def.EnergyCool);
+        }
+        onChangeEnergy?.Invoke();
+    }
+
 
     public Action onChangeEXP;
     public void AddEXP(int n)
     {
-        // Business
-        // var req = MetaUserLevel.GetNextReq(_data.lv, Def.UserLevelMax);
-        // _data.exp = Mathf.Clamp(_data.exp + n, 0, (int)req);
-        // if (_data.fameHi < _data.exp) _data.fameHi = _data.exp;
-
-        // // Level Up?
-        // if (_data.lv < Def.UserLevelMax &&
-        //     req <= _data.exp)
-        // {
-        //     // Level
-        //     _data.lv++;
-        //     ReportHigh("mxlv", _data.lv);
-        //     // Rewards
-        //     var msg = RewardsMsg.inst;
-        //     // Energy
-        //     var count = 10;
-        //     RefillEnergy(count);
-        //     msg.InitToNextSlot("energy", count);
-        //     // Manas
-        //     var gold = _data.lv * 10000;
-        //     AddGold(gold);
-        //     msg.InitToNextSlot("mana", gold);
-        //     msg.InitToNextSlot("dark", gold);
-        //     // If Unlock? Then Get a Stone
-        //     if (_data.lv < 10)
-        //     {
-        //         var unlocking = GameData.meta.unitArr.Find(e => e.min_lv == _data.lv);
-        //         if (unlocking != null)
-        //         {
-        //             var stone = DataSStone.Generate(0, 1, 10, 0, unlocking.key);
-        //             stone.InitToSlot(msg.GetNextSlot(), null, null);
-        //             _data.ssInven.Add(stone);
-        //         }
-        //     }
-        //     // Request Review
-        //     if (_data.lv == 10) Common_StarRating.Show();
-        //     msg.Show("LevelUp!".L() + $" Lv.{_data.lv}");
-        //     SFX.Play("levelup");
-        //     // ETC
-        //     FirebaseMng.Log($"level{_data.lv}");
-        // }
-
+        _.xp += n;
+        if (_.lv >= Def.UserLevelMax) return;
+        // var req = MetaUserLevel.GetNextReq(lv, Def.UserLevelMax);
+        var req = _.lv * 10;
+        if (req <= _.xp)
+        {
+            _.lv++;
+            _.xp -= req;
+            // User.i.ReportHigh("mxlv", lv);
+            // Rewards
+            // var msg = RewardsMsg.inst;
+            // Energy
+            // var count = 10;
+            // RefillEnergy(count);
+            // msg.InitToNextSlot("energy", count);
+            // If Unlock? Then Get a Stone
+            // if (lv < 10)
+            // {
+            //     var unlocking = Gamemeta.unitArr.Find(e => e.min_lv == lv);
+            //     if (unlocking != null)
+            //     {
+            //         var stone = DataSStone.Generate(0, 1, 10, 0, unlocking.key);
+            //         stone.InitToSlot(msg.GetNextSlot(), null, null);
+            //         ssInven.Add(stone);
+            //     }
+            // }
+            // Request Review
+            // if (lv == 10) Common_StarRating.Show();
+            // msg.Show("LevelUp!".L() + $" Lv.{lv}");
+            // SFX.Play("levelup");
+            // ETC
+            // FirebaseMng.Log($"level{lv}");
+        }
         onChangeEXP?.Invoke();
     }
-    #endregion
 }

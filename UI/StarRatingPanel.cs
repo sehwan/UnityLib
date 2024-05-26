@@ -32,7 +32,7 @@ public class StarRatingPanel : MonoBehaviour
 
     public void Summit()
     {
-        User.i.data.starRating = stars;
+        User.i._.starRating = stars;
         if (stars == 0)
         {
             ToastGroup.Show("pressStar".L());
