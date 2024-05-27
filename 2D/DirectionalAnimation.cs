@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 [System.Serializable]
 public class DataFrame
@@ -11,6 +10,8 @@ public class DataFrame
 }
 
 public enum PlayMode { Once, Loop, Pong }
+
+// Usage CharName/u_idle_0_5
 
 public class DirectionalAnimation : MonoBehaviour
 {
@@ -51,9 +52,11 @@ public class DirectionalAnimation : MonoBehaviour
             var idx = splitted[2];
             var dur = splitted[3];
             var frameName = $"{dir}_{key}_{idx}";
-            var frame = new DataFrame();
-            frame.spr = file;
-            frame.dur = float.Parse(dur) * 0.1f;
+            var frame = new DataFrame
+            {
+                spr = file,
+                dur = float.Parse(dur) * 0.1f
+            };
             if (dic.ContainsKey(unit) == false) dic.Add(unit, new Dictionary<string, DataFrame>());
             dic[unit][frameName] = frame;
         }
@@ -124,7 +127,7 @@ public class DirectionalAnimation : MonoBehaviour
             var frame = CurFrame();
             if (frame == null) break;
             ren.sprite = frame.spr;
-            yield return new WaitForSeconds(frame.dur);
+            yield return CoroutineEx.GetWait(frame.dur);
             curFrame++;
         }
         Loop("idle");
@@ -143,11 +146,10 @@ public class DirectionalAnimation : MonoBehaviour
                 frame = CurFrame();
             }
             ren.sprite = frame.spr;
-            yield return new WaitForSeconds(frame.dur);
+            yield return CoroutineEx.GetWait(frame.dur);
             curFrame++;
         }
     }
-
     IEnumerator Co_Pong(string key)
     {
         mode = PlayMode.Pong;
@@ -172,7 +174,7 @@ public class DirectionalAnimation : MonoBehaviour
                 }
             }
             ren.sprite = frame.spr;
-            yield return new WaitForSeconds(frame.dur);
+            yield return CoroutineEx.GetWait(frame.dur);
             if (isRewinding) curFrame--;
             else curFrame++;
         }

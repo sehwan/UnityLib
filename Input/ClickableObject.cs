@@ -3,7 +3,7 @@ using UnityEngine;
 public class ClickableObject : MonoBehaviour
 {
     Vector3 mousePos;
-    const float CLICK_DISTANCE = 10.0f;
+    const float CLICK_DISTANCE = 20f;
 
     void OnMouseDown()
     {
