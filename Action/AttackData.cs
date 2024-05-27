@@ -15,11 +15,13 @@ public class AttackData
         if (a == null) return a;
         if (m == 0) return new AttackData();
 
-        AttackData r = new();
-        r.atk = a.atk * m;
-        r.mag = a.mag * m;
-        r.acc = a.acc;
-        r.cri = a.cri;
+        AttackData r = new()
+        {
+            atk = a.atk * m,
+            mag = a.mag * m,
+            acc = a.acc,
+            cri = a.cri
+        };
         return r;
     }
 

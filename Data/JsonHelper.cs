@@ -32,8 +32,10 @@ public class JsonHelper
 
     public static string ToJson<T>(T[] array, bool prettyPrint = false)
     {
-        Wrapper<T> wrapper = new();
-        wrapper.array = array;
+        Wrapper<T> wrapper = new()
+        {
+            array = array
+        };
         return JsonUtility.ToJson(wrapper, prettyPrint);
     }
 }

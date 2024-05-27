@@ -19,9 +19,10 @@ public class MailItem : MonoBehaviour
     {
         gameObject.SetActive(true);
         data = d;
-        txt_title.text = d.Value.t.L();
-        txt_detail.text = $"{d.Value.r.L()} x{d.Value.n:n0}";
-        img_icon.sprite = UIUtil.GetIcon(d.Value.r);
+        txt_title.text = d.Value.ts.L();
+        txt_detail.text = $"{d.Value.ts.L()} x{d.Value.n:n0}";
+        // img_icon.sprite = UIUtil.GetIcon(d.Value.ts);
+        img_icon.sprite = d.Value.t.GetIcon();
         txt_count.text = d.Value.n > 0 ? $"x{d.Value.n:n0}" : "";
     }
 

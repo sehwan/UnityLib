@@ -18,7 +18,7 @@ public class MessageBox : MonoBehaviour
 
     [Header("Data")]
     Action cb;
-    Resource rsc;
+    Rsc rsc;
     GameObject displayingObj;
 
 
@@ -66,7 +66,7 @@ public class MessageBox : MonoBehaviour
 
     public static void Show(
         string message,
-        Resource resourceAmount,
+        Rsc resourceAmount,
         Sprite image,
         GameObject go,
         Action callback)
@@ -100,7 +100,8 @@ public class MessageBox : MonoBehaviour
                 _.rsc.IsPayable() == false;
 
             _.go_require.gameObject.SetActive(true);
-            _.img_require.sprite = UIUtil.GetIcon(_.rsc.r);
+            // _.img_require.sprite = UIUtil.GetIcon(_.rsc.t);
+            _.img_require.sprite = _.rsc.t.GetIcon();
             _.txt_require.text = $"{_.rsc.n:n0}";
             _.txt_require.color = notPayable ? Color.red : Color.white;
         }

@@ -23,8 +23,8 @@ public class GM : MonoSingleton<GM>
         base.Awake();
         Application.targetFrameRate = Settings.FrameRate;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        var targetAspect = (float)Screen.width / Screen.height;
-        Camera.main.orthographicSize = 3.5f / targetAspect;
+
+        // Camera.main.orthographicSize = 22f / targetAspect;
         // size
         // float w = Screen.width;
         // float h = Screen.height;
@@ -34,6 +34,9 @@ public class GM : MonoSingleton<GM>
 
     IEnumerator Start()
     {
+        var targetAspect = (float)Screen.width / Screen.height;
+        CameraWork.i.SetZoom(15f / targetAspect);
+
         // Fade.i.Dim(Color.black);
         // Title
         TitleScene title = null;

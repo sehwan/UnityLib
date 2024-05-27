@@ -35,7 +35,7 @@ public class RewardsMsg : PrefabSignleton<RewardsMsg>
 
         // Icon
         s.img_frame.color = Color.black;
-        s.SetIcons(UIUtil.GetIcon(type));
+        s.SetIcons(type.GetIcon());
         s.txt_5.text = $"x{cnt:n0}";
     }
 

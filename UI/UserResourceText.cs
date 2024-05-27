@@ -15,7 +15,7 @@ public class UserResourceText : MonoBehaviour
     {
         text.text = "";
         fieldInfo = (typeof(UserData)).GetField(key);
-        if (icon != null) icon.sprite = UIUtil.GetIcon(key);
+        if (icon != null) icon.sprite = key.GetIcon();
     }
 
     void Update()

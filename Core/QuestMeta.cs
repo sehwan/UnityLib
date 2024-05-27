@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class QuestMeta : Resource
+public class QuestMeta : Rsc
 {
     public string id;
     public int req;

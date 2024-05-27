@@ -97,8 +97,10 @@ public class BigNumber
         if (a.u + 7 < b.u) return new BigNumber(b);
         // 아니라면 계산 후 더한다.
         int i;
-        BigNumber r = new();
-        r.u = a.u;
+        BigNumber r = new()
+        {
+            u = a.u
+        };
         float real_a = a.n * a._, real_b = b.n * b._;
         if (a.u > b.u)
         {
@@ -124,8 +126,10 @@ public class BigNumber
         if (a.u + 7 < b.u) return new BigNumber(b);
 
         int i;
-        BigNumber r = new();
-        r.u = a.u;
+        BigNumber r = new()
+        {
+            u = a.u
+        };
         float real_a = a.n * a._, real_b = b.n * b._;
         if (a.u > b.u)
         {
@@ -155,17 +159,21 @@ public class BigNumber
 
     static public BigNumber operator *(BigNumber a, float b)
     {
-        BigNumber r = new();
-        r.u = a.u;
-        r.n = a.n * b;
+        BigNumber r = new()
+        {
+            u = a.u,
+            n = a.n * b
+        };
         r.MakeSuffix();
         return r;
     }
     static public BigNumber operator *(BigNumber a, BigNumber b)
     {
-        BigNumber r = new();
-        r.u = a.u + b.u;
-        r.n = a.n * b.n;
+        BigNumber r = new()
+        {
+            u = a.u + b.u,
+            n = a.n * b.n
+        };
         r.MakeSuffix();
         return r;
     }
@@ -173,9 +181,11 @@ public class BigNumber
     {
         if (a == 0) return 0;
         if (b == 0) return a;
-        BigNumber r = new();
-        r.u = a.u;
-        r.n = a.n / b;
+        BigNumber r = new()
+        {
+            u = a.u,
+            n = a.n / b
+        };
         r.MakeSuffix();
         return r;
     }
@@ -183,8 +193,10 @@ public class BigNumber
     {
         if (a == 0) return 0;
         if (b == 0) return a;
-        BigNumber r = new();
-        r.u = a.u - b.u;
+        BigNumber r = new()
+        {
+            u = a.u - b.u
+        };
 
         int diff, i;
 
@@ -281,8 +293,10 @@ public class BigNumber
     public BigNumber Abs()
     {
         if (_ >= 1) return this;
-        BigNumber r = new(this);
-        r._ = 1;
+        BigNumber r = new(this)
+        {
+            _ = 1
+        };
         return r;
     }
 

@@ -198,16 +198,8 @@ public class CameraWork : MonoBehaviour
     void Clamp()
     {
         var zoom = 0f;
-        if (isOrthographic)
-        {
-            zoom = cam.orthographicSize / 2;
-            cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, maxZoom);
-        }
-        else
-        {
-            zoom = cam.fieldOfView / 15;
-            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, minZoom, maxZoom);
-        }
+        if (isOrthographic) zoom = cam.orthographicSize / 2;
+        else zoom = cam.fieldOfView / 15;
         var x = isXMovable ?
             Mathf.Clamp(tr.position.x, limit_minX + zoom, limit_maxX - zoom) :
             zero.x;
@@ -290,6 +282,13 @@ public class CameraWork : MonoBehaviour
 #else
         Zoom_Mobile();
 #endif
+        if (isZoom)
+        {
+            if (isOrthographic)
+                cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, minZoom, maxZoom);
+            else
+                cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, minZoom, maxZoom);
+        }
     }
     void Zoom_Desktop()
     {

@@ -264,11 +264,13 @@ public static class StringEx
 
     public static string Decrypt(this string textToDecrypt, string key)
     {
-        RijndaelManaged rijndaelCipher = new();
-        rijndaelCipher.Mode = CipherMode.CBC;
-        rijndaelCipher.Padding = PaddingMode.PKCS7;
-        rijndaelCipher.KeySize = 128;
-        rijndaelCipher.BlockSize = 128;
+        RijndaelManaged rijndaelCipher = new()
+        {
+            Mode = CipherMode.CBC,
+            Padding = PaddingMode.PKCS7,
+            KeySize = 128,
+            BlockSize = 128
+        };
         byte[] encryptedData = Convert.FromBase64String(textToDecrypt);
         byte[] pwdBytes = Encoding.UTF8.GetBytes(key);
         byte[] keyBytes = new byte[16];
@@ -286,11 +288,13 @@ public static class StringEx
 
     public static string Encrypt(this string textToEncrypt, string key)
     {
-        RijndaelManaged rijndaelCipher = new();
-        rijndaelCipher.Mode = CipherMode.CBC;
-        rijndaelCipher.Padding = PaddingMode.PKCS7;
-        rijndaelCipher.KeySize = 128;
-        rijndaelCipher.BlockSize = 128;
+        RijndaelManaged rijndaelCipher = new()
+        {
+            Mode = CipherMode.CBC,
+            Padding = PaddingMode.PKCS7,
+            KeySize = 128,
+            BlockSize = 128
+        };
         byte[] pwdBytes = Encoding.UTF8.GetBytes(key);
         byte[] keyBytes = new byte[16];
         int len = pwdBytes.Length;

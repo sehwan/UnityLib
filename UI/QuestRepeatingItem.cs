@@ -20,7 +20,7 @@ public class QuestRepeatingItem : MonoBehaviour
     {
         this.meta = meta;
         gameObject.SetActive(true);
-        icon_reward.sprite = UIUtil.GetIcon(meta.r);
+        icon_reward.sprite = meta.t.GetIcon();
         txt_rcount.text = meta.n.ToString();
         Refresh();
     }

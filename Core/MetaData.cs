@@ -7,8 +7,8 @@ using UnityEngine;
 public class MetaData
 {
 
-    public Dictionary<int, Resource> att = new();
-    public Dictionary<int, Resource> online = new();
+    public Dictionary<int, Rsc> att = new();
+    public Dictionary<int, Rsc> online = new();
 
     public Dictionary<string, QuestMeta> dq = new();
     public Dictionary<string, QuestMeta> rq = new();

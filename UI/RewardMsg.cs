@@ -36,33 +36,39 @@ public class RewardMsg : PrefabSignleton<RewardMsg>
     public void Enqueue(string s, string t, int c)
     {
         gameObject.SetActive(true);
-        DataRewardMsg msg = new();
-        msg.msg = s;
-        msg.type = t;
-        msg.count = c;
-        msg.count_big = 0;
+        DataRewardMsg msg = new()
+        {
+            msg = s,
+            type = t,
+            count = c,
+            count_big = 0
+        };
         queue.Add(msg);
         if (queue.Count == 1) Show();
     }
     public void Enqueue(string s, string t, BigNumber c)
     {
         gameObject.SetActive(true);
-        DataRewardMsg msg = new();
-        msg.msg = s;
-        msg.type = t;
-        msg.count = 0;
-        msg.count_big = c;
+        DataRewardMsg msg = new()
+        {
+            msg = s,
+            type = t,
+            count = 0,
+            count_big = c
+        };
         queue.Add(msg);
         if (queue.Count == 1) Show();
     }
-    public void Enqueue(string s, Resource r)
+    public void Enqueue(string s, Rsc r)
     {
         gameObject.SetActive(true);
-        var msg = new DataRewardMsg();
-        msg.msg = s;
-        msg.type = r.r;
-        msg.count = r.n;
-        msg.count_big = r.b != null ? r.b : new BigNumber(0);
+        var msg = new DataRewardMsg
+        {
+            msg = s,
+            type = r.t,
+            count = r.n,
+            count_big = r.b != null ? r.b : new BigNumber(0)
+        };
         queue.Add(msg);
         if (queue.Count == 1) Show();
     }
@@ -77,14 +83,14 @@ public class RewardMsg : PrefabSignleton<RewardMsg>
         if (cur.count_big != 0)
         {
             img_rsc.SetActive(true);
-            img_rsc.sprite = UIUtil.GetIcon(cur.type);
+            img_rsc.sprite = cur.type.GetIcon();
             txt_rsc.SetActive(true);
             txt_rsc.text = cur.count_big.ToString();
         }
         else if (cur.count != 0)
         {
             img_rsc.SetActive(true);
-            img_rsc.sprite = UIUtil.GetIcon(cur.type);
+            img_rsc.sprite = cur.type.GetIcon();
             txt_rsc.SetActive(true);
             txt_rsc.text = cur.count.ToString("n0");
         }

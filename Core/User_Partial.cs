@@ -433,15 +433,15 @@ public partial class User : UserBase
 
         // Reward
         int gem = 500;
-        AddResource(Resource.kGem, gem);
-        RewardMsg.inst.Enqueue("FinishTutorial".L(), Resource.kGem, gem);
+        AddResource(Rsc._gem, gem);
+        RewardMsg.inst.Enqueue("FinishTutorial".L(), Rsc._gem, gem);
     }
     #endregion
 
 
     #region Resources
 
-    public void GetReward(Resource r, string msg = "")
+    public void GetReward(Rsc r, string msg = "")
     {
         // if (r.r == Resource.kSoul)
         // {
@@ -481,14 +481,14 @@ public partial class User : UserBase
             // Gold
             if (r == _++)
             {
-                var reward = Resource.Gold(5);
+                var reward = Rsc.New(Rsc._gold, 5);
                 reward.InitToSlot(e.slot);
                 AddResource(reward);
             }
             // Ticket
             else if (r == _++)
             {
-                var reward = Resource.Ticket(1);
+                var reward = Rsc.New(Rsc._ticket, 1);
                 reward.InitToSlot(e.slot);
                 AddResource(reward);
             }
@@ -501,11 +501,11 @@ public partial class User : UserBase
         new();
     public Dictionary<string, Action<BigNumber>> onAddResourceBig =
         new();
-    public bool AddResource(Resource r) => AddResource(r.r, r.n);
+    public bool AddResource(Rsc r) => AddResource(r.t, r.n);
     public bool AddResource(string type, int value)
     {
         if (value == 0) return true;
-        if (type == Resource.kSoul)
+        if (type == Rsc._soul)
         {
             Debug.LogError("Soul is BigNumber");
             return false;
@@ -521,10 +521,10 @@ public partial class User : UserBase
         // if (value > 0) UM.Scene<MainScenePanel>().snowMsg.Show($"{value} {type.L()}");
         _.SetField(type, old + value);
         if (onAddResource.ContainsKey(type)) onAddResource[type](value);
-        if (type == Resource.kGem) SaveImmediately();
+        if (type == Rsc._gem) SaveImmediately();
         return true;
     }
-    public bool AddResourceBig(Resource r) => AddResourceBig(r.r, r.b);
+    public bool AddResourceBig(Rsc r) => AddResourceBig(r.t, r.b);
     public bool AddResourceBig(string type, BigNumber value)
     {
         if (value == 0) return true;

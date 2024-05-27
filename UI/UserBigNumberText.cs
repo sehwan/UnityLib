@@ -16,7 +16,7 @@ public class UserBigNumberText : MonoBehaviour
     }
     void OnEnable()
     {
-        icon.sprite = UIUtil.GetIcon(key);
+        icon.sprite = key.GetIcon();
     }
     void Update()
     {

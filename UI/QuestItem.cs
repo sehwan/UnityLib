@@ -22,7 +22,8 @@ public class QuestItem : MonoBehaviour
     public void Init(QuestMeta meta)
     {
         this.meta = meta;
-        icon_reward.sprite = UIUtil.GetIcon(meta.r);
+        // icon_reward.sprite = UIUtil.GetIcon(meta.t);
+        icon_reward.sprite = meta.t.GetIcon();
         txt_rcount.text = meta.n.ToString();
         gameObject.SetActive(true);
         Refresh();

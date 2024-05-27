@@ -3,41 +3,10 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using System.Reflection;
-using UnityEngine.EventSystems;
 
 public class UIUtil : MonoSingleton<UIUtil>
 {
-    public static string AlphabetIntegerType(double d)
-    {
-        string s = "";
-        if (d > 1000000000000)
-        {
-            s = (d / 1000000000000 - 0.005).ToString("F3") + "D";
-        }
-        if (d > 1000000000)
-        {
-            s = (d / 1000000000 - 0.005).ToString("F3") + "C";
-        }
-        else if (d > 1000000)
-        {
-            s = (d / 1000000 - 0.005).ToString("F3") + "B";
-        }
-        else if (d > 1000)
-        {
-            s = (d / 1000 - 0.005).ToString("F3") + "A";
-        }
-        else
-        {
-            s = d.ToString();
-        }
-        return s;
-    }
-
-
-
-
-    //차일드 전부 페이드인아웃.
+    // 차일드 전부 페이드인아웃.
     public IEnumerator Co_FadeAllChild(Transform parent, float on, float delay, float off, Action cb)
     {
         parent.gameObject.SetActive(true);
@@ -100,24 +69,6 @@ public class UIUtil : MonoSingleton<UIUtil>
     }
 
 
-
-
-    public static void Colorize_UIChildren(Transform parent, Color color)
-    {
-        Text[] txts = parent.GetComponentsInChildren<Text>();
-        Image[] imgs = parent.GetComponentsInChildren<Image>();
-        foreach (var item in txts)
-        {
-            item.color = color;
-        }
-        foreach (var item in imgs)
-        {
-            item.color = color;
-        }
-    }
-
-
-
     public float deltaClick;
     int clickCount;
     ///<summary>
@@ -135,48 +86,5 @@ public class UIUtil : MonoSingleton<UIUtil>
         if (clickCount == 1) cb(1);
         else if (clickCount > 1) cb(2);
         clickCount = 0;
-    }
-
-
-
-    public static string TagTMPSprite(string spr)
-    {
-        if (string.IsNullOrEmpty(spr))
-            return "";
-        else
-            return string.Format("<sprite name=\"{0}\">", spr);
-    }
-
-
-
-
-    static string Colorize(int v, bool isPercent = false)
-    {
-        string operation = "";
-        if (isPercent == true) operation = "%";
-
-        if (v > 0)
-            return string.Format("<color=#00ff00>{0}{1}", v, operation);
-        else if (v < 0)
-            return string.Format("<color=red>{0}{1}", v, operation);
-        else
-            return v.ToString();
-    }
-
-
-    // 자원.
-    // 스트링 -> 메쉬 스프라이트.
-    public static string ResourcesType_To_TMP(string str)
-    {
-        if (str == "dollar") return "$";
-        if (str == "cash") return TagTMPSprite("icon_cash");
-        else if (str == "coin") return TagTMPSprite("icon_coin");
-        else return "";
-    }
-
-    public static Sprite GetIcon(string type)
-    {
-        if (type == "cash") return "Lib/empty".LoadSprite();
-        return $"Icons/icon_{type}".LoadSprite();
     }
 }
