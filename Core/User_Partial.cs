@@ -8,17 +8,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEditor;
 
 // using Firebase.Database;
 // using Firebase.Extensions;
 // using Firebase.Auth;
-
-
-public class UserBase : MonoBehaviour
-{
-    virtual public void UpdateDataForNewVersion() { }
-}
-
 
 public partial class User : UserBase
 {
@@ -779,3 +773,12 @@ public partial class User : UserBase
         onChangeEXP?.Invoke();
     }
 }
+
+// [CustomEditor(typeof(User))]
+// public class UserEditor : Editor
+// {
+//     public override void OnInspectorGUI()
+//     {
+//         base.OnInspectorGUI();
+//     }
+// }

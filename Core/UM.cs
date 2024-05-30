@@ -59,6 +59,10 @@ public class UM : MonoBehaviour
     {
         return i.windows.Find(e => e is T) as T;
     }
+    public static T Scene<T>() where T : UIScene
+    {
+        return i.windows.Find(e => e is T) as T;
+    }
 
 
     // Managing
@@ -87,5 +91,9 @@ public class UM : MonoBehaviour
     public void HideScenes()
     {
         foreach (var e in scenes) e.Hide();
+    }
+    public void ShowScene()
+    {
+
     }
 }

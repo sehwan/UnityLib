@@ -125,11 +125,11 @@ public static class TransformEx
     }
     public static void LocalScaleY(this Transform me, float v)
     {
-        me.transform.localScale = new Vector3(me.transform.localScale.x, v, me.transform.localScale.z);
+        me.transform.localScale = new Vector3(me.localScale.x, v, me.localScale.z);
     }
     public static void LocalScaleZ(this Transform me, float v)
     {
-        me.transform.localScale = new Vector3(me.transform.localScale.x, me.transform.localScale.y, v);
+        me.transform.localScale = new Vector3(me.localScale.x, me.localScale.y, v);
     }
     public static void LocalScale(this Transform me, float x, float y)
     {
@@ -143,15 +143,15 @@ public static class TransformEx
     // Position
     public static void LocalPositionX(this Transform me, float v)
     {
-        me.transform.localPosition = new Vector3(v, me.transform.localPosition.y, me.transform.localPosition.z);
+        me.transform.localPosition = new Vector3(v, me.localPosition.y, me.localPosition.z);
     }
     public static void LocalPositionY(this Transform me, float v)
     {
-        me.transform.localPosition = new Vector3(me.transform.localPosition.x, v, me.transform.localPosition.z);
+        me.transform.localPosition = new Vector3(me.localPosition.x, v, me.localPosition.z);
     }
     public static void LocalPositionZ(this Transform me, float v)
     {
-        me.transform.localPosition = new Vector3(me.transform.localPosition.x, me.transform.localPosition.y, v);
+        me.transform.localPosition = new Vector3(me.localPosition.x, me.localPosition.y, v);
     }
     public static void LocalPosition(this Transform me, float x, float y, float z)
     {
@@ -164,15 +164,15 @@ public static class TransformEx
 
     public static void PositionX(this Transform me, float v)
     {
-        me.transform.position = new Vector3(v, me.transform.position.y, me.transform.position.z);
+        me.transform.position = new Vector3(v, me.position.y, me.position.z);
     }
     public static void PositionY(this Transform me, float v)
     {
-        me.transform.position = new Vector3(me.transform.position.x, v, me.transform.position.z);
+        me.transform.position = new Vector3(me.position.x, v, me.position.z);
     }
     public static void PositionZ(this Transform me, float v)
     {
-        me.transform.position = new Vector3(me.transform.position.x, me.transform.position.y, v);
+        me.transform.position = new Vector3(me.position.x, me.position.y, v);
     }
     public static void Position(this Transform me, float x, float y)
     {

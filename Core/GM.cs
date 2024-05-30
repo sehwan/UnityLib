@@ -34,8 +34,8 @@ public class GM : MonoSingleton<GM>
 
     IEnumerator Start()
     {
-        var targetAspect = (float)Screen.width / Screen.height;
-        CameraWork.i.SetZoom(15f / targetAspect);
+        // var targetAspect = (float)Screen.width / Screen.height;
+        // CameraWork.i.SetZoom(15f / targetAspect);
 
         // Fade.i.Dim(Color.black);
         // Title

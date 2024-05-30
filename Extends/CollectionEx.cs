@@ -126,7 +126,14 @@ public static class CollectionEx
     public static T GetInactive<T>(this T[] me) where T : UnityEngine.Component
     {
         var first = me.FirstOrDefault(e => e.gameObject.activeSelf == false);
-        if (first == null) return null;
+        if (first == null)
+        {
+            UnityEngine.Debug.LogError($"No Inactive {typeof(T).Name} found");
+            var prefab = me[0].gameObject;
+            var clone = UnityEngine.Object.Instantiate(prefab, prefab.transform.parent).GetComponent<T>();
+            me.Append(clone);
+            return clone;
+        };
         first.gameObject.SetActive(true);
         return first;
     }

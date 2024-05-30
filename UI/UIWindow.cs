@@ -10,11 +10,11 @@ public abstract class UIPanel : MonoBehaviour
     }
 
     public bool IsActive => gameObject.activeSelf;
+    public void ShowWindow(string name) => UM.i.windows.Find(e => e.name == name).Show();
     public virtual void Show() => gameObject.SetActive(true);
     public virtual void Hide() => gameObject.SetActive(false);
     public void SetActive(bool b) => gameObject.SetActive(b);
     public void Toggle() => gameObject.SetActive(!gameObject.activeSelf);
-    public void ShowWindow(string name) => UM.i.windows.Find(e => e.name == name).Show();
 }
 
 
@@ -26,6 +26,7 @@ public class UIScene : UIPanel
         gameObject.SetActive(true);
     }
 }
+
 public class UIWindow : UIPanel
 {
     [Immutable] public bool buttonWillBeESC;
