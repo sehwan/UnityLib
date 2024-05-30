@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using UnityEngine.Rendering;
 
 [Serializable]
 public partial class UserData
@@ -44,8 +45,8 @@ public partial class UserData
     [Header("ETC")]
     public List<string> coupons = new();
     public List<string> rcd_str = new();
-    public Dictionary<string, int> rcd_int = new();
-    public Dictionary<string, DateTime> dts_iap = new();
+    public SerializedDictionary<string, int> rcd_int = new();
+    public SerializedDictionary<string, DateTime> dts_iap = new();
     public List<int> rcd_gacha = new();
     public float gachaRate;
     public int vip_exp;
@@ -59,8 +60,8 @@ public partial class UserData
     public int time;
     public int time_m;
     public int onlineCheck;
-    public Dictionary<string, QuestData> dq = new();
-    public Dictionary<string, QuestData> rq = new();
+    public SerializedDictionary<string, QuestData> dq = new();
+    public SerializedDictionary<string, QuestData> rq = new();
 
     static public string DefaultNick
     {
