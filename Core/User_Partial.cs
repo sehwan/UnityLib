@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEditor;
 
 // using Firebase.Database;
 // using Firebase.Extensions;
@@ -17,6 +18,7 @@ using Newtonsoft.Json.Linq;
 public class UserBase : MonoBehaviour
 {
     virtual public void UpdateDataForNewVersion() { }
+    virtual public void OnRecord(string key) { }
 }
 
 
@@ -464,7 +466,7 @@ public partial class User : UserBase
         var pn = UM.Get<GachaPanel>();
         var amount = Mathf.Min(_.rbox, pn.SlotCount);
         AddResource("rbox", -amount);
-        RecordInt("rbox", amount);
+        RecordCumulative("rbox", amount);
 
         // Chance
         int[] CHANCE = new int[] {
@@ -566,9 +568,20 @@ public partial class User : UserBase
     #endregion
 
 
-    #region Quest & Achievement        
-    public void ReportHigh(string type, int v)
+    #region Record
+
+    public void RecordGacha(int rate)
     {
+        _.rcd_gacha.Add(rate);
+        if (_.rcd_gacha.Count > 30) _.rcd_gacha.RemoveAt(0);
+        _.gachaRate = (float)_.rcd_gacha.Average();
+    }
+
+    public void RecordtHigh(string type, int v)
+    {
+        var rcd = _.rcd_int.GetValueOrNew(type);
+        if (rcd < v) _.rcd_int[type] = v;
+
         var meta = GameData.meta;
         if (meta.dq.ContainsKey(type))
         {
@@ -586,11 +599,14 @@ public partial class User : UserBase
         //     var achv = data.achv[type];
         //     if (achv.val < v) achv.val = v;
         // }
-        OnReport(type);
+        OnRecordBase(type);
     }
     public Action onChangeTask;
-    public void ReportAccrued(string type, int add = 1)
+    public void RecordCumulative(string type, int add = 1)
     {
+        if (_.rcd_int.ContainsKey(type) == false) _.rcd_int.Add(type, add);
+        else _.rcd_int[type] += add;
+
         // Quest
         var meta = GameData.meta;
         if (meta.dq.ContainsKey(type)) _.dq.GetValueOrNew(type).v += add;
@@ -612,33 +628,28 @@ public partial class User : UserBase
         //     achv.val += add;
         //     // print($"achv {type} {add}");
         // }
-        OnReport(type);
+        OnRecordBase(type);
     }
-    void OnReport(string type)
+    Action onRecord;
+    void OnRecordBase(string type)
     {
         // All Cleared?
         // if (data.dailyQuest.All(e => e.Key == key_record_allClear || e.Value.fin))
-        // {
         //     data.dailyQuest.GetValueDefault(key_record_allClear).val = 1;
-        // }
 
         // Notify
-        var pn = UM.Get<QuestsPanel>();
-        if (pn.daily.ContainsKey(type)) pn.daily[type].RefreshAble();
-        if (pn.repeating.ContainsKey(type)) pn.repeating[type].RefreshAble();
+        // var pn = UM.Get<QuestsPanel>();
+        // if (pn.daily.ContainsKey(type)) pn.daily[type].RefreshAble();
+        // if (pn.repeating.ContainsKey(type)) pn.repeating[type].RefreshAble();
 
         // var achv = UM.Get<UIAchievements>();
         // if (achv.items.ContainsKey(type)) achv.items[type].CheckAlarm(type);
+        
+        OnRecord(type);
+        onRecord?.Invoke();
     }
     #endregion
 
-
-    // to Check if user is a Cheater
-    public void RecordInt(string type, int add = 1)
-    {
-        if (_.rcd_int.ContainsKey(type) == false) _.rcd_int.Add(type, add);
-        else _.rcd_int[type] += add;
-    }
 
     public Action onChangeNick;
     public void ReqChangeNick(bool canESC, Action cb = null)
@@ -712,13 +723,6 @@ public partial class User : UserBase
         // }, msg, now, canESC, LIMIT_LENGTH);
     }
 
-    public void RecordGacha(int rate)
-    {
-        _.rcd_gacha.Add(rate);
-        if (_.rcd_gacha.Count > 30) _.rcd_gacha.RemoveAt(0);
-        _.gachaRate = (float)_.rcd_gacha.Average();
-    }
-
 
 
     public Action onChangeEnergy;
@@ -779,3 +783,20 @@ public partial class User : UserBase
         onChangeEXP?.Invoke();
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(User), true)]
+public class UserEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        // if (GUILayout.Button("Save"))
+        // {
+        //     var user = target as User;
+        //     user.SaveImmediately();
+        // }
+    }
+}
+#endif

@@ -15,7 +15,6 @@ public class NotiBadges : MonoBehaviour
             Debug.LogError($"<color=cyan>No Badge Object of '{name}'</color>");
             return;
         }
-
         var badge = dic[name];
         if (amount == 0) badge.gameObject.SetActive(false);
         else
@@ -35,7 +34,7 @@ public class NotiBadges : MonoBehaviour
 
         var badge = dic[name];
         badge.gameObject.SetActive(b);
-        badge.txt_cnt.text = "!";
+        if (badge.txt_cnt != null) badge.txt_cnt.text = "!";
     }
 
     // Instance
@@ -47,9 +46,10 @@ public class NotiBadges : MonoBehaviour
         gameObject.SetActive(false);
         oriPos = transform.localPosition;
     }
+    const string _Jump = "Jump";
     void OnEnable()
     {
-        InvokeRepeating("Jump", RandomEx.R(2f, 1f), 3f);
+        InvokeRepeating(_Jump, RandomEx.R(2f, 1f), 3f);
     }
     void Jump()
     {

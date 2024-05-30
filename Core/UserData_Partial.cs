@@ -46,7 +46,7 @@ public partial class UserData
     public List<string> coupons = new();
     public List<string> rcd_str = new();
     public SerializedDictionary<string, int> rcd_int = new();
-    public SerializedDictionary<string, DateTime> dts_iap = new();
+    public Dictionary<string, DateTime> dts_iap = new();
     public List<int> rcd_gacha = new();
     public float gachaRate;
     public int vip_exp;
