@@ -128,7 +128,7 @@ public class DirectionalAnimation : MonoBehaviour
         StopAllCoroutines();
     }
 
-
+    const string _idle = "idle";
     IEnumerator Co_Once(string key)
     {
         mode = PlayMode.Once;
@@ -142,7 +142,7 @@ public class DirectionalAnimation : MonoBehaviour
             yield return CoroutineEx.GetWait(frame.dur);
             curFrame++;
         }
-        Loop("idle");
+        Loop(_idle);
     }
     IEnumerator Co_Loop(string key)
     {
