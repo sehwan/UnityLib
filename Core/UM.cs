@@ -16,6 +16,8 @@ public class UM : MonoBehaviour
     public List<UIScene> scenes = new();
     public ParticleSystem touchFX;
     public Texture2D cursor;
+    public Material mat_gray;
+
 
     void Awake()
     {
