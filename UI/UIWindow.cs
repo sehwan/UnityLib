@@ -30,6 +30,8 @@ public class UIWindow : UIPanel
 {
     [Immutable] public bool buttonWillBeESC;
     public bool isESCable = true;
+    public bool isObstructingCamera = true;
+    
 
     [ContextMenu("Make Dim to ESC Buttons")]
     public void MakeESCDim()

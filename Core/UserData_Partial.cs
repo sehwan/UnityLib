@@ -4,8 +4,14 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine.Rendering;
 
+
+public class UserDataBase
+{
+    public virtual void ForNewData() { }
+}
+
 [Serializable]
-public partial class UserData
+public partial class UserData : UserDataBase
 {
     [Header("Base")]
     public string id;
@@ -82,6 +88,7 @@ public partial class UserData
             // r.id = FirebaseMng.inst.user.UserId;
             nick = DefaultNick
         };
+        r.ForNewData();
         return r;
     }
     static public UserData Tester()
@@ -94,6 +101,7 @@ public partial class UserData
             tester = true,
             tut = -1
         };
+        r.ForNewData();
         return r;
     }
 
