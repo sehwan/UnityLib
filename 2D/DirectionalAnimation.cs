@@ -79,8 +79,14 @@ public class DirectionalAnimation : MonoBehaviour
     {
         curDir = dir;
         if (curName.IsFilled() == false) return;
-        // if (CurFrame() == null) Debug.Log($"<color=cyan>{curDir} {curName} {curFrame}</color>");
-        ren.sprite = CurFrame().spr;
+
+        // var cur = $"{curDir}_{curName}_{curFrame}";
+        // if (dic.ContainsKey(cur) == false)
+        // {
+        //     print(cur);
+        //     return;
+        // }
+        ren.sprite = CurFrame()?.spr;
     }
     public float GetClipTime()
     {
@@ -112,7 +118,6 @@ public class DirectionalAnimation : MonoBehaviour
     {
         StopAllCoroutines();
         StartCoroutine(Co_Once(key));
-        // StartCoroutine(Co_Loop(key));
     }
     public void Loop(string key)
     {
@@ -131,21 +136,26 @@ public class DirectionalAnimation : MonoBehaviour
         StopAllCoroutines();
     }
 
-    const string _idle = "idle";
+    public static string DEFAULT_CLIP = "idle";
     IEnumerator Co_Once(string key)
     {
         mode = PlayMode.Once;
         curName = key;
         curFrame = 0;
+        var frame = CurFrame();
         while (true)
         {
-            var frame = CurFrame();
-            if (frame == null) break;
             ren.sprite = frame.spr;
-            yield return CoroutineEx.GetWait(frame.dur);
             curFrame++;
+            frame = CurFrame();
+            if (frame == null)
+            {
+                curFrame = 0;
+                break;
+            }
+            yield return CoroutineEx.GetWait(frame.dur);
         }
-        Loop(_idle);
+        Loop(DEFAULT_CLIP);
     }
     IEnumerator Co_Loop(string key)
     {
@@ -161,8 +171,8 @@ public class DirectionalAnimation : MonoBehaviour
                 frame = CurFrame();
             }
             ren.sprite = frame.spr;
-            yield return CoroutineEx.GetWait(frame.dur);
             curFrame++;
+            yield return CoroutineEx.GetWait(frame.dur);
         }
     }
     IEnumerator Co_Pong(string key)
