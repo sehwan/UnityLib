@@ -10,12 +10,15 @@ public class UM : MonoBehaviour
     public static UM i;
     public Canvas canvas;
     public Camera cam;
+    public GraphicRaycaster raycaster;
     public List<UIWindow> showings = new();
     public List<GameObject> others = new();
     public List<UIWindow> windows = new();
     public List<UIScene> scenes = new();
     public ParticleSystem touchFX;
     public Texture2D cursor;
+    public Material mat_gray;
+
 
     void Awake()
     {

@@ -144,6 +144,11 @@ public static class UnityEx
     }
 
     // Particle
+    public static void Play(this ParticleSystem me, Vector3 pos)
+    {
+        me.transform.position = pos;
+        me.Play();
+    }
     public static void Emit(this ParticleSystem me, Vector3 pos, int count = 1)
     {
         me.transform.position = pos;

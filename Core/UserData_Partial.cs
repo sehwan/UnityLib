@@ -2,9 +2,16 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using UnityEngine.Rendering;
+
+
+public class UserDataBase
+{
+    public virtual void ForNewData() { }
+}
 
 [Serializable]
-public partial class UserData
+public partial class UserData : UserDataBase
 {
     [Header("Base")]
     public string id;
@@ -44,7 +51,7 @@ public partial class UserData
     [Header("ETC")]
     public List<string> coupons = new();
     public List<string> rcd_str = new();
-    public Dictionary<string, int> rcd_int = new();
+    public SerializedDictionary<string, int> rcd_int = new();
     public Dictionary<string, DateTime> dts_iap = new();
     public List<int> rcd_gacha = new();
     public float gachaRate;
@@ -59,8 +66,8 @@ public partial class UserData
     public int time;
     public int time_m;
     public int onlineCheck;
-    public Dictionary<string, QuestData> dq = new();
-    public Dictionary<string, QuestData> rq = new();
+    public SerializedDictionary<string, QuestData> dq = new();
+    public SerializedDictionary<string, QuestData> rq = new();
 
     static public string DefaultNick
     {
@@ -81,6 +88,7 @@ public partial class UserData
             // r.id = FirebaseMng.inst.user.UserId;
             nick = DefaultNick
         };
+        r.ForNewData();
         return r;
     }
     static public UserData Tester()
@@ -93,6 +101,7 @@ public partial class UserData
             tester = true,
             tut = -1
         };
+        r.ForNewData();
         return r;
     }
 

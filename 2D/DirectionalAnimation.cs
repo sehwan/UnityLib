@@ -1,6 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+
+/*  
+Usage
+Load(CharName), SetDirection(u,d,l,r), Loop
+file ex) Characters/CharName/u_idle_0_5
+*/
+
 
 [System.Serializable]
 public class DataFrame
@@ -11,12 +18,10 @@ public class DataFrame
 
 public enum PlayMode { Once, Loop, Pong }
 
-// Usage CharName/u_idle_0_5
 
 public class DirectionalAnimation : MonoBehaviour
 {
-    static Dictionary<string, Dictionary<string, DataFrame>> dic =
-        new();
+    static SerializedDictionary<string, SerializedDictionary<string, DataFrame>> all = new();
 
     [Header("Settings")]
     public SpriteRenderer ren;
@@ -25,6 +30,7 @@ public class DirectionalAnimation : MonoBehaviour
 
 
     [Header("State")]
+    public SerializedDictionary<string, DataFrame> dic;
     public PlayMode mode;
     [Immutable] public bool isRewinding;
 
@@ -40,10 +46,14 @@ public class DirectionalAnimation : MonoBehaviour
     public void Load(string unit)
     {
         dirPath = unit;
-        if (dic.ContainsKey(unit)) return;
+        if (all.ContainsKey(unit))
+        {
+            dic = all[unit];
+            return;
+        }
 
-        var all = Resources.LoadAll<Sprite>(unit);
-        foreach (var file in all)
+        var sprites = Resources.LoadAll<Sprite>(unit);
+        foreach (var file in sprites)
         {
             var splitted = file.name.Split('_');
             if (splitted.Length < 4) continue;
@@ -57,16 +67,26 @@ public class DirectionalAnimation : MonoBehaviour
                 spr = file,
                 dur = float.Parse(dur) * 0.1f
             };
-            if (dic.ContainsKey(unit) == false) dic.Add(unit, new Dictionary<string, DataFrame>());
-            dic[unit][frameName] = frame;
+            if (all.ContainsKey(unit) == false)
+                all.Add(unit, new SerializedDictionary<string, DataFrame>());
+            all[unit][frameName] = frame;
         }
+        dic = all[unit];
     }
 
 
     public void SetDirection(string dir)
     {
         curDir = dir;
-        if (curName.IsFilled()) ren.sprite = CurFrame().spr;
+        if (curName.IsFilled() == false) return;
+
+        // var cur = $"{curDir}_{curName}_{curFrame}";
+        // if (dic.ContainsKey(cur) == false)
+        // {
+        //     print(cur);
+        //     return;
+        // }
+        ren.sprite = CurFrame()?.spr;
     }
     public float GetClipTime()
     {
@@ -75,7 +95,7 @@ public class DirectionalAnimation : MonoBehaviour
         while (true)
         {
             if (NextFrame() == null) break;
-            sum += dic[dirPath][$"{curDir}_{curName}_{idx}"].dur;
+            sum += dic[$"{curDir}_{curName}_{idx}"].dur;
         }
         return sum;
     }
@@ -83,14 +103,14 @@ public class DirectionalAnimation : MonoBehaviour
     DataFrame CurFrame()
     {
         var cur = $"{curDir}_{curName}_{curFrame}";
-        if (dic[dirPath].ContainsKey(cur) == false) return null;
-        return dic[dirPath][cur];
+        if (dic.ContainsKey(cur) == false) return null;
+        return dic[cur];
     }
     DataFrame NextFrame()
     {
         var next = $"{curDir}_{curName}_{curFrame + 1}";
-        if (dic[dirPath].ContainsKey(next) == false) return null;
-        return dic[dirPath][next];
+        if (dic.ContainsKey(next) == false) return null;
+        return dic[next];
     }
 
 
@@ -102,7 +122,7 @@ public class DirectionalAnimation : MonoBehaviour
     public void Loop(string key)
     {
         if (key.Equals(curName)) return;
-        if (dic[dirPath].ContainsKey($"{curDir}_{key}_0") == false) return;
+        if (dic.ContainsKey($"{curDir}_{key}_0") == false) return;
         StopAllCoroutines();
         StartCoroutine(Co_Loop(key));
     }
@@ -116,21 +136,26 @@ public class DirectionalAnimation : MonoBehaviour
         StopAllCoroutines();
     }
 
-
+    public static string DEFAULT_CLIP = "idle";
     IEnumerator Co_Once(string key)
     {
         mode = PlayMode.Once;
         curName = key;
         curFrame = 0;
+        var frame = CurFrame();
         while (true)
         {
-            var frame = CurFrame();
-            if (frame == null) break;
             ren.sprite = frame.spr;
-            yield return CoroutineEx.GetWait(frame.dur);
             curFrame++;
+            frame = CurFrame();
+            if (frame == null)
+            {
+                curFrame = 0;
+                break;
+            }
+            yield return CoroutineEx.GetWait(frame.dur);
         }
-        Loop("idle");
+        Loop(DEFAULT_CLIP);
     }
     IEnumerator Co_Loop(string key)
     {
@@ -146,8 +171,8 @@ public class DirectionalAnimation : MonoBehaviour
                 frame = CurFrame();
             }
             ren.sprite = frame.spr;
-            yield return CoroutineEx.GetWait(frame.dur);
             curFrame++;
+            yield return CoroutineEx.GetWait(frame.dur);
         }
     }
     IEnumerator Co_Pong(string key)

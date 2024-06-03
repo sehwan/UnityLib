@@ -125,7 +125,7 @@ public class MetaBase : MonoBehaviour
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(MetaBase), true)]
-public class MetaEditorBase : Editor
+public class MetaBaseEditor : Editor
 {
     public override void OnInspectorGUI()
     {

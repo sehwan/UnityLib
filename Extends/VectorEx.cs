@@ -18,6 +18,22 @@ public static class VectorEx
         return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
     }
 
+    public static Vector2 RandomPos(this Collider2D me)
+    {
+        var bounds = me.bounds;
+        float x = Random.Range(bounds.min.x, bounds.max.x);
+        float y = Random.Range(bounds.min.y, bounds.max.y);
+        return new Vector2(x, y);
+    }
+    public static Vector2 RandomPos(this CircleCollider2D me)
+    {
+        float radius = me.radius;
+        float angle = Random.Range(0, 2 * Mathf.PI);
+        float distance = Random.Range(0, radius);
+        float x = me.transform.position.x + distance * Mathf.Cos(angle);
+        float y = me.transform.position.y + distance * Mathf.Sin(angle);
+        return new Vector2(x, y);
+    }
     // Modify
     public static Vector3 X0(this Vector3 v)
     {
