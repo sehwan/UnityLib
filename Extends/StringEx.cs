@@ -170,10 +170,10 @@ public static class StringEx
 
 
     // 0보다 높으면 lime, 낮으면 orange
-    public static string MarkColor(this int me)
+    public static string MarkColor(this int me, string plus = "lime", string minus = "orange")
     {
-        if (me > 0) return $"<color=lime>+{me:n0}</color>";
-        else if (me < 0) return $"<color=orange>{me:n0}</color>";
+        if (me > 0) return $"<color={plus}>+{me:n0}</color>";
+        else if (me < 0) return $"<color={minus}>{me:n0}</color>";
         return me.ToString("n0");
     }
     public static string MarkColor(this float me, int decimalPlaces = 2)

@@ -64,7 +64,7 @@ public class UM : MonoBehaviour
     }
     public static T Scene<T>() where T : UIScene
     {
-        return i.windows.Find(e => e is T) as T;
+        return i.scenes.Find(e => e is T) as T;
     }
 
 
