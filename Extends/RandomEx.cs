@@ -40,6 +40,10 @@ public static class RandomEx
     // Don't Add This Keyword To Prevent Confusion
     // -1.R() Must Be (-1).R()
     // So Just Use RandomEx.R(-1)
+    public static int Range(this int me)
+    {
+        return UnityEngine.Random.Range(0, me);
+    }
     public static int R(int me, int min = 0)
     {
         if (min > me) (me, min) = (min, me);

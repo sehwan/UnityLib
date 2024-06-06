@@ -16,6 +16,11 @@ public static class DataEx
         var temp = JsonConvert.SerializeObject(from);
         return JsonConvert.DeserializeObject<T>(temp);
     }
+    public static bool IsSame<T>(this T from, T to)
+    {
+        return JsonConvert.SerializeObject(from) == JsonConvert.SerializeObject(to);
+    }
+
 
     // This is not working for something
     public static T DeepCloneBinary<T>(this T from)

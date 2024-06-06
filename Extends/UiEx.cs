@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
@@ -70,6 +70,11 @@ public static class UiEx
     }
 
     public static string RepeatRate(this string c, float fill, float max)
+    {
+        var count = Mathf.RoundToInt(fill * max);
+        return string.Concat(Enumerable.Repeat(c, count));
+    }
+    public static string RepeatRate(this char c, float fill, float max)
     {
         var count = Mathf.RoundToInt(fill * max);
         return string.Concat(Enumerable.Repeat(c, count));
