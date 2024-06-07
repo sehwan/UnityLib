@@ -12,7 +12,7 @@ public class RestartParticleOnEnable : MonoBehaviour
     void OnEnable()
     {
         particle.time = 0;
-        particle.Emit(1);
+        particle.Clear();
         particle.Play();
     }
 }
