@@ -1,22 +1,23 @@
 ﻿using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
 
 public class WorldClouds : MonoBehaviour
 {
     [Header("Settings")]
-    public int W = 40, H = 70;
-    public float SPD_MAX, SPD_MIN;
-    public float SCALE_MAX, SCALE_MIN;
+    public float W = 40;
+    public float H = 70;
+    public float SPD_MAX = 3, SPD_MIN = 0.1f;
+    public float SCALE_MAX = 10, SCALE_MIN = 1;
+    public float yScaler = 0.7f;
+    public Sprite[] sprites;
 
     [Header("Wind")]
     public float wind_spd;
-    public Vector3 wind_dir;
+    public Vector2 wind_dir;
 
-
-    Sprite[] sprites;
+    // Calculaated
     Transform[] trs;
     SpriteRenderer[] rens;
-    Vector3[] vel;
+    Vector2[] vel;
     float wMax, yMax;
     int count;
 
@@ -28,7 +29,7 @@ public class WorldClouds : MonoBehaviour
         sprites = Resources.LoadAll<Sprite>("BG/clouds");
         rens = new SpriteRenderer[count];
         trs = new Transform[count];
-        vel = new Vector3[count];
+        vel = new Vector2[count];
         wMax = W - 0.1f;
         yMax = H - 0.1f;
 
@@ -47,7 +48,7 @@ public class WorldClouds : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Transform e = trs[i];
-            e.localPosition += Time.deltaTime * vel[i];
+            e.localPosition += Time.deltaTime * vel[i].V3();
 
             //Out?
             if (Mathf.Abs(e.localPosition.x) > W || Mathf.Abs(e.localPosition.y) > H)
@@ -65,10 +66,10 @@ public class WorldClouds : MonoBehaviour
     {
         vel[i] = wind_spd.RandomizeByPercents(50) * wind_dir;
         var x = RandomEx.R(SCALE_MAX, SCALE_MIN);
-        var y = RandomEx.R(SCALE_MAX, SCALE_MIN) * 0.8f;
+        var y = RandomEx.R(SCALE_MAX, SCALE_MIN);
         if (y > x) y = x;
-        trs[i].localScale = new Vector2(x, y);
-        rens[i].sprite = sprites.Sample();
+        trs[i].localScale = new Vector2(x, y * yScaler);
+        if (sprites.Length > 0) rens[i].sprite = sprites.Sample();
     }
 
 
