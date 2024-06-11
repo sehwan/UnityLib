@@ -513,7 +513,6 @@ public partial class User : UserBase
             return false;
         }
 
-        // if (value > 0) UM.Scene<MainScenePanel>().snowMsg.Show($"{value} {type.L()}");
         _.SetField(type, old + value);
         if (onAddResource.ContainsKey(type)) onAddResource[type](value);
         if (type == Rsc._gem) SaveImmediately();
