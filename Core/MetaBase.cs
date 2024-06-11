@@ -49,8 +49,6 @@ public class MetaBase : MonoBehaviour
         var fieldType = fieldInfo.FieldType;
         var dic = fieldInfo.GetValue(this);
         var old = dic.ToJson();
-        Debug.Log($"<color=cyan>{e.name}</color>");
-        Debug.Log(old);
 
         // Load Sheet
         var req = UnityWebRequest.Get(url);
