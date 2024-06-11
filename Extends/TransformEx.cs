@@ -183,6 +183,11 @@ public static class TransformEx
         me.position = new Vector3(x, y, z);
     }
 
+    public static int SignX(this Transform me)
+    {
+        return me.position.x > 0 ? 1 : -1;
+    }
+
     // Children
     public static void ShuffleChildren(this Transform me)
     {

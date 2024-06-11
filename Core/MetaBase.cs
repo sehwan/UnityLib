@@ -25,7 +25,10 @@ public class MetaBase : MonoBehaviour
     public string rel_sheet_URL;
     public MetaURL[] urls;
 
-
+    // public string MakeURL(string gid)
+    // {
+    //     return $"https://docs.google.com/spreadsheets/d/{gid}/pub?gid={gid}&single=true&output=csv";
+    // }
     public void LoadGoogleSheet(bool devMode = false)
     {
         counter = 0;

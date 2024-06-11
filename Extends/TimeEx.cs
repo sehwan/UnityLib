@@ -95,13 +95,13 @@ public static class TimeEx
     }
     public static DateTime ToDateTime(this ulong me)
     {
-        return new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(me).ToLocalTime();
+        return new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(me);
     }
 
     // DateTime -> Javascript Dos Date Type
     public static ulong ToLong(this DateTime dt)
     {
-        return (ulong)dt
+        return (ulong)dt 
             .Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
             .TotalMilliseconds;
     }

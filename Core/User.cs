@@ -46,7 +46,7 @@ public partial class User : UserBase
 
 
     #region Application
-    [Immutable] public DateTime dt_lastFocused = DateTime.Now;
+    [Immutable] public DateTime dt_lastFocused = DateTime.UtcNow;
     void OnApplicationQuit()
     {
         _.device = null;
@@ -62,7 +62,7 @@ public partial class User : UserBase
         if (paused == false) return;
         if (_.nick.IsNullOrEmpty()) return;
         _.device = null;
-        dt_lastFocused = DateTime.Now;
+        dt_lastFocused = DateTime.UtcNow;
         SaveImmediately();
     }
     void OnApplicationFocus(bool hasFocus)
@@ -72,11 +72,11 @@ public partial class User : UserBase
         if (_.nick.IsNullOrEmpty()) return;
         _.device = SystemInfo.deviceUniqueIdentifier;
         // Diff
-        var diff = DateTime.Now - dt_lastFocused;
-        Debug.Log($"<color=cyan>{dt_lastFocused} {diff}</color>");
-        if (diff.TotalSeconds > 0) Debug.Log($"<color=cyan>returned in {diff.ToFormattedString()}</color>");
+        var diff = DateTime.UtcNow - dt_lastFocused;
+        if (diff.TotalSeconds > 0)
+            Debug.Log($"<color=cyan>Return in {diff.ToFormattedString()} {dt_lastFocused}</color>");
         GetOfflineReward(Convert.ToUInt64(diff.TotalSeconds));
-        dt_lastFocused = DateTime.Now;
+        dt_lastFocused = DateTime.UtcNow;
     }
     #endregion
 
@@ -103,11 +103,11 @@ public partial class User : UserBase
             ) return;
         if (isForceQuit) return;
 
-        _.dt_saved = DateTime.Now;
+        _.dt_saved = DateTime.UtcNow;
 
         if (isUsingServer) SaveToServer(isToast);
         else SaveToClient();
-        print("saved at " + DateTime.Now);
+        print("saved at " + DateTime.UtcNow);
     }
     static readonly string saveKey = "Reporter";
     static readonly string savePW = "shsh";
@@ -120,7 +120,7 @@ public partial class User : UserBase
             PlayerPrefs.SetString(saveKey, json);
 
             // fake
-            var fake = DateTime.Now.ToString();
+            var fake = DateTime.UtcNow.ToString();
             PlayerPrefs.SetString("save", fake.Encrypt(fake));
         }
         // catch (Exception e)
@@ -133,7 +133,7 @@ public partial class User : UserBase
     {
         await NetworkMng.i.FuncAsync("user-save", isToast, ("data", JsonConvert.SerializeObject(_)));
         if (isToast) ToastGroup.Show("Complete".L());
-        print("saved at " + DateTime.Now);
+        print("saved at " + DateTime.UtcNow);
     }
     IEnumerator Co_AutoSave()
     {
@@ -142,7 +142,7 @@ public partial class User : UserBase
         while (true)
         {
             yield return w;
-            if ((DateTime.Now - _.dt_saved).TotalMinutes < Def.AutoSaveCycle) continue;
+            if ((DateTime.UtcNow - _.dt_saved).TotalMinutes < Def.AutoSaveCycle) continue;
             // FirebaseMng.inst.TokenAsync();
             Save(false);
         }
@@ -177,7 +177,7 @@ public partial class User : UserBase
             }
         }
         else r.user = UserData.Default();
-        r.now = DateTime.Now.ToLong();
+        r.now = DateTime.UtcNow.ToLong();
         return r;
     }
 
@@ -197,7 +197,7 @@ public partial class User : UserBase
         {
             if (Application.isMobilePlatform) NetworkMng.i.Func("user-counter", null, false);
             login.user = UserData.Default();
-            login.now = DateTime.Now.ToLong();
+            login.now = DateTime.UtcNow.ToLong();
         }
         // Load
         else
@@ -243,9 +243,10 @@ public partial class User : UserBase
 
         if (_.IsTutorialOver())
         {
-            var diff = (login.now.ToDateTime() - _.dt_saved).TotalSeconds;
-            Debug.Log($"<color=cyan>{diff / 60} min</color>");
-            GetOfflineReward(diff);
+            var loginNow = login.now.ToDateTime();
+            var sec = (loginNow - _.dt_saved).TotalSeconds;
+            Debug.Log($"<color=cyan>{sec / 60:f1} min</color>");
+            GetOfflineReward(sec);
             CheckDateChanged(login.now);
         }
         _.lastLogin = login.now;
@@ -264,7 +265,7 @@ public partial class User : UserBase
     // {
     //     if (data.dts_iap.ContainsKey(e.Key) == false &&
     //         (e.Value.priceType == "time" || e.Value.duration != 0))
-    //         data.dts_iap.Add(e.Key, DateTime.Now);
+    //         data.dts_iap.Add(e.Key, DateTime.UtcNow);
     // }
     // }
 
@@ -308,22 +309,6 @@ public partial class User : UserBase
     }
 
 
-    void GetOfflineReward(double diff)
-    {
-        var min = Mathf.Clamp((int)diff, 0, Def.LIMIT_AWAY_SEC) / 60;
-        if (min == 0) return;
-        // var val = Stage.ResourcePerMinute(User.data.Progress);
-        // var gold = Resource.Gold(val.gold * min);
-        // var soul = Resource.Soul(val.soul * min);
-        // AddResource(gold);
-        // AddResourceBig(soul);
-        // // Reward Panel
-        // var pn = RewardsMsg.inst;
-        // soul.InitToSlot(pn.GetNextSlot());
-        // gold.InitToSlot(pn.GetNextSlot());
-        // pn.Show($"{"OfflineReward".L()}\n<color=cyan>{new TimeSpan(0, min, 0).ToFormattedShortString()}</color>");
-        // FirebaseMng.Log("offline", "min", min);
-    }
     void CheckDateChanged(ulong now)
     {
         // If the Day was Changed
@@ -373,9 +358,9 @@ public partial class User : UserBase
         _.attCheck = false;
 
         // Attendance Reward
-        var ticket = 3;
-        RewardMsg.inst.Enqueue("Welcome!".L() + " " + _.att.ToOrdinal(), "ticket", ticket);
-        AddResource("ticket", ticket);
+        // var ticket = 3;
+        // RewardMsg.inst.Enqueue("Welcome!".L() + " " + _.att.ToOrdinal(), "ticket", ticket);
+        // AddResource("ticket", ticket);
 
         // VIP
         DateTime NOW = _.lastLogin.ToDateTime();
@@ -513,7 +498,6 @@ public partial class User : UserBase
             return false;
         }
 
-        // if (value > 0) UM.Scene<MainScenePanel>().snowMsg.Show($"{value} {type.L()}");
         _.SetField(type, old + value);
         if (onAddResource.ContainsKey(type)) onAddResource[type](value);
         if (type == Rsc._gem) SaveImmediately();
@@ -637,7 +621,7 @@ public partial class User : UserBase
 
         // var achv = UM.Get<UIAchievements>();
         // if (achv.items.ContainsKey(type)) achv.items[type].CheckAlarm(type);
-        
+
         OnRecord(type);
         onRecord?.Invoke();
     }
@@ -774,6 +758,13 @@ public partial class User : UserBase
             // FirebaseMng.Log($"level{lv}");
         }
         onChangeEXP?.Invoke();
+    }
+
+    public Action onChangeLevel;
+    public void AddLevel(int n)
+    {
+        _.lv += n;
+        onChangeLevel?.Invoke();
     }
 }
 
