@@ -120,7 +120,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1895149085874032159}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Common_LittleMenu, Assembly-CSharp
         m_MethodName: Hide
         m_Mode: 1
@@ -141,8 +141,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 22425132}
-  - component: {fileID: 1895149085874032159}
   - component: {fileID: 22248412}
+  - component: {fileID: 2142343235804575302}
   - component: {fileID: 244353882212589373}
   - component: {fileID: 1182911925296316335}
   - component: {fileID: 5796087903966250810}
@@ -174,19 +174,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1895149085874032159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 172096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c19f3746c1ba24d9ce22409d1cfc4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tr_grid: {fileID: 22466516}
 --- !u!222 &22248412
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -195,6 +182,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172096}
   m_CullTransparentMesh: 0
+--- !u!114 &2142343235804575302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10690ebfc651644e6b97d57178d89474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tr_grid: {fileID: 22466516}
 --- !u!223 &244353882212589373
 Canvas:
   m_ObjectHideFlags: 0
@@ -204,7 +204,7 @@ Canvas:
   m_GameObject: {fileID: 172096}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0

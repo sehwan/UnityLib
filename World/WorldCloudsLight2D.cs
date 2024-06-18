@@ -23,8 +23,12 @@ public class WorldCloudsLight2D : MonoBehaviour
     int count;
 
 
-    void Awake()
+    bool isInit;
+    public void Init()
     {
+        if (isInit) return;
+        isInit = true;
+
         RandomWind();
         count = transform.childCount;
         sprites = Resources.LoadAll<Sprite>("BG/clouds");
@@ -41,6 +45,10 @@ public class WorldCloudsLight2D : MonoBehaviour
             lights[i] = trs[i].GetComponent<Light2D>();
             ResetCloud(i);
         }
+    }
+    void Awake()
+    {
+        Init();
     }
 
 
@@ -77,5 +85,13 @@ public class WorldCloudsLight2D : MonoBehaviour
     {
         wind_spd = RandomEx.R(SPD_MAX, SPD_MIN);
         wind_dir = Random.insideUnitCircle.normalized;
+    }
+
+    internal void SetColor(Color color)
+    {
+        foreach (var e in lights)
+        {
+            e.color = color;
+        }
     }
 }

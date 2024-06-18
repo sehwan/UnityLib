@@ -43,10 +43,11 @@ public class Common_LittleMenu : MonoBehaviour
             btn.transform.LocalScale(1);
             btn.transform.Find("Text").GetComponent<Text>().text = menus[i].Item1;
             btn.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+            var iter = i;
             btn.GetComponent<Button>().onClick.AddListener(() =>
             {
                 _.Hide();
-                menus[i].Item2();
+                menus[iter].Item2();
             });
         }
     }
