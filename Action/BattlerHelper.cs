@@ -6,6 +6,7 @@ using System.Linq;
 
 public static class BattlerHelper
 { 
+    //946
     public static GameObject FindClosest(Transform me, GameObject[] targets)
     {
         GameObject r = null;
