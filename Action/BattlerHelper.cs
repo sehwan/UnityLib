@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 
 public static class BattlerHelper
-{
+{ 
     public static GameObject FindClosest(Transform me, GameObject[] targets)
     {
         GameObject r = null;
