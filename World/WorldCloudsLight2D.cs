@@ -29,7 +29,6 @@ public class WorldCloudsLight2D : MonoBehaviour
         if (isInit) return;
         isInit = true;
 
-        RandomWind();
         count = transform.childCount;
         sprites = Resources.LoadAll<Sprite>("BG/clouds");
         lights = new Light2D[count];
@@ -38,6 +37,7 @@ public class WorldCloudsLight2D : MonoBehaviour
         wMax = W - 0.1f;
         yMax = H - 0.1f;
 
+        RandomWind();
         for (int i = 0; i < count; i++)
         {
             trs[i] = transform.GetChild(i);
@@ -56,7 +56,7 @@ public class WorldCloudsLight2D : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            Transform e = trs[i];
+            var e = trs[i];
             e.localPosition += Time.deltaTime * vel[i].V3();
 
             //Out?
@@ -90,8 +90,6 @@ public class WorldCloudsLight2D : MonoBehaviour
     internal void SetColor(Color color)
     {
         foreach (var e in lights)
-        {
             e.color = color;
-        }
     }
 }

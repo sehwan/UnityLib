@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FloatingObject : MonoBehaviour
@@ -21,8 +20,8 @@ public class FloatingObject : MonoBehaviour
 
     public void Update()
     {
-        tr.localPosition = new Vector2(
-            tr.localPosition.x,
+        tr.localPosition += new Vector3(
+            0,
             Mathf.Sin((Time.time + random) / PERIOD)
             * RANGE);
 
