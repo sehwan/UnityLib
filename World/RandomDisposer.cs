@@ -60,7 +60,7 @@ public class RandomDisposer : MonoBehaviour
         var colls = new Collider2D[] { };
         var filter = new ContactFilter2D();
         filter.SetLayerMask(LayerMask.GetMask(layerMask));
-        c.Overlap(filter, colls);
+        c.OverlapCollider(filter, colls);
         if (colls.Length > 0) Debug.Log($"<color=cyan>{colls.Length}</color>");
         return colls.Exists(e => e.CompareTag(c.tag));
     }
