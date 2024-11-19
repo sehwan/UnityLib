@@ -23,6 +23,6 @@ public class SimpleHoming : MonoBehaviour
         Vector2 dir = ((Vector2)target.position - rb.position).normalized;
         float rotateAmount = Vector3.Cross(dir, transform.up).z;
         rb.angularVelocity = rotateAmount * rotateSpeed;
-        rb.velocity = transform.up * speed;
+        rb.linearVelocity = transform.up * speed;
     }
 }
