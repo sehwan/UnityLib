@@ -140,7 +140,7 @@ public static class UnityEx
 
     public static void SetActive(this SpriteRenderer me, bool isActive)
     {
-        me.SetActive(isActive);
+        me.gameObject.SetActive(isActive);
     }
 
     // Particle

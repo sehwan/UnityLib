@@ -10,7 +10,6 @@ public static class ColorEx
     public static Color dark = new(.2f, .2f, .2f);
     public static Color darker = new(.135f, .135f, .135f);
     public static Color darkA = new(0.15f, 0.15f, 0.15f, 0.8f);
-    public static Color desert = new(0.4f, 0.2f, 0.0f);
 
     // Red
     public static Color crimson = new(0.5f, 0f, 0f);
@@ -21,8 +20,11 @@ public static class ColorEx
     public static Color orange = new(1, .5f, 0);
     public static Color darkOrange = new(1, .2f, 0);
     public static Color gold = new(1, .74f, 0.26f);
+    public static Color desert = new(0.4f, 0.2f, 0.0f);
+    public static Color brown = new(0.6f, 0.3f, 0.2f);
 
     // Green
+    public static Color green = new(.0f, .5f, .0f);
     public static Color darkGreen = new(.0f, .2f, .0f);
     public static Color lime = new(.7f, 1f, .7f);
     public static Color mint = new(.4f, 1f, .4f);
@@ -93,7 +95,7 @@ public static class ColorEx
     }
     static float RandomForColor(float max, float min)
     {
-        var r = RandomEx.R(max,min);
+        var r = RandomEx.R(max, min);
         if (r > 1) return 1;
         if (r < 0) return 0;
         return r;

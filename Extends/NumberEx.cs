@@ -4,6 +4,14 @@ using UnityEngine;
 
 public static class NumberEx
 {
+    public static bool IsOdd(this int me)
+    {
+        return me % 2 == 1;
+    }
+    public static bool IsEven(this int me)
+    {
+        return me % 2 == 0;
+    }
     public static int IncreasedPercent(this int me, int percent)
     {
         return Mathf.CeilToInt(me * (1 + percent * 0.01f));

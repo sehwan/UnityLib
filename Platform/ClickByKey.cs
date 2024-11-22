@@ -42,13 +42,11 @@ public class ClickByKey : MonoBehaviour
     {
         if (button.IsInteractable() == false) return;
         if (Input.GetKeyDown(key) == false) return;
-        if (um.showings.Count > 0)
-        {
-            if (tr.IsChildOf(um.showings.Last().transform) == false)
-                return;
-        }
-        else if (tr.IsChildOf(um.scenes.Last().transform) == false) return;
         if (um.others.Count > 0) return;
+        if (um.showings.Count > 0 &&
+            tr.IsChildOf(um.showings.Last().transform) == false) return;
+        if (um.scenes.Count > 0 &&
+            tr.IsChildOf(um.scenes.Last().transform) == false) return;
 
         ExecuteEvents.Execute(button.gameObject,
             new PointerEventData(EventSystem.current),
