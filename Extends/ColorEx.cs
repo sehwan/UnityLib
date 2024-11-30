@@ -47,10 +47,10 @@ public static class ColorEx
     public static Color ad = new(1f, .4f, .6f);
     public static Color ap = new(.6f, .5f, 1f);
     public static Color fire = new(1, .3f, .3f);
-    // public static Color ice = new Color(.1f, .85f, 1f);
-    // public static Color lightning = new Color(1, 1, 0);
-    // public static Color poison = Color.green;
-    // public static Color spirit = new Color(.2f, 0, .2f);
+    public static Color ice = new Color(.1f, .85f, 1f);
+    public static Color lightning = new Color(1, 1, 0);
+    public static Color poison = Color.green;
+    public static Color spirit = new Color(.2f, 0, .2f);
 
     //Grade
     public static Color[] GRADES ={
