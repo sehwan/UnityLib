@@ -8,7 +8,7 @@ public class FollowObject : MonoBehaviour
 
     void Update()
     {
-        if (target)
+        if (target && target.gameObject.activeSelf)
             tr.position = target.position;
     }
 }
