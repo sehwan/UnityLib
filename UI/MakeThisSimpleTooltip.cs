@@ -23,10 +23,10 @@ public class MakeThisSimpleTooltip : MonoBehaviour,
         // Tooltip.i.Show(tip.L(), null, null);
     }
 
-    public void OnPointerEnter(PointerEventData e)
+    public async void OnPointerEnter(PointerEventData e)
     {
         // target.SendMessage("SaveTip");
-        Tooltip.i.Show(tip.L(), null, null);
+        await Tooltip.i.Show(tip.L(), null, null);
     }
     public void OnPointerExit(PointerEventData e)
     {

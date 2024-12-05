@@ -22,7 +22,7 @@ public abstract class PrefabSignleton<T> : MonoBehaviour where T : PrefabSignlet
                     Debug.LogError("PrefabPath is Empty");
                     return null;
                 }
-                var go = (GameObject)Instantiate(Resources.Load(prefabPath)) as GameObject;
+                var go = (GameObject)Instantiate(Resources.Load(prefabPath));
                 go.name = go.name.Replace("(Clone)", "");
                 _inst = go.GetComponent<T>();
                 _inst.Init();

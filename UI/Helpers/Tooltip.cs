@@ -17,33 +17,36 @@ public class Tooltip : PrefabSignleton<Tooltip>
     public Text txt;
     public Image img;
 
+
+    protected override void Awake()
+    {
+        base.Awake();
+        GetComponent<GraphicRaycaster>().enabled = Application.isMobilePlatform;
+    }
+
     public void Hide()
     {
         gameObject.SetActive(false);
     }
 
-    public void Show(string title, Sprite spr, string desc)
+    async public Awaitable Show(string titleString, Sprite spr, string desc)
     {
         i.CancelInvoke();
-        if (title.IsNullOrEmpty() && spr == null && desc.IsNullOrEmpty()) return;
+        if (titleString.IsNullOrEmpty() && spr == null && desc.IsNullOrEmpty()) return;
 
         gameObject.SetActive(true);
         frame.localPosition = new Vector2(5000, 5000);
 
-        this.title.SetActive(title.IsFilled());
-        this.img.SetActive(spr != null);
-        this.txt.SetActive(desc.IsFilled());
-        if (title.IsFilled()) this.title.text = title;
-        if (spr != null) this.img.sprite = spr;
-        if (desc.IsFilled()) this.txt.text = desc.Trim();
+        title.SetActive(titleString.IsFilled());
+        img.SetActive(spr != null);
+        txt.SetActive(desc.IsFilled());
+        if (titleString.IsFilled()) title.text = titleString;
+        if (spr != null) img.sprite = spr;
+        if (desc.IsFilled()) txt.text = desc.Trim();
 
-        StartCoroutine(Co_Refresh());
-    }
-    IEnumerator Co_Refresh()
-    {
-        yield return null;
-        Vector2 res = Def.RESOULUTION;
-        Vector2 size = frame.GetComponent<RectTransform>().sizeDelta;
+        await Awaitable.NextFrameAsync();
+        Vector2 size = frame.sizeDelta;
+        Vector2 res = GetComponent<CanvasScaler>().referenceResolution;
         Vector2 pos_viewport = UM.i.cam.ScreenToViewportPoint(Input.mousePosition);
         Vector2 newPos = new(pos_viewport.x - 0.5f, pos_viewport.y - 0.5f);
         newPos.x *= res.x;
