@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class IdleScaler : MonoBehaviour
+public class IdleScalerY : MonoBehaviour
 {
     public float range = 0.3f;
     public float period = 0.4f;
@@ -8,6 +8,7 @@ public class IdleScaler : MonoBehaviour
     float random = 0;
     Vector2 originScale;
     Transform tr;
+
 
     void Awake()
     {
@@ -18,7 +19,7 @@ public class IdleScaler : MonoBehaviour
 
     void Update()
     {
-        tr.localScale = originScale +
-            Mathf.Sin((Time.time + random) / period) * range * Vector2.one;
+        float scaleFactor = 1 + Mathf.Sin((Time.time + random) / period) * range;
+        tr.localScale = new Vector2(originScale.x, originScale.y * scaleFactor);
     }
 }
