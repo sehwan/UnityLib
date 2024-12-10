@@ -41,6 +41,7 @@ public static class ColorEx
     public static Color cyanDirty = new(0, 0.7f, 0.7f);
 
     public static Color purple = new(0.8f, 0, 0.6f);
+    public static Color hotPink = new(1f, 0.27f, 0.61f);
     public static Color pink = new(1, 0.5f, 0.5f);
     
     // Violet
