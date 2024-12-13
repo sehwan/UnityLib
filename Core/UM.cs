@@ -79,11 +79,13 @@ public class UM : MonoBehaviour
         }
         w.transform.SetAsLastSibling();
         onRegisterWindow?.Invoke(w.gameObject);
+        Tooltip.i.Hide();
     }
     public void DeregisterWindow(UIWindow w)
     {
         showings.Remove(w);
         onDeregisterWindow?.Invoke(w.gameObject);
+        Tooltip.i.Hide();
     }
 
 
