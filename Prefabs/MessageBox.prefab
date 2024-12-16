@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 7037114915317588924}
   - component: {fileID: 4691482751764218189}
   m_Layer: 5
-  m_Name: btn_cancel
+  m_Name: btn x
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224,8 +224,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5555668362352308432}
-        m_TargetAssemblyTypeName: MessageBox, Assembly-CSharp
+      - m_Target: {fileID: 7009223302820039171}
+        m_TargetAssemblyTypeName: MessageBox, UnityLib
         m_MethodName: Btn_Cancel
         m_Mode: 1
         m_Arguments:
@@ -318,7 +318,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 63685645996b24541b67ae9e94d50cab, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 27
     m_FontStyle: 0
     m_BestFit: 0
@@ -783,7 +783,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3298085125618482709}
   - component: {fileID: 1588390988759433113}
-  - component: {fileID: 5555668362352308432}
+  - component: {fileID: 7009223302820039171}
   - component: {fileID: 8461977851565655558}
   - component: {fileID: 4847529877149036085}
   - component: {fileID: 8035540305621117397}
@@ -823,7 +823,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4028402802580940727}
   m_CullTransparentMesh: 0
---- !u!114 &5555668362352308432
+--- !u!114 &7009223302820039171
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -832,7 +832,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4028402802580940727}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7843775a2fd74e46b034a4cc727fc32, type: 3}
+  m_Script: {fileID: 11500000, guid: 6607b59f27d814f328162046a0fc62cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   frame: {fileID: 3035226831800989123}
@@ -919,7 +919,7 @@ GameObject:
   - component: {fileID: 8672652307671603073}
   - component: {fileID: 4473583932115782698}
   m_Layer: 5
-  m_Name: Image
+  m_Name: img require
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1015,7 +1015,6 @@ GameObject:
   - component: {fileID: 4217882589981964672}
   - component: {fileID: 4741777507817100508}
   - component: {fileID: 5259053946759936213}
-  - component: {fileID: 4410681054157126939}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -1071,7 +1070,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 63685645996b24541b67ae9e94d50cab, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 26
     m_FontStyle: 0
     m_BestFit: 0
@@ -1083,7 +1082,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u597D\u7684"
+  m_Text: OK
 --- !u!114 &4741777507817100508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,45 +1113,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
---- !u!114 &4410681054157126939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6495947678310475553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344445a89b4f74a0e9a0a766903df87e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mTerm: OK
-  mTermSecondary: 
-  PrimaryTermModifier: 0
-  SecondaryTermModifier: 0
-  TermPrefix: 
-  TermSuffix: 
-  LocalizeOnAwake: 1
-  IgnoreRTL: 0
-  MaxCharactersInRTL: 0
-  IgnoreNumbersInRTL: 1
-  CorrectAlignmentForRTL: 1
-  AddSpacesToJoinedLanguages: 0
-  AllowLocalizedParameters: 1
-  AllowParameters: 1
-  TranslatedObjects: []
-  LocalizeEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  AlwaysForceLocalize: 0
-  LocalizeCallBack:
-    Target: {fileID: 0}
-    MethodName: 
-  mGUI_ShowReferences: 0
-  mGUI_ShowTems: 1
-  mGUI_ShowCallback: 0
-  mLocalizeTarget: {fileID: 0}
-  mLocalizeTargetName: I2.Loc.LocalizeTarget_UnityUI_Text
 --- !u!1 &6672795325899351506
 GameObject:
   m_ObjectHideFlags: 0
@@ -1290,7 +1250,6 @@ GameObject:
   - component: {fileID: 6113393760994916926}
   - component: {fileID: 8473056664444901118}
   - component: {fileID: 638815975624633745}
-  - component: {fileID: 4224640626562751537}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -1346,7 +1305,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 63685645996b24541b67ae9e94d50cab, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 26
     m_FontStyle: 0
     m_BestFit: 0
@@ -1358,7 +1317,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u53D6\u6D88"
+  m_Text: Cancel
 --- !u!114 &8473056664444901118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1389,45 +1348,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 0
---- !u!114 &4224640626562751537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8042628404143816672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344445a89b4f74a0e9a0a766903df87e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mTerm: Cancel
-  mTermSecondary: 
-  PrimaryTermModifier: 0
-  SecondaryTermModifier: 0
-  TermPrefix: 
-  TermSuffix: 
-  LocalizeOnAwake: 1
-  IgnoreRTL: 0
-  MaxCharactersInRTL: 0
-  IgnoreNumbersInRTL: 1
-  CorrectAlignmentForRTL: 1
-  AddSpacesToJoinedLanguages: 0
-  AllowLocalizedParameters: 1
-  AllowParameters: 1
-  TranslatedObjects: []
-  LocalizeEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  AlwaysForceLocalize: 0
-  LocalizeCallBack:
-    Target: {fileID: 0}
-    MethodName: 
-  mGUI_ShowReferences: 0
-  mGUI_ShowTems: 1
-  mGUI_ShowCallback: 0
-  mLocalizeTarget: {fileID: 0}
-  mLocalizeTargetName: I2.Loc.LocalizeTarget_UnityUI_Text
 --- !u!1 &8448718032959472794
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,7 +1362,7 @@ GameObject:
   - component: {fileID: 2069210712094773466}
   - component: {fileID: 6377036708675206252}
   m_Layer: 5
-  m_Name: btn_ok
+  m_Name: btn ok
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1550,8 +1470,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5555668362352308432}
-        m_TargetAssemblyTypeName: MessageBox, Assembly-CSharp
+      - m_Target: {fileID: 7009223302820039171}
+        m_TargetAssemblyTypeName: MessageBox, UnityLib
         m_MethodName: Btn_Ok
         m_Mode: 1
         m_Arguments:
@@ -1610,9 +1530,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3035226831800989123}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 701.7259, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 637.34436, y: -144.39832}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9177492993342136166
@@ -1681,7 +1601,7 @@ GameObject:
   - component: {fileID: 3323444544441887211}
   - component: {fileID: 5549403998993916965}
   m_Layer: 5
-  m_Name: Text
+  m_Name: txt require
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1735,7 +1655,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 63685645996b24541b67ae9e94d50cab, type: 3}
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 31
     m_FontStyle: 3
     m_BestFit: 0

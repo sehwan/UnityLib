@@ -8,38 +8,41 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 [Serializable]
-public class MetaURL
+public class MetaGID
 {
     public string name;
-    public string dev;
-    public string rel;
+    public string dev_gid;
+    public string rel_gid;
 }
 
 public class MetaBase : MonoBehaviour
 {
     static readonly JsonSerializerSettings jsonSetting = new() { NullValueHandling = NullValueHandling.Ignore };
     int counter;
-    [Immutable] public string mode = "";
+    [Immutable] public string currentMode = "";
 
+    public int STARTING_ROW = 2;
     public string dev_sheet_URL;
     public string rel_sheet_URL;
-    public MetaURL[] urls;
+    public MetaGID[] gids;
 
-    // public string MakeURL(string gid)
-    // {
-    //     return $"https://docs.google.com/spreadsheets/d/{gid}/pub?gid={gid}&single=true&output=csv";
-    // }
+    public string MakeURL(MetaGID urls, bool devMode)
+    {
+        var baseUrl = (devMode ? dev_sheet_URL : rel_sheet_URL).Split("/pubhtml")[0];
+        var gid = devMode ? urls.dev_gid : urls.rel_gid;
+        return $"{baseUrl}/pub?gid={gid}&single=true&output=csv";
+    }
     public void LoadGoogleSheet(bool devMode = false)
     {
         counter = 0;
-        mode = devMode ? "DEV" : "RELEASE";
-        Debug.Log($"Loading {mode}");
-        foreach (var e in urls) LoadParseInit(e, devMode);
+        currentMode = devMode ? "DEV" : "RELEASE";
+        Debug.Log($"Loading {currentMode}");
+        foreach (var e in gids) LoadParseInit(e, devMode);
     }
 
-    async public void LoadParseInit(MetaURL e, bool devMode)
+    async public void LoadParseInit(MetaGID e, bool devMode)
     {
-        var url = devMode ? e.dev : e.rel;
+        var url = MakeURL(e, devMode);
         var fieldInfo = GetType().GetField(e.name);
         if (fieldInfo == null)
         {
@@ -68,21 +71,19 @@ public class MetaBase : MonoBehaviour
 
         counter++;
         var color = devMode ? "orange" : "cyan";
-        if (counter == urls.Length)
+        if (counter == gids.Length)
         {
-            Debug.Log($"Loaded {mode}".TagColor(color));
+            Debug.Log($"Loaded {currentMode}".TagColor(color));
             OnLoad();
         }
     }
-    public virtual void OnLoad()
-    {
-    }
+    public virtual void OnLoad() { }
 
 
-    static string CSVToJSON(string csv)
+    string CSVToJSON(string csv)
     {
+        print(csv);
         var ARRAY_DELIMITER = "/";
-        var STARTING_ROW = 2;
         var dic = new Dictionary<string, JObject>();
         var rows = csv.Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
         var keys = rows[STARTING_ROW - 1].Split(',');
@@ -90,7 +91,6 @@ public class MetaBase : MonoBehaviour
         for (int i = STARTING_ROW; i < rows.Length; i++)
         {
             var row = rows[i].Split(',');
-            // var jo = new Dictionary<string, object>();
             JObject jo = new();
             // Cell
             for (int j = 0; j < keys.Length && j < row.Length; j++)
@@ -109,7 +109,6 @@ public class MetaBase : MonoBehaviour
                 else if (key.Contains("."))
                 {
                     string[] names = key.Split('.');
-                    // if (jo[key][names[0]] == null) jo[key][names[0]] = new Dictionary<string, object>();
                     // Array cell
                     if (names[1].Contains("arr_"))
                         jo[key][names[0]][names[1]] = JArray.FromObject(cell.Split(ARRAY_DELIMITER));
@@ -119,12 +118,24 @@ public class MetaBase : MonoBehaviour
                 else if (int.TryParse(cell, out int intValue)) jo[key] = intValue;
                 else if (float.TryParse(cell, out float floatValue)) jo[key] = floatValue;
                 else jo[key] = string.IsNullOrEmpty(cell) ? null : (JToken)cell;
+                try
+                {
+                    dic[jo[keys[0]].ToString()] = jo;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message);
+                    Debug.Log($"<color=green>{keys[0]}</color>");
+                    Debug.Log($"<color=green>jo {jo}</color>");
+                    Debug.Log($"<color=green>csv {csv}</color>");
+                    throw;
+                }
             }
-            dic.Add(jo[keys[0]].ToString(), jo);
         }
         return JsonConvert.SerializeObject(dic, jsonSetting);
     }
 }
+
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(MetaBase), true)]

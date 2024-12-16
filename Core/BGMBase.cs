@@ -1,23 +1,21 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class BGM : MonoSingletonDontDestroyed<BGM>
+public class BGMBase : MonoBehaviour
 {
+    public static BGMBase i;
     AudioSource _audio;
-    public AudioLowPassFilter lowPassFilter;
-    public AudioClip[] clips_battle;
+    public AudioClip clip_lobby;
+    public AudioClip[] clips_stage;
 
 
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
         _audio = GetComponent<AudioSource>();
         _audio.loop = true;
         if (Settings.MuteBGM) SetVolume(0);
-        else //SetVolume(1);
-            SetVolume(Settings.VolumeBGM);
+        else SetVolume(Settings.VolumeBGM);
     }
 
     public static bool IsMute()
@@ -42,6 +40,8 @@ public class BGM : MonoSingletonDontDestroyed<BGM>
 
     public void Play(AudioClip clip)
     {
+        if (co_shuffle != null) StopCoroutine(co_shuffle);
+        if (_audio.clip == clip) return;
         _audio.clip = clip;
         _audio.Play();
     }
@@ -61,18 +61,5 @@ public class BGM : MonoSingletonDontDestroyed<BGM>
     {
         yield return new WaitForSeconds(length);
         PlayListShuffle(list);
-    }
-}
-
-
-public static class AudioClipEx
-{
-    public static void PlayBGM(this AudioClip me)
-    {
-        BGM.i.Play(me);
-    }
-    public static void PlayBGM(this AudioClip[] list)
-    {
-        BGM.i.PlayListShuffle(list);
     }
 }

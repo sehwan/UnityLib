@@ -1,8 +1,5 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public enum GameState { Quit, Pause, Playing }
@@ -10,6 +7,8 @@ public enum GameState { Quit, Pause, Playing }
 
 public class GM : MonoSingleton<GM>
 {
+    public bool showTitle = false;
+    public TitleScene title;
     public Action beforeInit;
     public Action onCloseTitle;
     public Action onInit;
@@ -39,8 +38,7 @@ public class GM : MonoSingleton<GM>
 
         // Fade.i.Dim(Color.black);
         // Title
-        TitleScene title = null;
-
+        title?.gameObject.SetActive(showTitle);
         // Firebase
         // while (FirebaseMng.inst.didFetchConfig == false) yield return null;
         // while (FirebaseMng.inst.user == null) yield return null;
@@ -59,7 +57,7 @@ public class GM : MonoSingleton<GM>
 
         yield return null;
         beforeInit?.Invoke();
-        while (title != null) yield return null;
+        while (title != null && title.gameObject.activeSelf) yield return null;
         onCloseTitle?.Invoke();
 
         // Start World

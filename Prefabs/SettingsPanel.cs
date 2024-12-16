@@ -126,7 +126,7 @@ public class SettingsPanel : MonoBehaviour
     public void OnMuteBGM(bool b)
     {
         Settings.MuteBGM = b;
-        BGM.Mute(b);
+        BGMBase.Mute(b);
     }
     public void OnMuteSFX(bool b)
     {
@@ -136,7 +136,7 @@ public class SettingsPanel : MonoBehaviour
     public void OnValueBGM(float v)
     {
         Settings.VolumeBGM = v;
-        BGM.SetVolume(v);
+        BGMBase.SetVolume(v);
         if (v == 0) OnMuteBGM(true);
         else OnMuteBGM(false);
     }

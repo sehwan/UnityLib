@@ -1,12 +1,13 @@
 using System.Text;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class SFX : MonoSingletonDontDestroyed<SFX>
+using UnityEngine.Rendering;
+public class SFX : MonoBehaviour
 {
-    static Dictionary<string, AudioClip> dic = new();
+    public static SFX i;
+    static SerializedDictionary<string, AudioClip> dic = new();
     AudioSource[] audios;
     int length;
     int iter;
@@ -14,24 +15,25 @@ public class SFX : MonoSingletonDontDestroyed<SFX>
     const string dirPath = "SFX";
     public List<string> failedNames = new();
 
-
-    public override void Init()
+    [ContextMenu("Make Audios")]
+    void MakeAudios()
     {
-        if (didInit) return;
+        for (int i = 0; i < 5; i++)
+            gameObject.AddComponent<AudioSource>();
+    }
 
+    void Awake()
+    {
+        i = this;
         var dir = Resources.LoadAll<AudioClip>(dirPath);
         foreach (var file in dir)
-        {
             dic.Add(file.name, file);
-        }
 
         audios = GetComponents<AudioSource>();
         length = audios.Length;
 
         if (Settings.MuteSFX) SetVolume(0);
         else SetVolume(1);
-
-        base.Init();
     }
 
 #if UNITY_EDITOR
