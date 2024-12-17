@@ -102,13 +102,13 @@ public static class CollectionEx
         // return me.OrderBy(a => rng.Next()).ToList();
     }
 
-    public static List<T> GetActives<T>(this List<T> me) where T : UnityEngine.Component
+    public static List<T> GetActives<T>(this List<T> me, bool activeState = true) where T : UnityEngine.Component
     {
-        return me.FindAll(e => e.gameObject.activeSelf);
+        return me.FindAll(e => e.gameObject.activeSelf == activeState);
     }
-    public static T[] GetActives<T>(this T[] me) where T : UnityEngine.Component
+    public static T[] GetActives<T>(this T[] me, bool activeState = true) where T : UnityEngine.Component
     {
-        return me.FindAll(e => e.gameObject.activeSelf);
+        return me.FindAll(e => e.gameObject.activeSelf == activeState);
     }
     public static T GetInactive<T>(this List<T> me) where T : UnityEngine.Component
     {

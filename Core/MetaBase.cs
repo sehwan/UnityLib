@@ -22,13 +22,19 @@ public class MetaBase : MonoBehaviour
     [Immutable] public string currentMode = "";
 
     public int STARTING_ROW = 2;
-    public string dev_sheet_URL;
-    public string rel_sheet_URL;
+    
+    [Header("Open Sheet")]
+    public string dev_url_modify;
+    public string rel_url_modify;
+
+    [Header("Published")]
+    public string dev_url_published;
+    public string rel_url_published;
     public MetaGID[] gids;
 
     public string MakeURL(MetaGID urls, bool devMode)
     {
-        var baseUrl = (devMode ? dev_sheet_URL : rel_sheet_URL).Split("/pubhtml")[0];
+        var baseUrl = (devMode ? dev_url_published : rel_url_published).Split("/pubhtml")[0];
         var gid = devMode ? urls.dev_gid : urls.rel_gid;
         return $"{baseUrl}/pub?gid={gid}&single=true&output=csv";
     }
@@ -149,7 +155,7 @@ public class MetaBaseEditor : Editor
         GUILayout.Space(30);
         GUILayout.Label("Dev", EditorStyles.boldLabel);
         if (GUILayout.Button("Open Sheet", GUILayout.Height(40)))
-            Application.OpenURL(meta.dev_sheet_URL);
+            Application.OpenURL(meta.dev_url_modify);
         GUILayout.Space(10);
         if (GUILayout.Button("Load Dev", GUILayout.Height(60)))
             meta.LoadGoogleSheet(true);
@@ -157,7 +163,7 @@ public class MetaBaseEditor : Editor
         GUILayout.Space(30);
         GUILayout.Label("Normal", EditorStyles.boldLabel);
         if (GUILayout.Button("Open Sheet", GUILayout.Height(40)))
-            Application.OpenURL(meta.rel_sheet_URL);
+            Application.OpenURL(meta.rel_url_modify);
         GUILayout.Space(10);
         if (GUILayout.Button("Load Release", GUILayout.Height(60)))
             meta.LoadGoogleSheet(false);
