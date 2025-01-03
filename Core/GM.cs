@@ -7,7 +7,8 @@ public enum GameState { Quit, Pause, Playing }
 
 public class GM : MonoSingleton<GM>
 {
-    public bool showTitle = false;
+    public bool skipTitle = false;
+    public bool skipOpenings = false;
     public TitleScene title;
     public Action beforeInit;
     public Action onCloseTitle;
@@ -22,7 +23,11 @@ public class GM : MonoSingleton<GM>
         base.Awake();
         Application.targetFrameRate = Settings.FrameRate;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
+        if (Application.isEditor == false)
+        {
+            skipTitle = false;
+            skipOpenings = false;
+        }
         // Camera.main.orthographicSize = 22f / targetAspect;
         // size
         // float w = Screen.width;
@@ -38,7 +43,9 @@ public class GM : MonoSingleton<GM>
 
         // Fade.i.Dim(Color.black);
         // Title
-        title?.gameObject.SetActive(showTitle);
+        title?.gameObject.SetActive(skipTitle == false);
+        title?.OnInit();
+
         // Firebase
         // while (FirebaseMng.inst.didFetchConfig == false) yield return null;
         // while (FirebaseMng.inst.user == null) yield return null;

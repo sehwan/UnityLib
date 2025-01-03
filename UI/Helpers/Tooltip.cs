@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,7 @@ public class Tooltip : PrefabSignleton<Tooltip>
     public Text title;
     public Text txt;
     public Image img;
+    public Action onHide;
 
 
     protected override void Awake()
@@ -24,6 +26,11 @@ public class Tooltip : PrefabSignleton<Tooltip>
         GetComponent<GraphicRaycaster>().enabled = Application.isMobilePlatform;
     }
 
+    public void OnDisable()
+    {
+        onHide?.Invoke();
+        onHide = null;
+    }
     public void Hide()
     {
         gameObject.SetActive(false);

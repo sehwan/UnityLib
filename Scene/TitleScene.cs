@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TitleScene : MonoBehaviour
 {
+    public static TitleScene i;
     public Canvas canvas;
     public Text txt_version;
     public Text txt_message;
@@ -11,27 +13,34 @@ public class TitleScene : MonoBehaviour
     public Button btn_start;
 
     bool isReady;
+    public Action onStart;
 
     public static TitleScene Instantiate() =>
          ((GameObject)Instantiate(Resources.Load("Prefabs/Title"))).GetComponent<TitleScene>();
 
+    void Awake()
+    {
+        i = this;
+        canvas.worldCamera = Camera.main;
+    }
 
     public virtual void Start()
     {
-        gameObject.SetActive(true);
+        if (isReady) return;
+
         txt_version.text = $"v{Application.version}";
-
-        btn_start.SetActive(false);
-        go_loading.SetActive(false);
         txt_message.text = "Loading...";
+        btn_start.SetActive(false);
+        go_loading.SetActive(true);
 
-        GM.i.beforeInit += () =>
-        {
-            btn_start.SetActive(true);
-            go_loading.SetActive(false);
-            txt_message.text = "";
-            isReady = true;
-        };
+        GM.i.beforeInit += OnInit;
+    }
+    public void OnInit()
+    {
+        isReady = true;
+        txt_message.text = "";
+        btn_start.SetActive(true);
+        go_loading.SetActive(false);
     }
 
 
@@ -52,6 +61,7 @@ public class TitleScene : MonoBehaviour
     public virtual void _Start()
     {
         gameObject.SetActive(false);
+        onStart?.Invoke();
     }
     public virtual void _Quit()
     {

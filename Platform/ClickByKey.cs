@@ -17,7 +17,7 @@ public class ClickByKey : MonoBehaviour
     {
         if (Application.isMobilePlatform)
         {
-            gameObject.SetActive(false);
+            Destroy(this);
             return;
         }
         tr = transform;

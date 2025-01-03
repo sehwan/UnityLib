@@ -104,7 +104,7 @@ public static class TransformEx
         me.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
-// 
+    // 
     public static void MultiLocalScale(this Transform me, float v)
     {
         me.transform.localScale *= v;
@@ -253,8 +253,23 @@ public static class TransformEx
     public static Transform FirstInactiveChild(this Transform me)
     {
         foreach (Transform c in me)
-        {
             if (c.gameObject.activeSelf == false) return c;
+        return null;
+    }
+
+    public static GameObject FirstInactive(this GameObject[] gos)
+    {
+        foreach (var go in gos)
+            if (go.activeSelf == false) return go;
+        return null;
+    }
+
+    public static T FirstInactive<T>(this T[] items) where T : Component
+    {
+        foreach (var item in items)
+        {
+            if (!item.gameObject.activeSelf)
+                return item;
         }
         return null;
     }

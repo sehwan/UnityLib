@@ -26,8 +26,8 @@ public class UM : MonoBehaviour
         canvas = GetComponent<Canvas>();
 
         // Registers all windows
-        windows = FindObjectsOfType<UIWindow>(true).ToList();
-        scenes = FindObjectsOfType<UIScene>(true).ToList();
+        windows = FindObjectsByType<UIWindow>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
+        scenes = FindObjectsByType<UIScene>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
 
         // if (Application.isMobilePlatform == false)
         // {

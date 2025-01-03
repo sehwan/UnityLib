@@ -44,17 +44,17 @@ public static class RandomEx
     {
         return UnityEngine.Random.Range(0, me);
     }
-    public static int R(int me, int min = 0)
+    public static int R(this int me, int min = 0)
     {
         if (min > me) (me, min) = (min, me);
         return UnityEngine.Random.Range(min, me);
     }
-    public static int R(long me, long min = 0)
+    public static int R(this long me, long min = 0)
     {
         if (min > me) (me, min) = (min, me);
         return UnityEngine.Random.Range((int)min, (int)me);
     }
-    public static float R(float me, float min = 0)
+    public static float R(this float me, float min = 0)
     {
         if (min > me) (me, min) = (min, me);
         return UnityEngine.Random.Range(min, me);

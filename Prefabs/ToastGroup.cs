@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class ToastGroup : MonoBehaviour
 {
@@ -31,6 +28,25 @@ public class ToastGroup : MonoBehaviour
     public Color color_alert_img = ColorEx.darker;
     public Color color_alert_txt = Color.yellow;
 
+    [ContextMenu("TestColors")]
+    public void TestColors()
+    {
+        var gos = GetComponentsInChildren<Image>(true);
+        var txts = GetComponentsInChildren<Text>(true);
+        for (int i = 0; i < gos.Length; i++)
+        {
+            if (50.Percent())
+            {
+                gos[i].color = color_img;
+                txts[i].color = color_txt;
+            }
+            else
+            {
+                gos[i].color = color_alert_img;
+                txts[i].color = color_alert_txt;
+            }
+        }
+    }
 
     public static void Show(string s)
     {
@@ -65,7 +81,7 @@ public class ToastGroup : MonoBehaviour
         var txt = _.txts[idx];
         txt.text = s;
         txt.color = _.color_alert_txt;
-        
+
         idx++;
         if (idx == _.gos.Length) idx = 0;
 

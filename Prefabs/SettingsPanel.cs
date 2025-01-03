@@ -175,6 +175,11 @@ public class SettingsPanel : MonoBehaviour
         StringEx.ChangeLanguage(go.name);
         pn_language.SetActive(false);
     }
+    public void _HideLanguage()
+    {
+        pn_language.SetActive(false);
+    }
+    
     public void Btn_Community()
     {
         // ToastGroup.Show("준비중입니다.");
