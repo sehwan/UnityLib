@@ -48,6 +48,7 @@ public class MetaBase : MonoBehaviour
 
     async public void LoadParseInit(MetaGID e, bool devMode)
     {
+        print(e.name);
         var url = MakeURL(e, devMode);
         var fieldInfo = GetType().GetField(e.name);
         if (fieldInfo == null)
@@ -97,6 +98,8 @@ public class MetaBase : MonoBehaviour
         for (int i = STARTING_ROW; i < rows.Length; i++)
         {
             var row = rows[i].Split(',');
+            if (row[0] == "") break;
+            
             JObject jo = new();
             // Cell
             for (int j = 0; j < keys.Length && j < row.Length; j++)

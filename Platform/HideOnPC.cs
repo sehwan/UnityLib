@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class HideOnPC : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+#if UNITY_STANDALONE || UNITY_EDITOR || UNITY_WEBGL
+        Destroy(gameObject);
+#endif
     }
 }

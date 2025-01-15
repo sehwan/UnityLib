@@ -12,15 +12,16 @@ public class SimpleAnimationOneShot : MonoBehaviour
 
     void OnEnable()
     {
-        StartCoroutine(Co_Animate());
+        PlayOneShot();
     }
-    public IEnumerator Co_Animate()
+    
+    public async Awaitable PlayOneShot()
     {
-        var w = new WaitForSeconds(delay);
+        gameObject.SetActive(true);
         for (int i = 0; i < sprites.Length; i++)
         {
             ren.sprite = sprites[i];
-            yield return w;
+            await Awaitable.WaitForSecondsAsync(delay);
         }
         gameObject.SetActive(false);
     }

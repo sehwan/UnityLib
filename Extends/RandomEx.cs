@@ -107,16 +107,11 @@ public static class RandomEx
         return me.ElementAt(RandomWithSeedToday(me.Count()));
     }
 
-    public static List<T> SamplesUnDuplicated<T>(this List<T> me, int count)
+    public static List<T> SamplesUnDuplicated<T>(this List<T> me, int max)
     {
-        count = Math.Min(count, me.Count);
-        // if (me.Count < count)
-        // {
-        //     UnityEngine.Debug.LogError("count error");
-        //     return null;
-        // }
+        max = Math.Min(max, me.Count);
         List<T> list = new();
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < max; i++)
         {
             T t;
             int r = 0;
