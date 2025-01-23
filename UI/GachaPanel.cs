@@ -36,7 +36,7 @@ public class GachaPanel : UIWindow
     {
         // SFX.Play("gacha");
         Fade.i.Dim(Color.white);
-        Fade.i.FadeOut(Color.white, 0.3f);
+        Fade.i.Out(Color.white, 0.3f);
         // btn_skip.SetActive(true);
         yield return CoroutineEx.GetWait(0.3f);
         for (int i = 0; i < cnt; i++)

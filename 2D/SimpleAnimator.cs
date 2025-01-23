@@ -2,47 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ClipType { OneShot, Loop, PingPong }
 [System.Serializable]
-public class DataAnimationClip
+public class ClipData
 {
     public string key;
-    public string path;
-    public int last;
-    public float delay = 0.25f;
-    public bool isRepeat;
-    public bool isPingpong;
+    public float delay = 0.2f;
+    public ClipType type;
     public Sprite[] sprites;
-    public DataAnimationClip Init()
+
+    public ClipData(string key, ClipType type, float delay, Sprite[] sprites)
     {
-        sprites = new Sprite[last + 1];
-        for (int i = 0; i <= last; i++)
-        {
-            sprites[i] = Resources.Load<Sprite>($"Animations/{path}_{i}");
-        }
-        return this;
+        this.key = key;
+        this.type = type;
+        this.delay = delay;
+        this.sprites = sprites;
     }
 }
 
 public class SimpleAnimator : MonoBehaviour
 {
     public SpriteRenderer ren;
-    public List<DataAnimationClip> list = new();
-    public DataAnimationClip clip;
+    public List<ClipData> clips = new();
+    public ClipData clip;
     public bool isRewinding;
-    public bool playOnEnable;
-    public float passed = 0.1f;
+    public float passed;
     public int frame;
+
+    public static string _idle = "idle";
+    public static string _attack = "attack";
+    public static string _damaged = "damaged";
 
 
     void Start()
     {
-        list.ForEach(e => e.Init());
-        if (list.Count > 0) clip = list[0];
-        if (playOnEnable) Play(list[0].key);
+        if (clips.Count > 0) clip = clips[0];
     }
-    public void AddClip(DataAnimationClip newClip)
+
+    public void Init(params ClipData[] arr)
     {
-        list.Add(newClip.Init());
+        clips.Clear();
+        clip = null;
+        foreach (var c in arr) clips.Add(c);
+        Play(clips[0].key);
+    }
+    public void AddClip(string key, ClipType type, float delay, Sprite[] sprites)
+    {
+        clips.Add(new ClipData(key, type, delay, sprites));
     }
 
 
@@ -50,18 +56,22 @@ public class SimpleAnimator : MonoBehaviour
     {
         passed += Time.deltaTime;
         if (passed < clip.delay) return;
-
         passed = 0;
-        // normal
-        if (clip.isPingpong == false)
+
+        // Normal
+        if (clip.type != ClipType.PingPong)
         {
-            if (clip.last <= frame) frame = 0;
+            if (frame <= clip.sprites.Length)
+            {
+                frame = 0;
+                if (clip.type == ClipType.OneShot) Play(_idle);
+            }
             else frame++;
         }
-        // pingpong
+        // Pingpong
         else
         {
-            if (clip.last <= frame) isRewinding = true;
+            if (clip.sprites.Length <= frame) isRewinding = true;
             else if (frame == 0 && isRewinding) isRewinding = false;
 
             if (isRewinding) frame--;
@@ -70,15 +80,15 @@ public class SimpleAnimator : MonoBehaviour
         ren.sprite = clip.sprites[frame];
     }
 
+    public void Idle() => Play(_idle);
+    public void Attack() => Play(_idle);
+    public void Damaged() => Play(_idle);
 
-    public void Play(DataAnimationClip c)
-    {
-        clip = c;
-    }
     public void Play(string key)
     {
+        if (clip != null && clip.key == key) return;
         enabled = true;
-        clip = list.Find(e => e.key == key);
+        clip = clips.Find(e => e.key == key);
         frame = 0;
         passed = 0;
         isRewinding = false;

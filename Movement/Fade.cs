@@ -57,7 +57,7 @@ public class Fade : MonoSingleton<Fade>
     }
 
     // 1 -> 0
-    public void FadeOut(Color color, float time = 1f, float delay = 0f)
+    public void Out(Color color, float time = 1f, float delay = 0f)
     {
         go.SetActive(true);
         go.transform.SetAsLastSibling();

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 [Serializable]
 public class MetaGID
@@ -21,8 +22,8 @@ public class MetaBase : MonoBehaviour
     int counter;
     [Immutable] public string currentMode = "";
 
-    public int STARTING_ROW = 2;
-    
+    // public int STARTING_ROW = 2;
+
     [Header("Open Sheet")]
     public string dev_url_modify;
     public string rel_url_modify;
@@ -48,7 +49,7 @@ public class MetaBase : MonoBehaviour
 
     async public void LoadParseInit(MetaGID e, bool devMode)
     {
-        print(e.name);
+        // print(e.name);
         var url = MakeURL(e, devMode);
         var fieldInfo = GetType().GetField(e.name);
         if (fieldInfo == null)
@@ -71,8 +72,9 @@ public class MetaBase : MonoBehaviour
             return;
         }
         // Parse
+        Debug.Log($"<color=green>{e.name}</color>");
         var json = CSVToJSON(req.downloadHandler.text);
-        // print(json);
+        print(json);
         Debug.Log(StringEx.GetDiffFromJson(old, json));
         fieldInfo.SetValue(this, JsonConvert.DeserializeObject(json, fieldType, jsonSetting));
 
@@ -93,13 +95,24 @@ public class MetaBase : MonoBehaviour
         var ARRAY_DELIMITER = "/";
         var dic = new Dictionary<string, JObject>();
         var rows = csv.Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
-        var keys = rows[STARTING_ROW - 1].Split(',');
+        var keyRow = 0;
+        for (int i = 0; i < rows.Length; i++)
+        {
+            if (rows[i].Split(',')[0] == "id")
+            {
+                keyRow = i;
+                break;
+            }
+        }
+        var keys = rows[keyRow].Split(',');
+        keys = keys.Where(s => !string.IsNullOrEmpty(s)).ToArray();
+
         // Row
-        for (int i = STARTING_ROW; i < rows.Length; i++)
+        for (int i = keyRow + 1; i < rows.Length; i++)
         {
             var row = rows[i].Split(',');
-            if (row[0] == "") break;
-            
+            if (row[0].IsNullOrEmpty()) break;
+
             JObject jo = new();
             // Cell
             for (int j = 0; j < keys.Length && j < row.Length; j++)

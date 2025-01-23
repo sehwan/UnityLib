@@ -7,14 +7,14 @@ public class SimpleAnimationLoop : MonoBehaviour
 {
     public SpriteRenderer ren;
     public Sprite[] sprites;
-    public float delay = 0.25f;
+    public float delay = 0.2f;
 
     void OnEnable()
     {
         StartCoroutine(Co_Animate());
     }
 
-    public void SetSprites(Sprite[] sprites, float delay)
+    public void SetSprites(Sprite[] sprites, float delay = 0.2f)
     {
         this.sprites = sprites;
         this.delay = delay;

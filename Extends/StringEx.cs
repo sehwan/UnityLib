@@ -468,4 +468,9 @@ public static class StringEx
         }
         if (me.Length > 0) yield return me;
     }
+    
+    public static string IconTag(this string me)
+    {
+        return $"<sprite name=\"{me}\">";
+    }
 }
