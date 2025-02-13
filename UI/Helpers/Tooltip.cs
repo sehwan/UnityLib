@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +15,8 @@ public class Tooltip : PrefabSignleton<Tooltip>
         }
     }
     public RectTransform frame;
-    public Text title;
-    public Text txt;
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI txt;
     public Image img;
     public Action onHide;
 

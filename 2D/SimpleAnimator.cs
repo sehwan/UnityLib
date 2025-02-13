@@ -61,7 +61,7 @@ public class SimpleAnimator : MonoBehaviour
         // Normal
         if (clip.type != ClipType.PingPong)
         {
-            if (frame <= clip.sprites.Length)
+            if (frame >= clip.sprites.Length - 1)
             {
                 frame = 0;
                 if (clip.type == ClipType.OneShot) Play(_idle);
@@ -81,8 +81,8 @@ public class SimpleAnimator : MonoBehaviour
     }
 
     public void Idle() => Play(_idle);
-    public void Attack() => Play(_idle);
-    public void Damaged() => Play(_idle);
+    public void Attack() => Play(_attack);
+    public void Damaged() => Play(_damaged);
 
     public void Play(string key)
     {

@@ -38,10 +38,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorMask: 15
-    - _Cycle: 2.5
-    - _Narrower: 0.96
-    - _Rotation: 0.3
-    - _Speed: 0.15
+    - _Cycle: 0.5
+    - _Narrower: 0
+    - _PosterStep: 3
+    - _Power: 15
+    - _Rotation: 0.15
+    - _Speed: 3
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -52,6 +54,6 @@ Material:
     - _UIMaskSoftnessY: 1
     m_Colors:
     - _ClipRect: {r: 0, g: 0, b: 0, a: 0}
-    - _Tint: {r: 0.36078432, g: 0, b: 1, a: 1}
+    - _Tint: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

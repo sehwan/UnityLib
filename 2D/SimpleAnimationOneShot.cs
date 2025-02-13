@@ -1,34 +1,58 @@
 using System.Collections;
 using UnityEngine;
 using UnityEditor;
+using System.Threading.Tasks;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class SimpleAnimationOneShot : MonoBehaviour
 {
     public SpriteRenderer ren;
     public Sprite[] sprites;
-    public float delay = 0.25f;
+    public float frametime = 0.1f;
+    public bool isPlaying;
 
+    public async Awaitable Play(string path, int count, float delay)
+    {
+        sprites = new Sprite[count];
+        for (int i = 0; i < count; i++)
+            sprites[i] = Resources.Load<Sprite>($"{path}{i}");
+        await Play(sprites, delay);
+    }
+    public async Awaitable Play(Sprite[] sprites, float frametime)
+    {
+        this.sprites = sprites;
+        this.frametime = frametime;
+        ren.sprite = sprites[0];
+        gameObject.SetActive(true);
+        await Play();
+    }
 
     void OnEnable()
     {
-        PlayOneShot();
+        if (isPlaying) return;
+        Play();
     }
-    
-    public async Awaitable PlayOneShot()
+    public async Awaitable Play()
     {
-        gameObject.SetActive(true);
+        isPlaying = true;
         for (int i = 0; i < sprites.Length; i++)
         {
             ren.sprite = sprites[i];
-            await Awaitable.WaitForSecondsAsync(delay);
+            var split = ren.sprite.name.Split("__");
+            if (split.Length > 1)
+            {
+                var time = float.Parse(split[1]);
+                await Awaitable.WaitForSecondsAsync(time * frametime);
+            }
+            else await Awaitable.WaitForSecondsAsync(frametime);
         }
         gameObject.SetActive(false);
+        isPlaying = false;
     }
 
     public IEnumerator Co_Test()
     {
-        var w = new WaitForSeconds(delay);
+        var w = new WaitForSeconds(frametime);
         for (int i = 0; i < sprites.Length; i++)
         {
             ren.sprite = sprites[i];
@@ -58,7 +82,7 @@ public class SimpleAnimationOneShotEditor : Editor
     {
         var s = (SimpleAnimationOneShot)target;
         var timer = stopwatch.ElapsedMilliseconds / 1000f;
-        if (timer >= s.delay)
+        if (timer >= s.frametime)
         {
             stopwatch.Restart();
             s.ren.sprite = s.sprites[iter++];

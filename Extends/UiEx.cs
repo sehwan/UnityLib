@@ -5,21 +5,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
+using TMPro;
 
 public static class UiEx
 {
-    public static void SetActive(this Image me, bool isActive)
-    {
+    public static void SetActive(this Image me, bool isActive) =>
         me.gameObject.SetActive(isActive);
-    }
-    public static void SetActive(this Text me, bool isActive)
-    {
+    public static void SetActive(this Text me, bool isActive) =>
         me.gameObject.SetActive(isActive);
-    }
-    public static void SetActive(this Button me, bool isActive)
-    {
+    public static void SetActive(this TextMeshProUGUI me, bool isActive) =>
         me.gameObject.SetActive(isActive);
-    }
+    public static void SetActive(this TextMeshPro me, bool isActive) =>
+        me.gameObject.SetActive(isActive);
+    public static void SetActive(this Button me, bool isActive) =>
+        me.gameObject.SetActive(isActive);
 
     public static Transform Find(this Button me, string name)
     {
