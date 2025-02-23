@@ -61,9 +61,18 @@ public static class NumberEx
     {
         return Mathf.Pow(me, pow);
     }
+    
     public static int Ceil(this float me)
     {
         return Mathf.CeilToInt(me);
+    }
+    public static int Floor(this float me)
+    {
+        return Mathf.FloorToInt(me);
+    }
+    public static int Round(this float me)
+    {
+        return Mathf.RoundToInt(me);
     }
 
     public static float DivideSafe(this int numerator, int denominator)
@@ -160,9 +169,34 @@ public static class NumberEx
     //     y = pow(abs((x++ % 6) - 3), 2.0);
     // Concave curves(i.e.sqrt(x) shape):
     // y = pow(abs((x++ % 6) - 3), 0.5);
-    
+
     public static bool IsBetween(this int me, int min, int max)
     {
         return me >= min && me <= max;
+    }
+
+    public static int Min(this int me, int other)
+    {
+        return me < other ? me : other;
+    }
+    public static int Max(this int me, int other)
+    {
+        return me > other ? me : other;
+    }
+    public static float Min(this float me, float other)
+    {
+        return me < other ? me : other;
+    }
+    public static float Max(this float me, float other)
+    {
+        return me > other ? me : other;
+    }
+    public static int Clamp(this int me, int min, int max)
+    {
+        return me < min ? min : me > max ? max : me;
+    }
+    public static float Clamp(this float me, float min, float max)
+    {
+        return me < min ? min : me > max ? max : me;
     }
 }

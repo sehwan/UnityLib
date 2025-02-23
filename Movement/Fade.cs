@@ -48,7 +48,7 @@ public class Fade : MonoSingleton<Fade>
     }
 
     // 0 -> 1
-    public void FadeIn(Color color, float time = 1.5f)
+    public void In(Color color, float time = 1.5f)
     {
         go.SetActive(true);
         go.transform.SetAsLastSibling();

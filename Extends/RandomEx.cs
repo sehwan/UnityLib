@@ -308,7 +308,7 @@ public static class RandomEx
             (list[n], list[k]) = (list[k], list[n]);
         }
     }
-    public static void Shuffle<T>(this T[] array, Random rnd = null)
+    public static T[] Shuffle<T>(this T[] array, Random rnd = null)
     {
         rnd ??= new();
         int n = array.Length;
@@ -317,6 +317,7 @@ public static class RandomEx
             int k = rnd.Next(n--);
             (array[k], array[n]) = (array[n], array[k]);
         }
+        return array;
     }
 
 
