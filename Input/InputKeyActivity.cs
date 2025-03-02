@@ -12,7 +12,7 @@ public class InputKeyActivity : MonoBehaviour
         CommonCheat();
 #endif
     }
-    
+
     void EscapeOnAndroid()
     {
         if (Application.isMobilePlatform == false) return;
@@ -56,7 +56,7 @@ public class InputKeyActivity : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            var savePath = "/Users/sehwanlim/Desktop/captures";
+            var savePath = "/Users/sh/Desktop/captures";
             if (!System.IO.Directory.Exists(savePath))
                 System.IO.Directory.CreateDirectory(savePath);
             var fileName = $"{System.DateTime.Now:yyyyMMdd_HHmmss}.png";
