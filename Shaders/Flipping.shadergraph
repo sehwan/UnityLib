@@ -261,7 +261,7 @@
         "preventRotation": false
     },
     "m_Path": "Shader Graphs",
-    "m_GraphPrecision": 2,
+    "m_GraphPrecision": 0,
     "m_PreviewMode": 2,
     "m_OutputNode": {
         "m_Id": ""
@@ -677,8 +677,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -233.0,
-            "y": -205.0,
+            "x": -210.0,
+            "y": -222.0,
             "width": 140.0,
             "height": 166.0
         }
@@ -730,10 +730,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1136.0001220703125,
-            "y": -207.00003051757813,
+            "x": -1127.0,
+            "y": -256.0,
             "width": 208.0,
-            "height": 302.00006103515627
+            "height": 302.0
         }
     },
     "m_Slots": [
@@ -1037,7 +1037,7 @@
     },
     "m_Name": "Remap",
     "m_DrawState": {
-        "m_Expanded": true,
+        "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
             "x": -614.0,
@@ -1082,8 +1082,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1238.0,
-            "y": -276.0,
+            "x": -1269.0,
+            "y": -256.0,
             "width": 83.0,
             "height": 34.0
         }
@@ -1345,10 +1345,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -883.0,
-            "y": -226.99998474121095,
-            "width": 208.00006103515626,
-            "height": 277.9999694824219
+            "x": -881.0,
+            "y": -256.0,
+            "width": 208.0,
+            "height": 278.0
         }
     },
     "m_Slots": [
@@ -1438,7 +1438,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "c1e040bf2dc144df8bdb26f37bf5348e",
     "m_Id": 0,
-    "m_DisplayName": "X",
+    "m_DisplayName": "Speed",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1651,10 +1651,10 @@
     "m_Guid": {
         "m_GuidSerialized": "c809ee01-afdd-471b-87f3-a51cdbf433f8"
     },
-    "m_Name": "X",
+    "m_Name": "Speed",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "X",
-    "m_DefaultReferenceName": "_X",
+    "m_RefNameGeneratedByDisplayName": "Speed",
+    "m_DefaultReferenceName": "_Speed",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,

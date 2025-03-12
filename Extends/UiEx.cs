@@ -214,13 +214,6 @@ public static class UiEx
     }
 
 
-    public static DG.Tweening.Core.TweenerCore<Color, Color, DG.Tweening.Plugins.Options.ColorOptions> DGCrossFadeAlpha(this Graphic me, float alpha, float duration)
-    {
-        me.DOKill();
-        return me.DOColor(new Color(me.color.r, me.color.g, me.color.b, alpha), duration);
-    }
-
-
 
     public static void Colorize_UIChildren(Transform parent, Color color)
     {
@@ -237,15 +230,6 @@ public static class UiEx
     }
 
 
-    public static string TagTMPSprite(string spr)
-    {
-        if (string.IsNullOrEmpty(spr))
-            return "";
-        else
-            return string.Format("<sprite name=\"{0}\">", spr);
-    }
-
-
 
     public static string Colorize(int v, bool isPercent = false)
     {
@@ -259,7 +243,6 @@ public static class UiEx
         else
             return v.ToString();
     }
-
 
     // 자원.
     // 스트링 -> 메쉬 스프라이트.
@@ -319,5 +302,35 @@ public static class UiEx
         else
             tier = "icon_league_diamond_0";
         return tier;
+    }
+
+
+    // TMP
+    public static DG.Tweening.Core.TweenerCore<Color, Color, 
+        DG.Tweening.Plugins.Options.ColorOptions>
+        DGCrossFadeAlpha(this Graphic me, float alpha, float duration)
+    {
+        me.DOKill();
+        return me.DOColor(new Color(me.color.r, me.color.g, me.color.b, alpha), duration);
+    }
+
+    public static string TagTMPSprite(string spr)
+    {
+        if (string.IsNullOrEmpty(spr))
+            return "";
+        else
+            return string.Format("<sprite name=\"{0}\">", spr);
+    }
+
+    public static Tweener DOText(this TextMeshProUGUI me, string endValue, float duration)
+    {
+        var startValue = me.text;
+        float progress = 0f;
+        return DOTween.To(() => progress, x =>
+        {
+            progress = x;
+            int len = Mathf.FloorToInt(Mathf.Lerp(0, endValue.Length, progress));
+            me.text = endValue[..len];
+        }, 1f, duration).SetEase(Ease.Linear);
     }
 }

@@ -116,7 +116,18 @@ public static class UnityEx
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
-
+    public static void ShowLayer(this Camera me, string name)
+    {
+        me.cullingMask |= 1 << LayerMask.NameToLayer(name);
+    }
+    public static void HideLayer(this Camera me, string name)
+    {
+        me.cullingMask &= ~(1 << LayerMask.NameToLayer(name));
+    }
+    public static bool IsLayerIncluded(this Camera me, string layerName)
+    {
+        return (me.cullingMask & (1 << LayerMask.NameToLayer(layerName))) != 0;
+    }
 
     public static Coroutine StartCoroutine(this GameObject me, IEnumerator co)
     {
