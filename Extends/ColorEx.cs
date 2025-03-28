@@ -5,7 +5,7 @@ public static class ColorEx
 {
     public static Color none = new(0, 0, 0, 0);
     public static Color dim = new(0, 0, 0, .5f);
-    
+
     public static Color lighter = new(.9f, .9f, .9f);
     public static Color lightGray = new(.8f, .8f, .8f);
     public static Color dark = new(.2f, .2f, .2f);
@@ -48,6 +48,9 @@ public static class ColorEx
     // Violet
     public static Color violet = new(0.533f, 0.271f, 1f);
     public static Color violetDark = new(0.36f, 0f, 1f);
+    public static Color indigo = new(0.2f, 0f, 0.6f);
+    public static Color royalIndigo = new(0.14f, 0.03f, 0.32f);
+    public static Color violetDark2 = new(0.1f, 0f, 0.3f);
 
     // Damage
     public static Color ad = new(1f, .4f, .6f);

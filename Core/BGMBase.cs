@@ -6,12 +6,13 @@ public class BGMBase : MonoBehaviour
 {
     public static BGMBase i;
     AudioSource _audio;
-    public AudioClip clip_lobby;
+    public AudioClip[] clips_lobby;
     public AudioClip[] clips_stage;
 
 
     protected virtual void Awake()
     {
+        i = this;
         _audio = GetComponent<AudioSource>();
         _audio.loop = true;
         if (Settings.MuteBGM) SetVolume(0);
@@ -46,7 +47,7 @@ public class BGMBase : MonoBehaviour
         _audio.Play();
     }
 
-    public void PlayListShuffle(AudioClip[] list)
+    public void Play(AudioClip[] list)
     {
         SetVolume(Settings.VolumeBGM);
         var sample = list.Sample();
@@ -60,6 +61,6 @@ public class BGMBase : MonoBehaviour
     IEnumerator Co_Shuffle(AudioClip[] list, float length)
     {
         yield return new WaitForSeconds(length);
-        PlayListShuffle(list);
+        Play(list);
     }
 }

@@ -26,7 +26,7 @@ public class WorldClouds : MonoBehaviour
     {
         RandomWind();
         count = transform.childCount;
-        sprites = Resources.LoadAll<Sprite>("BG/clouds");
+        // sprites = Resources.LoadAll<Sprite>("BG/clouds");
         rens = new SpriteRenderer[count];
         trs = new Transform[count];
         vel = new Vector2[count];
@@ -71,7 +71,12 @@ public class WorldClouds : MonoBehaviour
         trs[i].localScale = new Vector2(x, y * yScaler);
         if (sprites.Length > 0) rens[i].sprite = sprites.Sample();
     }
-
+    
+    [ContextMenu("Test")]
+    public void Test()
+    {
+        Awake();
+    }
 
     public void RandomWind()
     {

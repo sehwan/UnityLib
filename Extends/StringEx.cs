@@ -468,9 +468,18 @@ public static class StringEx
         }
         if (me.Length > 0) yield return me;
     }
-    
+
     public static string IconTag(this string me)
     {
         return $"<sprite name=\"{me}\">";
+    }
+
+    public static StringBuilder AppendLine(this StringBuilder sb, int number)
+    {
+        return sb.AppendLine(number.ToString());
+    }
+    public static StringBuilder AppendLine(this StringBuilder sb, float number)
+    {
+        return sb.AppendLine(number.ToString());
     }
 }

@@ -9,6 +9,7 @@ public class FlickerUIErratically : MonoBehaviour
     public float on = 2.3f;
     public float trans = 0.1f;
     public bool isPlayingInPause = false;
+    public float delay = 0;
 
 
     void OnEnable()
@@ -17,6 +18,7 @@ public class FlickerUIErratically : MonoBehaviour
     }
     IEnumerator Co()
     {
+        yield return new WaitForSeconds(delay);
         var ui = GetComponent<MaskableGraphic>();
         while (true)
         {

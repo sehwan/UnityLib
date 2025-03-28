@@ -325,7 +325,7 @@ public static class UiEx
     public static Tweener DOText(this TextMeshProUGUI me, string endValue, float duration)
     {
         var startValue = me.text;
-        float progress = 0f;
+        var progress = 0f;
         return DOTween.To(() => progress, x =>
         {
             progress = x;

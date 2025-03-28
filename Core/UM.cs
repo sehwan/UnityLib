@@ -18,6 +18,7 @@ public class UM : MonoBehaviour
     public ParticleSystem touchFX;
     public Texture2D cursor;
     public Material mat_gray;
+    public GameObject hud_commons;
 
 
     void Awake()
@@ -100,5 +101,11 @@ public class UM : MonoBehaviour
     public void ShowScene()
     {
 
+    }
+
+    public void ShowCommons()
+    {
+        hud_commons.SetActive(true);
+        hud_commons.transform.SetAsLastSibling();
     }
 }

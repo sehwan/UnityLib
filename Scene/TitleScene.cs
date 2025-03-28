@@ -5,15 +5,18 @@ using UnityEngine.UI;
 
 public class TitleScene : MonoBehaviour
 {
+    public Action onStart;
+    bool isReady;
+
     public static TitleScene i;
     public Canvas canvas;
     public Text txt_version;
     public Text txt_message;
     public GameObject go_loading;
     public Button btn_start;
+    public Transform tr_chars;
+    public Image[] imgs_colorized;
 
-    bool isReady;
-    public Action onStart;
 
     public static TitleScene Instantiate() =>
          ((GameObject)Instantiate(Resources.Load("Prefabs/Title"))).GetComponent<TitleScene>();
@@ -22,6 +25,20 @@ public class TitleScene : MonoBehaviour
     {
         i = this;
         canvas.worldCamera = Camera.main;
+
+        var color = ColorEx.RandomColorWithMinMax(0.6f, 1f);
+        foreach (var e in imgs_colorized)
+        {
+            e.color = color;
+        }
+        var x = -210f;
+        foreach (Transform e in tr_chars)
+        {
+            x += 15 + 40f.R();
+            e.LocalPositionX(x);
+            print(150.R(-150));
+            // e.LocalPositionX(-150f.R(150f));
+        }
     }
 
     public virtual void Start()

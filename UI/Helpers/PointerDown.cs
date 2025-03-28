@@ -1,21 +1,24 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class PointerDown : MonoBehaviour
 , IUpdateSelectedHandler
 , IPointerUpHandler, IPointerDownHandler
 , IDragHandler, IEndDragHandler
 {
-    public UnityEvent onDown;
+    public UnityEvent cb;
 
     public void OnUpdateSelected(BaseEventData e)
     {
         if (isPressing == false && isDragging == false) return;
-        onDown.Invoke();
+        cb.Invoke();
     }
+    
 
-    bool isPressing;
+    public bool isPressing;
     public void OnPointerDown(PointerEventData e)
     {
         isPressing = true;
@@ -23,7 +26,7 @@ public class PointerDown : MonoBehaviour
     public void OnPointerUp(PointerEventData e) => isPressing = false;
 
 
-    bool isDragging;
+    public bool isDragging;
     public void OnDrag(PointerEventData e) => isDragging = true;
     public void OnEndDrag(PointerEventData e) => isDragging = false;
 }

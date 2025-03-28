@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class ClickByKey : MonoBehaviour
 {
     Transform tr;
+    public bool isNumber123 = false;
     public KeyCode key = KeyCode.Space;
     public Button button;
     static UM um;
@@ -21,21 +22,33 @@ public class ClickByKey : MonoBehaviour
             return;
         }
         tr = transform;
-        GetComponent<Text>().text = $"[{KeyCodeToString(key)}]";
+        GetComponent<Text>().text = $"[{KeyCodeToString()}]";
     }
     void Start()
     {
         if (um == null) um = UM.i;
     }
-    string KeyCodeToString(KeyCode k)
+    public string KeyCodeToString()
     {
-        if (k > KeyCode.Alpha0 && k < KeyCode.Alpha9)
+        if (key == KeyCode.Space) return " ";
+
+        if (isNumber123)
         {
-            var n = (int)k - (int)KeyCode.Alpha0;
+            key = KeyCode.Alpha1 + button.transform.GetSiblingIndex();
+        }
+        if (key > KeyCode.Alpha0 && key < KeyCode.Alpha9)
+        {
+            var n = (int)key - (int)KeyCode.Alpha0;
             return n.ToString();
         }
-        if (k == KeyCode.Escape) return "ESC";
-        return k.ToString().ToUpper();
+        if (key == KeyCode.Escape) return "ESC";
+        if (key == KeyCode.LeftArrow) return "←";
+        if (key == KeyCode.RightArrow) return "→";
+        if (key == KeyCode.UpArrow) return "↑";
+        if (key == KeyCode.DownArrow) return "↓";
+        if (key == KeyCode.LeftShift) return "L SHIFT";
+        if (key == KeyCode.RightShift) return "R SHIFT";
+        return key.ToString().ToUpper();
     }
 
     void Update()
@@ -58,26 +71,10 @@ public class ClickByKey : MonoBehaviour
 [CustomEditor(typeof(ClickByKey))]
 public class ClickByKeEditor : Editor
 {
-    // void OnDisable()
-    // {
-    //     var t = target as ClickByKey;
-    //     t.GetComponent<Text>().text = $"[{KeyCodeToString(t.key)}]";
-    // }
     void OnEnable()
     {
         var t = target as ClickByKey;
-        t.GetComponent<Text>().text = $"[{KeyCodeToString(t.key)}]";
-    }
-
-    string KeyCodeToString(KeyCode k)
-    {
-        if (k > KeyCode.Alpha0 && k < KeyCode.Alpha9)
-        {
-            var n = (int)k - (int)KeyCode.Alpha0;
-            return n.ToString();
-        }
-        if (k == KeyCode.Escape) return "ESC";
-        return k.ToString().ToUpper();
+        t.GetComponent<Text>().text = $"[{t.KeyCodeToString()}]";
     }
 }
 #endif

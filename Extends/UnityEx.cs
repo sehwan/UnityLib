@@ -185,4 +185,15 @@ public static class UnityEx
         else if (EventSystem.current.IsPointerOverGameObject()) return true;
         return false;
     }
+
+
+    // Sound
+    public static void BGM(this AudioClip clip)
+    {
+        BGMBase.i.Play(clip);
+    }
+    public static void BGM(this AudioClip[] clips)
+    {
+        BGMBase.i.Play(clips);
+    }
 }

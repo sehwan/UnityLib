@@ -44,20 +44,30 @@ public static class RandomEx
     {
         return UnityEngine.Random.Range(0, me);
     }
-    public static int R(this int me, int min = 0)
+    public static int R(this int max, int min = 0)
     {
-        if (min > me) (me, min) = (min, me);
-        return UnityEngine.Random.Range(min, me);
+        if (min > max)
+        {
+            var tmp = min;
+            min = max;
+            max = tmp;
+        }
+        return UnityEngine.Random.Range(min, max);
     }
-    public static int R(this long me, long min = 0)
+    public static int R(this long max, long min = 0)
     {
-        if (min > me) (me, min) = (min, me);
-        return UnityEngine.Random.Range((int)min, (int)me);
+        if (min > max) (max, min) = (min, max);
+        return UnityEngine.Random.Range((int)min, (int)max);
     }
-    public static float R(this float me, float min = 0)
+    public static float R(this float max, float min = 0)
     {
-        if (min > me) (me, min) = (min, me);
-        return UnityEngine.Random.Range(min, me);
+        if (min > max)
+        {
+            var tmp = min;
+            min = max;
+            max = tmp;
+        }
+        return UnityEngine.Random.Range(min, max);
     }
 
     public static int Randomize(this int me, int percent)

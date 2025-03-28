@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class IdleScalerY : MonoBehaviour
 {
-    public float range = 0.3f;
-    public float period = 0.4f;
+    public float range = 0.03f;
+    public float period = 0.3f;
     public bool isRandomize = true;
     float random = 0;
     Vector2 originScale;
