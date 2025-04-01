@@ -40,18 +40,13 @@ public static class RandomEx
     // Don't Add This Keyword To Prevent Confusion
     // -1.R() Must Be (-1).R()
     // So Just Use RandomEx.R(-1)
-    public static int Range(this int me)
+    public static int R(this int me)
     {
         return UnityEngine.Random.Range(0, me);
     }
     public static int R(this int max, int min = 0)
     {
-        if (min > max)
-        {
-            var tmp = min;
-            min = max;
-            max = tmp;
-        }
+        if (min > max) (max, min) = (min, max);
         return UnityEngine.Random.Range(min, max);
     }
     public static int R(this long max, long min = 0)
@@ -61,12 +56,7 @@ public static class RandomEx
     }
     public static float R(this float max, float min = 0)
     {
-        if (min > max)
-        {
-            var tmp = min;
-            min = max;
-            max = tmp;
-        }
+        if (min > max) (max, min) = (min, max);
         return UnityEngine.Random.Range(min, max);
     }
 

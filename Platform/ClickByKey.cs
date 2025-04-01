@@ -30,17 +30,14 @@ public class ClickByKey : MonoBehaviour
     }
     public string KeyCodeToString()
     {
-        if (key == KeyCode.Space) return " ";
-
         if (isNumber123)
-        {
             key = KeyCode.Alpha1 + button.transform.GetSiblingIndex();
-        }
         if (key > KeyCode.Alpha0 && key < KeyCode.Alpha9)
         {
             var n = (int)key - (int)KeyCode.Alpha0;
             return n.ToString();
         }
+        if (key == KeyCode.Space) return " ";
         if (key == KeyCode.Escape) return "ESC";
         if (key == KeyCode.LeftArrow) return "←";
         if (key == KeyCode.RightArrow) return "→";

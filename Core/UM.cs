@@ -108,4 +108,8 @@ public class UM : MonoBehaviour
         hud_commons.SetActive(true);
         hud_commons.transform.SetAsLastSibling();
     }
+    public void HideCommons()
+    {
+        hud_commons.SetActive(false);
+    }
 }
