@@ -60,7 +60,7 @@ public class BGMBase : MonoBehaviour
     Coroutine co_shuffle;
     IEnumerator Co_Shuffle(AudioClip[] list, float length)
     {
-        yield return new WaitForSeconds(length);
+        yield return new WaitForSecondsRealtime(length);
         Play(list);
     }
 }

@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(Button))]
+// [RequireComponent(typeof(Button))]
 public class MakeThisSimpleTooltip : MonoBehaviour,
-    IPointerEnterHandler, IPointerExitHandler
+    IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
 {
     [TextArea]
     public string tip;
-    public float time = 5f;
+    // public float time = 5f;
 
 
     // void Start()
@@ -17,18 +17,23 @@ public class MakeThisSimpleTooltip : MonoBehaviour,
     //     btn.onClick.RemoveAllListeners();
     //     btn.onClick.AddListener(ShowTooltip);
     // }
-    void ShowTooltip()
-    {
-        SimplePopup.i.Show(null, null, tip.L(), time);
-        // Tooltip.i.Show(tip.L(), null, null);
-    }
+    // void ShowTooltip()
+    // {
+    //     SimplePopup.i.Show(null, null, tip.L(), time);
+    //     // Tooltip.i.Show(tip.L(), null, null);
+    // }
 
-    public async void OnPointerEnter(PointerEventData e)
+    public void OnPointerEnter(PointerEventData e)
     {
         // target.SendMessage("SaveTip");
-        await Tooltip.i.Show(tip.L(), null, null);
+        /* await  */
+        Tooltip.i.Show(null, null, tip.L());
     }
     public void OnPointerExit(PointerEventData e)
+    {
+        Tooltip.i.Hide();
+    }
+    public void OnPointerUp(PointerEventData e)
     {
         Tooltip.i.Hide();
     }

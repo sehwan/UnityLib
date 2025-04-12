@@ -45,7 +45,6 @@ public class GameData : MonoSingleton<GameData>
         // Override Defines
         // var virtualDef = JsonConvert.DeserializeObject<Def>(config.GetValue("define").StringValue); // Essential
         // var virtualDef = JsonConvert.DeserializeObject<Def>(JObject.Parse(json)["def"].ToString());
-        // Debug.Log($"<color=cyan>{Def.Cnt_Boons_PVP}</color>");
 
         FetchRunningMeta();
 

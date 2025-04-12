@@ -19,12 +19,11 @@ public class Tooltip : PrefabSignleton<Tooltip>
     public TextMeshProUGUI txt;
     public Image img;
     public Action onHide;
-
+    public CanvasScaler canvasScaler;
 
     protected override void Awake()
     {
         base.Awake();
-        GetComponent<GraphicRaycaster>().enabled = Application.isMobilePlatform;
     }
 
     public void OnDisable()
@@ -37,13 +36,10 @@ public class Tooltip : PrefabSignleton<Tooltip>
         gameObject.SetActive(false);
     }
 
-    async public Awaitable Show(string titleString, Sprite spr, string desc)
+    public async Awaitable Show(string titleString, Sprite spr, string desc)
     {
-        i.CancelInvoke();
         if (titleString.IsNullOrEmpty() && spr == null && desc.IsNullOrEmpty()) return;
-
         gameObject.SetActive(true);
-        frame.localPosition = new Vector2(5000, 5000);
 
         title.SetActive(titleString.IsFilled());
         img.SetActive(spr != null);
@@ -52,13 +48,19 @@ public class Tooltip : PrefabSignleton<Tooltip>
         if (spr != null) img.sprite = spr;
         if (desc.IsFilled()) txt.text = desc.Trim();
 
-        await Awaitable.NextFrameAsync();
+        await Awaitable.EndOfFrameAsync();
+
         Vector2 size = frame.sizeDelta;
-        Vector2 res = GetComponent<CanvasScaler>().referenceResolution;
+        Vector2 res = canvasScaler.referenceResolution;
         Vector2 pos_viewport = UM.i.cam.ScreenToViewportPoint(Input.mousePosition);
         Vector2 newPos = new(pos_viewport.x - 0.5f, pos_viewport.y - 0.5f);
+
         newPos.x *= res.x;
         newPos.y *= res.y;
+
+        float offsetY = size.y / 2 + 10f;
+        newPos.y += offsetY;
+
         var DIV = 2.0f;
         newPos.x = Mathf.Clamp(newPos.x, -res.x / DIV + size.x / DIV, res.x / DIV - size.x / DIV);
         newPos.y = Mathf.Clamp(newPos.y, -res.y / DIV + size.y / DIV, res.y / DIV - size.y / DIV);

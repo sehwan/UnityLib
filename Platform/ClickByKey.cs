@@ -18,7 +18,7 @@ public class ClickByKey : MonoBehaviour
     {
         if (Application.isMobilePlatform)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
         tr = transform;
@@ -37,7 +37,7 @@ public class ClickByKey : MonoBehaviour
             var n = (int)key - (int)KeyCode.Alpha0;
             return n.ToString();
         }
-        if (key == KeyCode.Space) return " ";
+        if (key == KeyCode.Space) return "␣";
         if (key == KeyCode.Escape) return "ESC";
         if (key == KeyCode.LeftArrow) return "←";
         if (key == KeyCode.RightArrow) return "→";
@@ -53,8 +53,8 @@ public class ClickByKey : MonoBehaviour
         if (button.IsInteractable() == false) return;
         if (Input.GetKeyDown(key) == false) return;
         if (um.others.Count > 0) return;
-        if (um.showings.Count > 0 &&
-            tr.IsChildOf(um.showings.Last().transform) == false) return;
+        // if (um.showings.Count > 0 &&
+        //     tr.IsChildOf(um.showings.Last().transform) == false) return;
         if (um.scenes.Count > 0 &&
             tr.IsChildOf(um.scenes.Last().transform) == false) return;
 

@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using System.Linq;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Text))]
 public class KeyLinker : MonoBehaviour
@@ -34,14 +33,21 @@ public class KeyLinker : MonoBehaviour
             var n = (int)k - (int)KeyCode.Alpha0;
             return n.ToString();
         }
-        if (k == KeyCode.Escape) return "ESC";
+        if (key == KeyCode.Space) return "␣";
+        if (key == KeyCode.Escape) return "ESC";
+        if (key == KeyCode.LeftArrow) return "←";
+        if (key == KeyCode.RightArrow) return "→";
+        if (key == KeyCode.UpArrow) return "↑";
+        if (key == KeyCode.DownArrow) return "↓";
+        if (key == KeyCode.LeftShift) return "L SHIFT";
+        if (key == KeyCode.RightShift) return "R SHIFT";
         return k.ToString().ToUpper();
     }
 
     void Update()
     {
-        if (pointerDown.enabled == false) return;
         if (Input.GetKey(key) == false) return;
+        if (pointerDown.enabled == false) return;
         if (um.others.Count > 0) return;
         if (um.showings.Count > 0 &&
             tr.IsChildOf(um.showings.Last().transform) == false) return;

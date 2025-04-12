@@ -66,6 +66,16 @@ public class UIWindow : UIPanel
         UM.i?.DeregisterWindow(this);
         SFX.Play("window");
     }
+
+    public virtual void Update()
+    {
+        if (isESCable == false) return;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Hide();
+        }
+    }
+
     public virtual void HideManually()
     {
         if (isESCable == false) return;

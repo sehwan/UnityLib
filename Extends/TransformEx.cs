@@ -183,6 +183,11 @@ public static class TransformEx
         me.position = new Vector3(x, y, z);
     }
 
+    public static void RotateZ(this Transform me, float angle)
+    {
+        me.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
     public static int SignX(this Transform me)
     {
         return me.position.x > 0 ? 1 : -1;

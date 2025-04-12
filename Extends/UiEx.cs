@@ -15,7 +15,7 @@ public static class UiEx
         me.gameObject.SetActive(isActive);
     public static void SetActive(this TextMeshProUGUI me, bool isActive) =>
         me.gameObject.SetActive(isActive);
-    public static void SetActive(this TextMeshPro me, bool isActive) =>
+    public static void SetActive(this TMP_Text me, bool isActive) =>
         me.gameObject.SetActive(isActive);
     public static void SetActive(this Button me, bool isActive) =>
         me.gameObject.SetActive(isActive);
@@ -322,7 +322,7 @@ public static class UiEx
             return string.Format("<sprite name=\"{0}\">", spr);
     }
 
-    public static Tweener DOText(this TextMeshProUGUI me, string endValue, float duration)
+    public static Tweener DOText(this TMP_Text me, string endValue, float duration)
     {
         var startValue = me.text;
         var progress = 0f;

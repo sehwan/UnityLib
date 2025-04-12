@@ -65,9 +65,7 @@ public class TimeManager : MonoSingleton<TimeManager>
     void RefreshTimescale()
     {
         var time = 1f;
-        // find minimum
-        foreach (var kv in timeScaler)
-            if (kv.Value < time) time = kv.Value;
+        foreach (var kv in timeScaler) time *= kv.Value;
         Time.timeScale = time;
     }
     public void ResetTimeSlower()
