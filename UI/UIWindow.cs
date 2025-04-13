@@ -11,7 +11,11 @@ public abstract class UIPanel : MonoBehaviour
 
     public bool IsActive => gameObject.activeSelf;
     public void ShowWindow(string name) => UM.i.windows.Find(e => e.name == name).Show();
-    public virtual void Show() => gameObject.SetActive(true);
+    public virtual void Show()
+    {
+        gameObject.SetActive(true);
+        transform.SetAsLastSibling();
+    }
     public virtual void Hide() => gameObject.SetActive(false);
     public void SetActive(bool b) => gameObject.SetActive(b);
     public void Toggle() => gameObject.SetActive(!gameObject.activeSelf);
@@ -32,7 +36,7 @@ public class UIWindow : UIPanel
     [Immutable] public bool buttonWillBeESC;
     public bool isESCable = true;
     public bool isObstructingCamera = true;
-    
+
 
     [ContextMenu("Make Dim to ESC Buttons")]
     public void MakeESCDim()

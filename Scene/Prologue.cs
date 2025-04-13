@@ -1,17 +1,19 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
-using DG.Tweening;
 
 public class Prologue : MonoBehaviour
 {
-    public Transform prologue;
-    public string nextSceneName = "stage";
+    public Transform tr_seq;
 
     [TextArea(10, 25)]
     public string prologueText = "";
 
+
+    public static bool HavePrologue()
+    {
+        return PlayerPrefs.GetInt("prolog", 0) == 1;
+    }
 
     void Update()
     {
@@ -22,7 +24,7 @@ public class Prologue : MonoBehaviour
 
     void Start()
     {
-        if (PlayerPrefs.GetInt("prologue", 0) == 1)
+        if (HavePrologue())
         {
             NextScene();
             return;
@@ -30,13 +32,13 @@ public class Prologue : MonoBehaviour
         StartCoroutine(Co_Prologue());
     }
 
-    IEnumerator Co_Prologue()
+    public IEnumerator Co_Prologue()
     {
         // Hide All
-        prologue.SetActive(true);
-        foreach (Transform item in prologue)
+        tr_seq.SetActive(true);
+        foreach (Transform e in tr_seq)
         {
-            item.GetComponent<Graphic>().CrossFadeAlpha(0, 0, false);
+            e.GetComponent<Graphic>().CrossFadeAlpha(0, 0, false);
         }
 
         // Show All
@@ -45,7 +47,7 @@ public class Prologue : MonoBehaviour
         for (int i = 0; i < splitted.Length; i++)
         {
             if (splitted[i].IsNullOrEmpty()) continue;
-            var text = prologue.GetChild(i).GetComponent<Text>();
+            var text = tr_seq.GetChild(i).GetComponent<Text>();
             text.text = splitted[i];
             text.CrossFadeAlpha(1, 3, false);
             yield return new WaitForSeconds(3f);
@@ -57,7 +59,8 @@ public class Prologue : MonoBehaviour
     void NextScene()
     {
         Time.timeScale = 1;
-        PlayerPrefs.SetInt("prologue", 1);
-        SceneManager.LoadScene(nextSceneName);
+        PlayerPrefs.SetInt("prolog", 1);
+        Fade.i.Out(Color.black, 0.4f);
+        Destroy(gameObject);
     }
 }
