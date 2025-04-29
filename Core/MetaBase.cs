@@ -16,6 +16,13 @@ public class MetaGID
     public string rel_gid;
 }
 
+[CreateAssetMenu(fileName = "MetaSOBase", menuName = "Assets/Create/MetaSOBase", order = 1)]
+public class MetaSOBase : ScriptableObject
+{
+    public virtual void OnLoad() { }
+}
+
+
 public class MetaBase : MonoBehaviour
 {
     static readonly JsonSerializerSettings jsonSetting = new() { NullValueHandling = NullValueHandling.Ignore };
@@ -24,6 +31,7 @@ public class MetaBase : MonoBehaviour
 
     // public int STARTING_ROW = 2;
 
+    public MetaGID[] gids;
     [Header("Open Sheet")]
     public string dev_url_modify;
     public string rel_url_modify;
@@ -31,7 +39,6 @@ public class MetaBase : MonoBehaviour
     [Header("Published")]
     public string dev_url_published;
     public string rel_url_published;
-    public MetaGID[] gids;
 
     public string MakeURL(MetaGID urls, bool devMode)
     {

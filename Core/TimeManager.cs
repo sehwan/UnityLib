@@ -49,7 +49,7 @@ public class TimeManager : MonoSingleton<TimeManager>
     }
     #endregion
 
-    #region TimeSclae
+    #region TimeScale
     public SerializedDictionary<GameObject, float> timeScaler = new();
     public void AddTimeScaler(GameObject go, float time)
     {
@@ -59,6 +59,7 @@ public class TimeManager : MonoSingleton<TimeManager>
     }
     public void RemoveTimeScaler(GameObject go)
     {
+        if (timeScaler.ContainsKey(go) == false) return;
         timeScaler.Remove(go);
         RefreshTimescale();
     }

@@ -51,13 +51,13 @@ public class TitleScene : MonoBehaviour
         MessageBox.Show("TitleReset".L(), null, null, null, () =>
         {
             PlayerPrefs.DeleteAll();
-            SceneManager.LoadScene(0);
+            // SceneManager.LoadScene(0);
         });
     }
 
     public virtual void Update()
     {
-        if (isReady && Input.GetKeyDown(KeyCode.Space)) _Start();
+        if (isReady && Input.GetKeyDown(KeyCode.Space)) SendMessage("_Start");
     }
 
     public virtual void _Start()

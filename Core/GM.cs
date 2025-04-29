@@ -24,7 +24,7 @@ public class GM : MonoSingleton<GM>
         Application.targetFrameRate = Settings.FrameRate;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         if (Application.isEditor == false) skipLevel = 0;
-        
+
         // Camera.main.orthographicSize = 22f / targetAspect;
         // size
         // float w = Screen.width;
@@ -96,4 +96,5 @@ public class GM : MonoSingleton<GM>
     {
         state = n;
     }
+
 }
