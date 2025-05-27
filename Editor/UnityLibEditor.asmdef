@@ -2,7 +2,8 @@
     "name": "UnityLibEditor",
     "rootNamespace": "",
     "references": [
-        "UnityLib"
+        "UnityLib",
+        "I2"
     ],
     "includePlatforms": [
         "Editor"
