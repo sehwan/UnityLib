@@ -16,13 +16,6 @@ public class MetaGID
     public string rel_gid;
 }
 
-[CreateAssetMenu(fileName = "MetaSOBase", menuName = "Assets/Create/MetaSOBase", order = 1)]
-public class MetaSOBase : ScriptableObject
-{
-    public virtual void OnLoad() { }
-}
-
-
 public class MetaBase : MonoBehaviour
 {
     static readonly JsonSerializerSettings jsonSetting = new() { NullValueHandling = NullValueHandling.Ignore };
@@ -40,6 +33,7 @@ public class MetaBase : MonoBehaviour
     public string dev_url_published;
     public string rel_url_published;
 
+
     public string MakeURL(MetaGID urls, bool devMode)
     {
         var baseUrl = (devMode ? dev_url_published : rel_url_published).Split("/pubhtml")[0];
@@ -56,7 +50,6 @@ public class MetaBase : MonoBehaviour
 
     async public void LoadParseInit(MetaGID e, bool devMode)
     {
-        // print(e.name);
         var url = MakeURL(e, devMode);
         var fieldInfo = GetType().GetField(e.name);
         if (fieldInfo == null)
@@ -81,7 +74,7 @@ public class MetaBase : MonoBehaviour
         // Parse
         Debug.Log($"<color=green>{e.name}</color>");
         var json = CSVToJSON(req.downloadHandler.text);
-        print(json);
+        Debug.Log(json);
         Debug.Log(StringEx.GetDiffFromJson(old, json));
         fieldInfo.SetValue(this, JsonConvert.DeserializeObject(json, fieldType, jsonSetting));
 
