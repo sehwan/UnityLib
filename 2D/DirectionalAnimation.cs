@@ -20,7 +20,7 @@ public enum PlayMode { Once, Loop, Pong }
 
 
 public class DirectionalAnimation : MonoBehaviour
-{
+{ 
     static SerializedDictionary<string, SerializedDictionary<string, DataFrame>> all = new();
 
     [Header("Settings")]
