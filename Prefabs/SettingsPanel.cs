@@ -17,6 +17,12 @@ public class SettingsPanel : MonoBehaviour
     public Text txt_version;
     public GameObject pn_language;
 
+    [Header("Give Up Button")]
+    public Button btn_giveUp;
+    static public Func<bool> giveUpShowingCondition;
+    static public Action giveUpCallback;
+
+
     public static void Show()
     {
         var _ = Instantiate(Resources.Load<GameObject>("Prefabs/SettingsPanel")).GetComponent<SettingsPanel>();
@@ -32,6 +38,18 @@ public class SettingsPanel : MonoBehaviour
         // bool isKorean = LocalizationMng.inst.IsKorean();
         // btn_term.SetActive(isKorean);
         // btn_cafe.SetActive(isKorean);
+
+        // Quit Button
+        print(giveUpShowingCondition.Invoke());
+        _.btn_giveUp.SetActive(
+            giveUpShowingCondition != null &&
+            giveUpShowingCondition.Invoke());
+        _.btn_giveUp.onClick.AddListener(() =>
+        {
+            if (giveUpCallback == null) return;
+            giveUpCallback.Invoke();
+            _._Hide();
+        });
     }
     void Awake()
     {
@@ -50,6 +68,7 @@ public class SettingsPanel : MonoBehaviour
     }
 
     #region Cheat
+    [Header("Cheat")]
     public int count_cheat;
     public void Btn_Cheat()
     {
@@ -179,7 +198,7 @@ public class SettingsPanel : MonoBehaviour
     {
         pn_language.SetActive(false);
     }
-    
+
     public void Btn_Community()
     {
         // ToastGroup.Show("준비중입니다.");
