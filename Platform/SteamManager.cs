@@ -57,7 +57,7 @@ public class SteamManager : MonoBehaviour
         Debug.Log($"<color=green>{SteamApps.GameLanguage}</color>");
         foreach (var controller in SteamInput.Controllers)
             Debug.Log($"<color=green>{controller.Id}</color>");
-        
+
         SteamScreenshots.TriggerScreenshot();
 
         // SteamUserStats.SetStat("deaths", value);
@@ -73,7 +73,17 @@ public class SteamManager : MonoBehaviour
 
     void Update()
     {
-            if (isSteamInitialized == false) return;
-            SteamClient.RunCallbacks();
-        }
+        if (isSteamInitialized == false) return;
+        SteamClient.RunCallbacks();
     }
+
+    void SetHighscore(string key, int value)
+    {
+        if (isSteamInitialized == false) return;
+        var oldTotal = SteamUserStats.GetStatInt(key);
+        if (oldTotal >= value) return;
+        SteamUserStats.SetStat(key, value);
+        SteamUserStats.StoreStats();
+    }
+
+}
