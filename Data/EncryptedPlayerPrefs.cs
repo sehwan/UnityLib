@@ -6,7 +6,7 @@ using System.Text;
 public class EncryptedPlayerPrefs
 {
     // Modify this key in this file :
-    private static string privateKey = "9ETrEsWaFRach3gexaDr";
+    static string privateKey = "9ETrEsWaFRach3gexaDr";
 
     // Add some values to this array before using EncryptedPlayerPrefs
     public static string[] keys;
@@ -114,5 +114,4 @@ public class EncryptedPlayerPrefs
         PlayerPrefs.DeleteKey(key + "_encryption_check");
         PlayerPrefs.DeleteKey(key + "_used_key");
     }
-
 }

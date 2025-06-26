@@ -264,6 +264,7 @@ public static class StringEx
 
     public static string Decrypt(this string textToDecrypt, string key)
     {
+        if (key.IsNullOrEmpty()) return textToDecrypt;
         RijndaelManaged rijndaelCipher = new()
         {
             Mode = CipherMode.CBC,
@@ -288,6 +289,7 @@ public static class StringEx
 
     public static string Encrypt(this string textToEncrypt, string key)
     {
+        if (key.IsNullOrEmpty()) return textToEncrypt;
         RijndaelManaged rijndaelCipher = new()
         {
             Mode = CipherMode.CBC,

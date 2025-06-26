@@ -32,6 +32,30 @@ public class SteamManager : MonoBehaviour
             throw;
         }
 
+        SteamUserStats.OnAchievementProgress += AchievementChanged;
+
+        // Get top 20 scores
+        // LeaderboardEntry[] globalScores = await lb.Value.GetScoresAsync(20);
+        // foreach (LeaderboardEntry e in globalScores)
+        //     Console.WriteLine($"{e.GlobalRank}: {e.Score} {e.User}");
+
+
+        // // Get scores from friends
+        // LeaderboardEntry[] friendScores = await lb.Value.GetScoresFromFriendsAsync();
+        // foreach (LeaderboardEntry e in friendScores)
+        //     Console.WriteLine($"{e.GlobalRank}: {e.Score} {e.User}");
+
+        // // Get scores around current user
+        // LeaderboardEntry[] surroundScores = await lb.Value.GetScoresAroundUserAsync(-10, 10);
+        // foreach (LeaderboardEntry e in surroundScores)
+        //     Console.WriteLine($"{e.GlobalRank}: {e.Score} {e.User}");
+    }
+    void AchievementChanged(Steamworks.Data.Achievement ach, int currentProgress, int progress)
+    {
+        if (ach.State)
+        {
+            Debug.Log($"{ach.Name} WAS UNLOCKED!");
+        }
     }
 
     public void OnDestroy()
@@ -77,13 +101,16 @@ public class SteamManager : MonoBehaviour
         SteamClient.RunCallbacks();
     }
 
-    void SetHighscore(string key, int value)
+
+    void SetHighScore(string key, int value)
     {
         if (isSteamInitialized == false) return;
         var oldTotal = SteamUserStats.GetStatInt(key);
         if (oldTotal >= value) return;
         SteamUserStats.SetStat(key, value);
-        SteamUserStats.StoreStats();
     }
-
+    void AddStat(string key, int value)
+    {
+        SteamUserStats.AddStat(key, value);
+    }
 }
