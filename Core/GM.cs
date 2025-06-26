@@ -97,4 +97,14 @@ public class GM : MonoSingleton<GM>
         state = n;
     }
 
+
+    void OnApplicationQuit()
+    {
+        Records.Save();
+    }
+    void OnApplicationFocus(bool focus)
+    {
+        if (focus == true) return;
+        Records.Save();
+    }
 }
