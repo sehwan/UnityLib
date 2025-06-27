@@ -113,4 +113,11 @@ public class SteamManager : MonoBehaviour
     {
         SteamUserStats.AddStat(key, value);
     }
+
+
+    public static void SetAchievement(string key)
+    {
+        SteamUserStats.Achievements.SetField(key, true);
+        SteamUserStats.StoreStats();
+    }
 }
