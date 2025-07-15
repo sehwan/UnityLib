@@ -12,7 +12,6 @@ using Steamworks;
 
 public class Record
 {
-    public Type type;
     public object persist; // For persistent storage
     public object session; // For current session
     public bool ifHigh;
@@ -20,7 +19,6 @@ public class Record
 
     public Record(Type type, bool ifHigh, bool isSteam)
     {
-        this.type = type;
         this.ifHigh = ifHigh;
         this.isSteam = isSteam;
         persist = Activator.CreateInstance(type);
@@ -117,18 +115,18 @@ public class Records
 
 
     // Current Session
-    public static object GetSession(string key)
+    public static T GetSession<T>(string key)
     {
-        if (records.TryGetValue(key, out var rec)) return rec.session;
+        if (records.TryGetValue(key, out var rec)) return (T)rec.session;
         Debug.LogWarning($"Record '{key}' does Not Exist.");
-        return null;
+        return default(T);
     }
 
-    public static object GetPersistent(string key)
+    public static T GetPersistent<T>(string key)
     {
-        if (records.TryGetValue(key, out var rec)) return rec.persist;
+        if (records.TryGetValue(key, out var rec)) return (T)rec.persist;
         Debug.LogWarning($"Record '{key}' does Not Exist.");
-        return null;
+        return default(T);
     }
 
 
