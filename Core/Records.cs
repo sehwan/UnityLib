@@ -21,8 +21,8 @@ public class Record
     {
         this.ifHigh = ifHigh;
         this.isSteam = isSteam;
-        persist = Activator.CreateInstance(type);
-        session = Activator.CreateInstance(type);
+        persist = 0; //Activator.CreateInstance(type);
+        session = 0; //Activator.CreateInstance(type);
     }
 }
 
@@ -160,7 +160,7 @@ public class Records
     public static void ClearSession()
     {
         foreach (var rec in records.Values)
-            rec.session = Activator.CreateInstance(rec.type);
+            rec.session = 0;
         isDirty = true;
         Save();
     }
@@ -191,7 +191,7 @@ public class Records
     {
         StringBuilder sb = new();
         foreach (var kv in records)
-            sb.AppendLine($"{kv.Key}: {kv.Value.type} {(kv.Value.ifHigh ? "High" : "Cumulative")} {kv.Value.session} / {kv.Value.persist} ");
+            sb.AppendLine($"{kv.Key}: {(kv.Value.ifHigh ? "High" : "Cumulative")} {kv.Value.session} / {kv.Value.persist} ");
         Debug.Log(sb.ToString());
     }
 }
