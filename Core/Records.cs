@@ -187,6 +187,14 @@ public class Records
         isDirty = true;
         Save();
     }
+    public static void Reset(string key)
+    {
+        var rec = records[key];
+        rec.session = 0;
+        rec.persist = 0;
+        isDirty = true;
+        Save();
+    }
     public static void ShowAll()
     {
         StringBuilder sb = new();
