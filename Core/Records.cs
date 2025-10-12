@@ -32,7 +32,7 @@ public class Records
     static Dictionary<string, Record> records = new();
     static readonly string SavePath = Path.Combine(Application.persistentDataPath, "records.sav");
 
-    public static void ModelCum<T>(string key, bool isSteam = true)
+    static public void ModelCum<T>(string key, bool isSteam = true)
     {
         if (!records.ContainsKey(key))
             records[key] = new Record(typeof(T), false, isSteam);
@@ -44,7 +44,7 @@ public class Records
         }
     }
 
-    public static void ModelHi<T>(string key, bool isSteam = true)
+    static public void ModelHi<T>(string key, bool isSteam = true)
     {
         if (!records.ContainsKey(key))
             records[key] = new Record(typeof(T), true, isSteam);
@@ -57,7 +57,7 @@ public class Records
     }
 
 
-    public static void Accumulate<T>(string key, T value) where T : struct, IComparable
+    static public void Accumulate<T>(string key, T value) where T : struct, IComparable
     {
         if (!records.TryGetValue(key, out var e))
         {
@@ -73,7 +73,7 @@ public class Records
         e.persist = Add(e.persist, value);
         Apply<T>(key, e);
     }
-    public static void UpdateIfHi<T>(string key, T value) where T : struct, IComparable
+    static public void UpdateIfHi<T>(string key, T value) where T : struct, IComparable
     {
         if (!records.TryGetValue(key, out var e))
         {
@@ -115,14 +115,14 @@ public class Records
 
 
     // Current Session
-    public static T GetSession<T>(string key)
+    static public T GetSession<T>(string key)
     {
         if (records.TryGetValue(key, out var rec)) return (T)rec.session;
         Debug.LogWarning($"Record '{key}' does Not Exist.");
         return default(T);
     }
 
-    public static T GetPersistent<T>(string key)
+    static public T GetPersistent<T>(string key)
     {
         if (records.TryGetValue(key, out var rec)) return (T)rec.persist;
         Debug.LogWarning($"Record '{key}' does Not Exist.");
@@ -131,7 +131,7 @@ public class Records
 
 
 
-    public static void LoadFromFile()
+    static public void LoadFromFile()
     {
         if (File.Exists(SavePath) == false)
         {
@@ -157,7 +157,7 @@ public class Records
 
 
 
-    public static void ClearSession()
+    static public void ClearSession()
     {
         foreach (var rec in records.Values)
             rec.session = 0;
@@ -165,7 +165,7 @@ public class Records
         Save();
     }
 
-    public static void Save()
+    static public void Save()
     {
         if (isDirty == false) return;
         isDirty = false;
@@ -181,13 +181,13 @@ public class Records
             Debug.LogError($"Failed to save records to file: {e.Message}");
         }
     }
-    public static void Reset()
+    static public void Reset()
     {
         records.Clear();
         isDirty = true;
         Save();
     }
-    public static void Reset(string key)
+    static public void Reset(string key)
     {
         var rec = records[key];
         rec.session = 0;
@@ -195,7 +195,7 @@ public class Records
         isDirty = true;
         Save();
     }
-    public static void ShowAll()
+    static public void ShowAll()
     {
         StringBuilder sb = new();
         foreach (var kv in records)
