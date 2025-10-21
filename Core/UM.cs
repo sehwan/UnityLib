@@ -54,7 +54,6 @@ public class UM : MonoBehaviour
     void MakeTouchEffect()
     {
         Vibration.Vibrate(1);
-        if (Time.timeScale < 1) return;
         if (touchFX == null) return;
         touchFX.Emit(cam.ScreenToWorldPoint(Input.mousePosition));
     }
