@@ -51,9 +51,6 @@ public class InputKeyActivity : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4))
             Time.timeScale = 10f;
 
-        else if (Input.GetKeyDown(KeyCode.LeftShift))
-            UM.i.canvas.enabled = !UM.i.canvas.enabled;
-
         else if (Input.GetKeyDown(KeyCode.C))
         {
             var savePath = "/Users/sh/Desktop/captures";
