@@ -16,6 +16,15 @@ public abstract class UIPanel : MonoBehaviour
         gameObject.SetActive(true);
         transform.SetAsLastSibling();
     }
+    /// <summary>
+    /// Generic overload for showing with options. Panels that previously used custom ShowX
+    /// methods can accept an options object here (e.g. Show(new MyPanel.Options{...})).
+    /// Default implementation forwards to parameterless Show().
+    /// </summary>
+    public virtual void Show(object options)
+    {
+        Show();
+    }
     public virtual void Hide() => gameObject.SetActive(false);
     public void SetActive(bool b) => gameObject.SetActive(b);
     public void Toggle() => gameObject.SetActive(!gameObject.activeSelf);

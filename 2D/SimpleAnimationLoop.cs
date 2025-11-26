@@ -11,6 +11,7 @@ public class SimpleAnimationLoop : MonoBehaviour
 
     void OnEnable()
     {
+        if (sprites == null || sprites.Length == 0) return;
         StartCoroutine(Co_Animate());
     }
 

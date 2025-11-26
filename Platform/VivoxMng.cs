@@ -111,7 +111,7 @@
 //     }
 //     public void LeaveChannel()
 //     {
-//         channelSession.Disconnect();
+//         channelSession.i.disconnect();
 //         BindChannelHandlers(false, channelSession);
 //     }
 

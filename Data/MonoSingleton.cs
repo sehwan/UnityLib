@@ -10,7 +10,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         {
             if (_i == null)
             {
-                _i = GameObject.FindObjectOfType(typeof(T)) as T;
+                _i = FindFirstObjectByType<T>();
                 if (_i == null)
                 {
                     _i = new GameObject(typeof(T).ToString(), typeof(T)).GetComponent<T>();
