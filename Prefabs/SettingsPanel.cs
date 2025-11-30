@@ -22,6 +22,11 @@ public class SettingsPanel : MonoBehaviour
     static public Func<bool> giveUpShowingCondition;
     static public Action giveUpCallback;
 
+    [Header("Main Menu Button")]
+    public Button btn_mainMenu;
+    static public Func<bool> mainMenuShowingCondition;
+    static public Action mainMenuCallback;
+
 
     public static void Show()
     {
@@ -39,15 +44,23 @@ public class SettingsPanel : MonoBehaviour
         // btn_term.SetActive(isKorean);
         // btn_cafe.SetActive(isKorean);
 
-        // Quit Button
-        print(giveUpShowingCondition.Invoke());
+        // Give Up
         _.btn_giveUp.SetActive(
             giveUpShowingCondition != null &&
             giveUpShowingCondition.Invoke());
         _.btn_giveUp.onClick.AddListener(() =>
         {
-            if (giveUpCallback == null) return;
-            giveUpCallback.Invoke();
+            giveUpCallback?.Invoke();
+            _._Hide();
+        });
+
+        // Main Menu Button
+        _.btn_mainMenu.SetActive(
+            mainMenuShowingCondition != null &&
+            mainMenuShowingCondition.Invoke());
+        _.btn_mainMenu.onClick.AddListener(() =>
+        {
+            mainMenuCallback?.Invoke();
             _._Hide();
         });
     }

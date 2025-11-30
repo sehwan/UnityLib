@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InputKeyActivity : MonoBehaviour
 {
@@ -7,9 +6,6 @@ public class InputKeyActivity : MonoBehaviour
     {
 #if UNITY_ANDROID
         EscapeOnAndroid();
-#endif
-#if UNITY_EDITOR
-        CommonCheat();
 #endif
     }
 
@@ -31,34 +27,6 @@ public class InputKeyActivity : MonoBehaviour
                     // User.inst.SaveImmediately();
                     Application.Quit();
                 });
-        }
-    }
-
-    public static bool IsCheatMode => Input.GetKey(KeyCode.BackQuote);
-    void CommonCheat()
-    {
-        if (IsCheatMode == false) return;
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
-            Time.timeScale = 0.25f;
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-            Time.timeScale = 1;
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-            Time.timeScale = 3;
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-            Time.timeScale = 10f;
-
-        else if (Input.GetKeyDown(KeyCode.C))
-        {
-            var savePath = "/Users/sh/Desktop/captures";
-            if (!System.IO.Directory.Exists(savePath))
-                System.IO.Directory.CreateDirectory(savePath);
-            var fileName = $"{System.DateTime.Now:yyyyMMdd_HHmmss}.png";
-            var filePath = System.IO.Path.Combine(savePath, fileName);
-            ScreenCapture.CaptureScreenshot(filePath);
         }
     }
 }

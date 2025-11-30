@@ -7,7 +7,7 @@ public enum GameState { Quit, Pause, Playing }
 
 public class GM : MonoSingleton<GM>
 {
-    [Range(0, 2)]
+    [Range(0, 3)]
     public int skipLevel = 0;
     public TitleScene title;
     public Action beforeInit;
@@ -97,14 +97,4 @@ public class GM : MonoSingleton<GM>
         state = n;
     }
 
-
-    void OnApplicationQuit()
-    {
-        Records.Save();
-    }
-    void OnApplicationFocus(bool focus)
-    {
-        if (focus == true) return;
-        Records.Save();
-    }
 }
