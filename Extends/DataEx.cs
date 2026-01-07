@@ -60,7 +60,7 @@ public static class DataEx
         {
             // DefaultValueHandling = DefaultValueHandling.Ignore,
             MissingMemberHandling = MissingMemberHandling.Ignore,
-            // NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore
         });
     }
 
