@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 public static class DataEx
 {
@@ -39,7 +40,6 @@ public static class DataEx
     {
         var tempJson = JsonConvert.SerializeObject(obj, new JsonSerializerSettings()
         {
-            // DefaultValueHandling = DefaultValueHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore
         });
         return JsonConvert.DeserializeObject<V>(tempJson);
@@ -49,18 +49,47 @@ public static class DataEx
     {
         return JsonConvert.SerializeObject(obj, new JsonSerializerSettings()
         {
-            // DefaultValueHandling = DefaultValueHandling.Ignore,
-            NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore,
+            DefaultValueHandling = DefaultValueHandling.Ignore
         });
     }
+
+    public static string ToJsoIgnoreNull(this object obj)
+    {
+        return JsonConvert.SerializeObject(obj, new JsonSerializerSettings()
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            DefaultValueHandling = DefaultValueHandling.Ignore,
+            ContractResolver = new IgnoreEmptyObjectsResolver()
+        });
+    }
+
+    class IgnoreEmptyObjectsResolver : DefaultContractResolver
+    {
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            var property = base.CreateProperty(member, memberSerialization);
+            // 참조 타입(클래스)만 체크
+            if (property.PropertyType.IsClass && property.PropertyType != typeof(string))
+            {
+                property.ShouldSerialize = instance =>
+                {
+                    var value = property.ValueProvider.GetValue(instance);
+                    return value != null;
+                };
+            }
+            return property;
+        }
+    }
+
+
     // String -> Object
     public static V ToObject<V>(this string str)
     {
         return JsonConvert.DeserializeObject<V>(str, new JsonSerializerSettings()
         {
-            // DefaultValueHandling = DefaultValueHandling.Ignore,
-            MissingMemberHandling = MissingMemberHandling.Ignore,
-            NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore,
+            DefaultValueHandling = DefaultValueHandling.Ignore
         });
     }
 
