@@ -107,7 +107,6 @@ public partial class User : UserBase
 
         if (isUsingServer) SaveToServer(isToast);
         else SaveToClient();
-        print("saved at " + DateTime.UtcNow);
     }
     static readonly string saveKey = "Reporter";
     static readonly string savePW = "shsh";
@@ -116,7 +115,11 @@ public partial class User : UserBase
         // try
         {
             var json = JsonConvert.SerializeObject(_);
-            print(json);
+            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+            Print.SetShowTrace(false);
+            Print.Gray(json);
+            Print.SetShowTrace(true);
+
             PlayerPrefs.SetString(saveKey, json);
 
             // fake
@@ -133,7 +136,7 @@ public partial class User : UserBase
     {
         await NetworkMng.i.FuncAsync("user-save", isToast, ("data", JsonConvert.SerializeObject(_)));
         if (isToast) ToastGroup.Show("Complete".L());
-        print("saved at " + DateTime.UtcNow);
+        Print.Gray("saved at " + DateTime.UtcNow);
     }
     IEnumerator Co_AutoSave()
     {
@@ -253,7 +256,7 @@ public partial class User : UserBase
         _.active = true;
         ListenDB();
 
-        StartCoroutine(Co_AutoSave());
+        // StartCoroutine(Co_AutoSave());
     }
 
     // public override void UpdateDataForNewVersion()

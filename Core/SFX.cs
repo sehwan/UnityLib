@@ -1,9 +1,10 @@
 using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
+using UnityEngine.EventSystems;
+
 public class SFX : MonoBehaviour
 {
     public static SFX i;
@@ -13,7 +14,8 @@ public class SFX : MonoBehaviour
     int iter;
 
     const string dirPath = "SFX";
-    public List<string> failedNames = new();
+    [SerializeField] List<string> failedNames = new();
+
 
     [ContextMenu("Make Audios")]
     void MakeAudios()
@@ -62,7 +64,8 @@ public class SFX : MonoBehaviour
 
     public static void Mute(bool b)
     {
-        i?.audios.ForEach(e =>
+        if (i == null) return;
+        i.audios.ForEach(e =>
         {
             e.enabled = !b;
         });
@@ -70,19 +73,20 @@ public class SFX : MonoBehaviour
     public static void SetVolume(float val)
     {
         Mute(val == 0);
-        i?.audios.ForEach(e => e.volume = val);
+        if (i == null) return;
+        i.audios.ForEach(e => e.volume = val);
     }
 
     public static void Play(string name)
     {
+        if (i == null) return;
         if (name.IsNullOrEmpty()) return;
-        var _ = i;
-        if (dic.ContainsKey(name) == false)
+        if (dic.TryGetValue(name, out var clip) == false)
         {
-            if (_.failedNames.Contains(name) == false) _.failedNames.Add(name);
+            if (i.failedNames.Contains(name) == false) i.failedNames.Add(name);
             return;
         }
-        if (_.iter >= _.length) _.iter = 0;
-        _.audios[_.iter++]?.PlayOneShot(dic[name]);
+        if (i.iter >= i.length) i.iter = 0;
+        i.audios[i.iter++]?.PlayOneShot(clip);
     }
 }
