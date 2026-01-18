@@ -32,7 +32,16 @@ class CompileTime : EditorWindow
             isTrackingTime = false;
             var compileTime = finishTime - startTime;
             PlayerPrefs.DeleteKey("CompileStartTime");
-            Debug.Log($"Compiled in <color=cyan>{compileTime:0.00}s</color>");
+            if (compileTime >= 60)
+            {
+                int minutes = (int)(compileTime / 60);
+                double seconds = compileTime % 60;
+                Debug.Log($"Compiled in <color=cyan>{minutes}:{seconds:00}</color>");
+            }
+            else
+            {
+                Debug.Log($"Compiled in <color=cyan>{compileTime:0.00}s</color>");
+            }
         }
     }
 }

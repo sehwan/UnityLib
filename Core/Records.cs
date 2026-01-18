@@ -171,7 +171,10 @@ public class Records
         isDirty = false;
         var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
         var json = JsonConvert.SerializeObject(records, settings);
-        Debug.Log($"<color=green>{json}</color>");
+#if UNITY_EDITOR
+        using (Print.HideTrace())
+            Print.Log(json);
+#endif
         try
         {
             File.WriteAllText(SavePath, json);
